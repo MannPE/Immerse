@@ -1,0 +1,34 @@
+@import '../../global/variables';
+
+.language-card-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+
+}
+
+language-card {
+  padding-bottom: 20px;
+
+  h4 {
+    margin-bottom: 0;
+  }
+  p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+}
+
+.demo-card__image {
+  border-radius: 15px;
+  //overflow: hidden;
+  background: $color-white;
+  box-shadow: $card-shadow;
+  border-radius: 13px;
+
+  img {
+    width: 100%;
+    vertical-align: bottom;
+  }
+}

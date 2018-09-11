@@ -1,0 +1,79 @@
+{
+  "namespace": "App",
+  "fsNamespace": "app",
+  "loader": "../app.js",
+  "corePolyfilled": "es5-build-disabled.js",
+  "global": "app.global.js",
+  "core": "app.core.js",
+  "components": {
+    "app-burger": {
+      "$": "app-burger"
+    },
+    "app-icon": {
+      "$": "app-icon"
+    },
+    "app-marked": {
+      "$": "app-burger"
+    },
+    "context-consumer": {
+      "$": "context-consumer"
+    },
+    "document-component": {
+      "$": "app-burger"
+    },
+    "language-card": {
+      "$": "language-card"
+    },
+    "lazy-iframe": {
+      "$": "lazy-iframe"
+    },
+    "main-page": {
+      "$": "language-card"
+    },
+    "notfound-page": {
+      "$": "notfound-page"
+    },
+    "pwas-page": {
+      "$": "pwas-page"
+    },
+    "resources-page": {
+      "$": "resources-page"
+    },
+    "site-header": {
+      "$": "site-header"
+    },
+    "site-menu": {
+      "$": "app-burger"
+    },
+    "stencil-route": {
+      "$": "translate-header"
+    },
+    "stencil-route-link": {
+      "$": "stencil-route-link"
+    },
+    "stencil-route-switch": {
+      "$": "translate-header"
+    },
+    "stencil-router": {
+      "$": "translate-header"
+    },
+    "translate-flag-list": {
+      "$": "language-card"
+    },
+    "translate-header": {
+      "$": "translate-header"
+    },
+    "translate-input": {
+      "$": "language-card"
+    },
+    "translate-word": {
+      "$": "translate-word"
+    },
+    "translate-words-page": {
+      "$": "translate-word"
+    },
+    "translation-main-view": {
+      "$": "translate-header"
+    }
+  }
+}
