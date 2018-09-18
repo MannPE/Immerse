@@ -1,0 +1,40 @@
+/*! Built with http://stenciljs.com */
+import { h } from './app.core.js';
+import { a as SiteProviderConsumer } from './chunk-d68c9225.js';
+var AppBurger = /** @class */ (function () {
+    function AppBurger() {
+        this.toggleLeftSidebar = function () { };
+    }
+    AppBurger.prototype.render = function () {
+        var _this = this;
+        return (h("div", { class: "burger", onClick: function () { return _this.toggleLeftSidebar(); } }, h("app-icon", { name: "menu" }), h("app-icon", { name: "close" })));
+    };
+    Object.defineProperty(AppBurger, "is", {
+        get: function () { return "app-burger"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AppBurger, "properties", {
+        get: function () {
+            return {
+                "el": {
+                    "elementRef": true
+                },
+                "toggleLeftSidebar": {
+                    "type": "Any",
+                    "attr": "toggle-left-sidebar"
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AppBurger, "style", {
+        get: function () { return "/**style-placeholder:app-burger:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return AppBurger;
+}());
+SiteProviderConsumer.injectProps(AppBurger, ['toggleLeftSidebar']);
+export { AppBurger };

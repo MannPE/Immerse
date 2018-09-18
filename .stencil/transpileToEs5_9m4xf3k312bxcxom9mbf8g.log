@@ -1,0 +1,62 @@
+/*! Built with http://stenciljs.com */
+App.loadBundle('/**:bundle-id:**/', ['exports'], function (exports) {
+    var h = window.App.h;
+    /**
+     * @export
+     * @class TranslateWord
+     * Class representing the element that will be injected into webpages for translated words.
+     * @property {string} value - The word that is being replaced
+     * @property {string} translation - The word that will replace the old one.
+     * @property {string} lang - 2 letter shortened language. IE: ES, EN, DE
+     * @property {string} type - The type of word. IE: noun, verb, adverb, etc.
+     * @property {boolean} singular - Indicates if the word is for singular or plural
+     */
+    var ViewMain = /** @class */ (function () {
+        function ViewMain() {
+        }
+        ViewMain.prototype.render = function () {
+            return (h("div", null, h("span", { class: this.type + " word " + (this.singular ? "singular" : "plural") }, this.value), h("input", { type: "text", value: this.translation }), h("a", { class: "svg-button", rel: "noopener", title: "Remove this word from the immerse list" }, h("app-icon", { name: "trash" }))));
+        };
+        Object.defineProperty(ViewMain, "is", {
+            get: function () { return "imr-view-main"; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ViewMain, "properties", {
+            get: function () {
+                return {
+                    "lang": {
+                        "type": String,
+                        "attr": "lang"
+                    },
+                    "singular": {
+                        "type": Boolean,
+                        "attr": "singular"
+                    },
+                    "translation": {
+                        "type": String,
+                        "attr": "translation"
+                    },
+                    "type": {
+                        "type": String,
+                        "attr": "type"
+                    },
+                    "value": {
+                        "type": String,
+                        "attr": "value"
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ViewMain, "style", {
+            get: function () { return "/**style-placeholder:imr-view-main:**/"; },
+            enumerable: true,
+            configurable: true
+        });
+        return ViewMain;
+    }());
+    exports.ImrViewMain = ViewMain;
+    Object.defineProperty(exports, '__esModule', { value: true });
+});

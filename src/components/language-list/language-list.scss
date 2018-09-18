@@ -1,0 +1,25 @@
+@import '../../global/variables';
+
+imr-language-list{
+    imr-language-card {
+        padding-bottom: 1em;
+        cursor: pointer;
+
+        h4 {
+          margin-bottom: 0;
+        }
+        p {
+          margin-top: .5em;
+          margin-bottom: 0;
+          line-height: 1.5;
+        }
+        img{
+            width: 100%;
+        }
+    }   
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    justify-content: center;
+    
+}

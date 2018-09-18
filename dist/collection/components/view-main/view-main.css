@@ -1,0 +1,110 @@
+imr-view-main main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3em; }
+
+imr-view-main #logo {
+  width: 4em;
+  height: 4em; }
+
+imr-view-main #action-call {
+  font-size: 3.2em;
+  text-align: center;
+  width: 16em;
+  line-height: normal;
+  margin-top: 20px; }
+
+imr-view-main button {
+  margin: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  border-radius: 2px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  outline: none;
+  letter-spacing: 0.04em;
+  transition: all .15s ease;
+  cursor: pointer; }
+
+imr-view-main button:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: translateY(1px); }
+
+imr-view-main #get-started {
+  background: #5851ff;
+  color: white; }
+
+imr-view-main #learn-more {
+  background: white;
+  color: #5851ff; }
+
+imr-view-main #background {
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 8888;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  background-color: #00082d;
+  transition: opacity 0.3s cubic-bezier(0.36, 0.66, 0.04, 1); }
+
+imr-view-main .background-show {
+  opacity: 0.4 !important;
+  pointer-events: auto !important; }
+
+imr-view-main #three-points {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-top: 3.2em;
+  margin-bottom: 2.8em; }
+
+imr-view-main .point-card {
+  margin: 2.4em;
+  position: relative; }
+  imr-view-main .point-card h2 {
+    margin-top: 72px; }
+  imr-view-main .point-card p {
+    color: #626177;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    line-height: 30px; }
+  imr-view-main .point-card::before {
+    position: absolute;
+    background: url(/assets/img/feature-icons.png) no-repeat;
+    background-size: 48px;
+    height: 48px;
+    width: 48px;
+    content: "";
+    top: 0;
+    left: calc(50% - 24px); }
+  imr-view-main .point-card.performant::before {
+    background-position: 0 -48px; }
+  imr-view-main .point-card.future-proof::before {
+    background-position: 0 -96px; }
+
+@media screen and (max-width: 740px) {
+  imr-view-main #action-call {
+    width: auto; }
+  imr-view-main #launch-video {
+    display: none; }
+  imr-view-main #youtube-video {
+    display: none; }
+  imr-view-main #mobile-video {
+    display: flex; }
+  imr-view-main #three-points {
+    flex-direction: column;
+    text-align: left; }
+    imr-view-main #three-points .point-card {
+      margin: 1em 2.4em; }
+    imr-view-main #three-points .point-card::before {
+      left: 0; } }

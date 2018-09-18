@@ -1,0 +1,13 @@
+tf-flag-list tf-language-card {
+  padding-bottom: 20px; }
+  tf-flag-list tf-language-card h4 {
+    margin-bottom: 0; }
+  tf-flag-list tf-language-card p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    line-height: 1.5; }
+
+tf-flag-list.language-card-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px; }

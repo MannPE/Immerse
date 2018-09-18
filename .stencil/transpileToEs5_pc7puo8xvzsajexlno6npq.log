@@ -1,0 +1,93 @@
+/*! Built with http://stenciljs.com */
+import { h } from './app.core.js';
+var ViewMain = /** @class */ (function () {
+    function ViewMain() {
+        this.words = [
+            {
+                "value": "cat",
+                "translation": "Katze",
+                "lang": "en",
+                "type": "noun",
+                "singular": true
+            },
+            {
+                "value": "dog",
+                "translation": "Hund",
+                "lang": "en",
+                "type": "noun",
+                "singular": true
+            }
+        ];
+    }
+    ViewMain.prototype.render = function () {
+        return (h("div", null, this.words.map(function (word) { return (h("translate-word", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })); })));
+    };
+    Object.defineProperty(ViewMain, "is", {
+        get: function () { return "imr-view-main"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ViewMain, "style", {
+        get: function () { return "/**style-placeholder:imr-view-main:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return ViewMain;
+}());
+/**
+ * @export
+ * @class TranslateWord
+ * Class representing the element that will be injected into webpages for translated words.
+ * @property {string} value - The word that is being replaced
+ * @property {string} translation - The word that will replace the old one.
+ * @property {string} lang - 2 letter shortened language. IE: ES, EN, DE
+ * @property {string} type - The type of word. IE: noun, verb, adverb, etc.
+ * @property {boolean} singular - Indicates if the word is for singular or plural
+ */
+var TranslateWord = /** @class */ (function () {
+    function TranslateWord() {
+    }
+    TranslateWord.prototype.render = function () {
+        return (h("div", null, h("span", { class: this.type + " word " + (this.singular ? "singular" : "plural") }, this.value), h("input", { type: "text", value: this.translation }), h("a", { class: "svg-button", rel: "noopener", title: "Remove this word from the immerse list" }, h("app-icon", { name: "trash" }))));
+    };
+    Object.defineProperty(TranslateWord, "is", {
+        get: function () { return "translate-word"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TranslateWord, "properties", {
+        get: function () {
+            return {
+                "lang": {
+                    "type": String,
+                    "attr": "lang"
+                },
+                "singular": {
+                    "type": Boolean,
+                    "attr": "singular"
+                },
+                "translation": {
+                    "type": String,
+                    "attr": "translation"
+                },
+                "type": {
+                    "type": String,
+                    "attr": "type"
+                },
+                "value": {
+                    "type": String,
+                    "attr": "value"
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TranslateWord, "style", {
+        get: function () { return "/**style-placeholder:translate-word:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return TranslateWord;
+}());
+export { ViewMain as ImrViewMain, TranslateWord };

@@ -4,6 +4,7 @@ exports.config = {
   plugins: [
     sass()
   ],
+  buildEs5: true,
   outputTargets: [
     {
       type: 'www',
@@ -17,6 +18,10 @@ exports.config = {
     {
       type: 'docs',
       jsonFile: 'dist/documentation.json'
+    },
+    {
+      type: 'dist',
+      dir: './dist'
     }
   ],
   globalStyle: 'src/global/style.scss',

@@ -1,0 +1,14 @@
+imr-flag-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px; }
+  imr-flag-list imr-language-card {
+    padding-bottom: 1em; }
+    imr-flag-list imr-language-card h4 {
+      margin-bottom: 0; }
+    imr-flag-list imr-language-card p {
+      margin-top: 8px;
+      margin-bottom: 0;
+      line-height: 1.5; }
+    imr-flag-list imr-language-card .demo-card-image {
+      width: 100%; }

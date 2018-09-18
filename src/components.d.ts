@@ -65,6 +65,39 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface ImrAppHeader {
+
+    }
+  }
+
+  interface HTMLImrAppHeaderElement extends StencilComponents.ImrAppHeader, HTMLStencilElement {}
+
+  var HTMLImrAppHeaderElement: {
+    prototype: HTMLImrAppHeaderElement;
+    new (): HTMLImrAppHeaderElement;
+  };
+  interface HTMLElementTagNameMap {
+    'imr-app-header': HTMLImrAppHeaderElement;
+  }
+  interface ElementTagNameMap {
+    'imr-app-header': HTMLImrAppHeaderElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'imr-app-header': JSXElements.ImrAppHeaderAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface ImrAppHeaderAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface AppIcon {
       'name': string;
     }
@@ -131,31 +164,31 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface DocumentComponent {
-      'pages': string[];
+    interface ImrAppRoot {
+
     }
   }
 
-  interface HTMLDocumentComponentElement extends StencilComponents.DocumentComponent, HTMLStencilElement {}
+  interface HTMLImrAppRootElement extends StencilComponents.ImrAppRoot, HTMLStencilElement {}
 
-  var HTMLDocumentComponentElement: {
-    prototype: HTMLDocumentComponentElement;
-    new (): HTMLDocumentComponentElement;
+  var HTMLImrAppRootElement: {
+    prototype: HTMLImrAppRootElement;
+    new (): HTMLImrAppRootElement;
   };
   interface HTMLElementTagNameMap {
-    'document-component': HTMLDocumentComponentElement;
+    'imr-app-root': HTMLImrAppRootElement;
   }
   interface ElementTagNameMap {
-    'document-component': HTMLDocumentComponentElement;
+    'imr-app-root': HTMLImrAppRootElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'document-component': JSXElements.DocumentComponentAttributes;
+      'imr-app-root': JSXElements.ImrAppRootAttributes;
     }
   }
   namespace JSXElements {
-    export interface DocumentComponentAttributes extends HTMLAttributes {
-      'pages'?: string[];
+    export interface ImrAppRootAttributes extends HTMLAttributes {
+
     }
   }
 }
@@ -164,35 +197,105 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface LanguageCard {
+    interface ImrInput {
+      'description': string;
+      'example': string;
+      'word': string;
+    }
+  }
+
+  interface HTMLImrInputElement extends StencilComponents.ImrInput, HTMLStencilElement {}
+
+  var HTMLImrInputElement: {
+    prototype: HTMLImrInputElement;
+    new (): HTMLImrInputElement;
+  };
+  interface HTMLElementTagNameMap {
+    'imr-input': HTMLImrInputElement;
+  }
+  interface ElementTagNameMap {
+    'imr-input': HTMLImrInputElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'imr-input': JSXElements.ImrInputAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface ImrInputAttributes extends HTMLAttributes {
+      'description'?: string;
+      'example'?: string;
+      'word'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface ImrLanguageCard {
       'alt': string;
       'imgPath': string;
       'name': string;
     }
   }
 
-  interface HTMLLanguageCardElement extends StencilComponents.LanguageCard, HTMLStencilElement {}
+  interface HTMLImrLanguageCardElement extends StencilComponents.ImrLanguageCard, HTMLStencilElement {}
 
-  var HTMLLanguageCardElement: {
-    prototype: HTMLLanguageCardElement;
-    new (): HTMLLanguageCardElement;
+  var HTMLImrLanguageCardElement: {
+    prototype: HTMLImrLanguageCardElement;
+    new (): HTMLImrLanguageCardElement;
   };
   interface HTMLElementTagNameMap {
-    'language-card': HTMLLanguageCardElement;
+    'imr-language-card': HTMLImrLanguageCardElement;
   }
   interface ElementTagNameMap {
-    'language-card': HTMLLanguageCardElement;
+    'imr-language-card': HTMLImrLanguageCardElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'language-card': JSXElements.LanguageCardAttributes;
+      'imr-language-card': JSXElements.ImrLanguageCardAttributes;
     }
   }
   namespace JSXElements {
-    export interface LanguageCardAttributes extends HTMLAttributes {
+    export interface ImrLanguageCardAttributes extends HTMLAttributes {
       'alt'?: string;
       'imgPath'?: string;
       'name'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface ImrLanguageList {
+
+    }
+  }
+
+  interface HTMLImrLanguageListElement extends StencilComponents.ImrLanguageList, HTMLStencilElement {}
+
+  var HTMLImrLanguageListElement: {
+    prototype: HTMLImrLanguageListElement;
+    new (): HTMLImrLanguageListElement;
+  };
+  interface HTMLElementTagNameMap {
+    'imr-language-list': HTMLImrLanguageListElement;
+  }
+  interface ElementTagNameMap {
+    'imr-language-list': HTMLImrLanguageListElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'imr-language-list': JSXElements.ImrLanguageListAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface ImrLanguageListAttributes extends HTMLAttributes {
+
     }
   }
 }
@@ -236,39 +339,6 @@ declare global {
       'scrolling'?: string;
       'src'?: string;
       'width'?: string;
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface MainPage {
-
-    }
-  }
-
-  interface HTMLMainPageElement extends StencilComponents.MainPage, HTMLStencilElement {}
-
-  var HTMLMainPageElement: {
-    prototype: HTMLMainPageElement;
-    new (): HTMLMainPageElement;
-  };
-  interface HTMLElementTagNameMap {
-    'main-page': HTMLMainPageElement;
-  }
-  interface ElementTagNameMap {
-    'main-page': HTMLMainPageElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'main-page': JSXElements.MainPageAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface MainPageAttributes extends HTMLAttributes {
-
     }
   }
 }
@@ -409,30 +479,30 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface SiteMenu {
+    interface ImrViewMain {
 
     }
   }
 
-  interface HTMLSiteMenuElement extends StencilComponents.SiteMenu, HTMLStencilElement {}
+  interface HTMLImrViewMainElement extends StencilComponents.ImrViewMain, HTMLStencilElement {}
 
-  var HTMLSiteMenuElement: {
-    prototype: HTMLSiteMenuElement;
-    new (): HTMLSiteMenuElement;
+  var HTMLImrViewMainElement: {
+    prototype: HTMLImrViewMainElement;
+    new (): HTMLImrViewMainElement;
   };
   interface HTMLElementTagNameMap {
-    'site-menu': HTMLSiteMenuElement;
+    'imr-view-main': HTMLImrViewMainElement;
   }
   interface ElementTagNameMap {
-    'site-menu': HTMLSiteMenuElement;
+    'imr-view-main': HTMLImrViewMainElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'site-menu': JSXElements.SiteMenuAttributes;
+      'imr-view-main': JSXElements.ImrViewMainAttributes;
     }
   }
   namespace JSXElements {
-    export interface SiteMenuAttributes extends HTMLAttributes {
+    export interface ImrViewMainAttributes extends HTMLAttributes {
 
     }
   }
@@ -442,30 +512,30 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface TranslateFlagList {
+    interface ImrViewWordList {
 
     }
   }
 
-  interface HTMLTranslateFlagListElement extends StencilComponents.TranslateFlagList, HTMLStencilElement {}
+  interface HTMLImrViewWordListElement extends StencilComponents.ImrViewWordList, HTMLStencilElement {}
 
-  var HTMLTranslateFlagListElement: {
-    prototype: HTMLTranslateFlagListElement;
-    new (): HTMLTranslateFlagListElement;
+  var HTMLImrViewWordListElement: {
+    prototype: HTMLImrViewWordListElement;
+    new (): HTMLImrViewWordListElement;
   };
   interface HTMLElementTagNameMap {
-    'translate-flag-list': HTMLTranslateFlagListElement;
+    'imr-view-word-list': HTMLImrViewWordListElement;
   }
   interface ElementTagNameMap {
-    'translate-flag-list': HTMLTranslateFlagListElement;
+    'imr-view-word-list': HTMLImrViewWordListElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'translate-flag-list': JSXElements.TranslateFlagListAttributes;
+      'imr-view-word-list': JSXElements.ImrViewWordListAttributes;
     }
   }
   namespace JSXElements {
-    export interface TranslateFlagListAttributes extends HTMLAttributes {
+    export interface ImrViewWordListAttributes extends HTMLAttributes {
 
     }
   }
@@ -475,77 +545,7 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface TranslateHeader {
-
-    }
-  }
-
-  interface HTMLTranslateHeaderElement extends StencilComponents.TranslateHeader, HTMLStencilElement {}
-
-  var HTMLTranslateHeaderElement: {
-    prototype: HTMLTranslateHeaderElement;
-    new (): HTMLTranslateHeaderElement;
-  };
-  interface HTMLElementTagNameMap {
-    'translate-header': HTMLTranslateHeaderElement;
-  }
-  interface ElementTagNameMap {
-    'translate-header': HTMLTranslateHeaderElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'translate-header': JSXElements.TranslateHeaderAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface TranslateHeaderAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface TranslateInput {
-      'description': string;
-      'example': string;
-      'word': string;
-    }
-  }
-
-  interface HTMLTranslateInputElement extends StencilComponents.TranslateInput, HTMLStencilElement {}
-
-  var HTMLTranslateInputElement: {
-    prototype: HTMLTranslateInputElement;
-    new (): HTMLTranslateInputElement;
-  };
-  interface HTMLElementTagNameMap {
-    'translate-input': HTMLTranslateInputElement;
-  }
-  interface ElementTagNameMap {
-    'translate-input': HTMLTranslateInputElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'translate-input': JSXElements.TranslateInputAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface TranslateInputAttributes extends HTMLAttributes {
-      'description'?: string;
-      'example'?: string;
-      'word'?: string;
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface TranslateWord {
+    interface ImrWordItem {
       'lang': string;
       'singular': boolean;
       'translation': string;
@@ -554,25 +554,25 @@ declare global {
     }
   }
 
-  interface HTMLTranslateWordElement extends StencilComponents.TranslateWord, HTMLStencilElement {}
+  interface HTMLImrWordItemElement extends StencilComponents.ImrWordItem, HTMLStencilElement {}
 
-  var HTMLTranslateWordElement: {
-    prototype: HTMLTranslateWordElement;
-    new (): HTMLTranslateWordElement;
+  var HTMLImrWordItemElement: {
+    prototype: HTMLImrWordItemElement;
+    new (): HTMLImrWordItemElement;
   };
   interface HTMLElementTagNameMap {
-    'translate-word': HTMLTranslateWordElement;
+    'imr-word-item': HTMLImrWordItemElement;
   }
   interface ElementTagNameMap {
-    'translate-word': HTMLTranslateWordElement;
+    'imr-word-item': HTMLImrWordItemElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'translate-word': JSXElements.TranslateWordAttributes;
+      'imr-word-item': JSXElements.ImrWordItemAttributes;
     }
   }
   namespace JSXElements {
-    export interface TranslateWordAttributes extends HTMLAttributes {
+    export interface ImrWordItemAttributes extends HTMLAttributes {
       'lang'?: string;
       'singular'?: boolean;
       'translation'?: string;
@@ -582,70 +582,6 @@ declare global {
   }
 }
 
-
-declare global {
-
-  namespace StencilComponents {
-    interface TranslateWordsPage {
-
-    }
-  }
-
-  interface HTMLTranslateWordsPageElement extends StencilComponents.TranslateWordsPage, HTMLStencilElement {}
-
-  var HTMLTranslateWordsPageElement: {
-    prototype: HTMLTranslateWordsPageElement;
-    new (): HTMLTranslateWordsPageElement;
-  };
-  interface HTMLElementTagNameMap {
-    'translate-words-page': HTMLTranslateWordsPageElement;
-  }
-  interface ElementTagNameMap {
-    'translate-words-page': HTMLTranslateWordsPageElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'translate-words-page': JSXElements.TranslateWordsPageAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface TranslateWordsPageAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface TranslationMainView {
-
-    }
-  }
-
-  interface HTMLTranslationMainViewElement extends StencilComponents.TranslationMainView, HTMLStencilElement {}
-
-  var HTMLTranslationMainViewElement: {
-    prototype: HTMLTranslationMainViewElement;
-    new (): HTMLTranslationMainViewElement;
-  };
-  interface HTMLElementTagNameMap {
-    'translation-main-view': HTMLTranslationMainViewElement;
-  }
-  interface ElementTagNameMap {
-    'translation-main-view': HTMLTranslationMainViewElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'translation-main-view': JSXElements.TranslationMainViewAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface TranslationMainViewAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
 declare global { namespace JSX { interface StencilJSX {} } }
+
+export declare function defineCustomElements(window: any): void;

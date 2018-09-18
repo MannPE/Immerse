@@ -1,0 +1,104 @@
+/*! Built with http://stenciljs.com */
+App.loadBundle('/**:bundle-id:**/', ['exports'], function (exports) {
+    var h = window.App.h;
+    /**
+     *
+     *
+     * @export
+     * @class TranslateFlagList
+     * Element consisting of a list of language cards for choosing the current language.
+     * @property {any} languages - The structure for this param is an array of custom objects with
+     * the following propertis:
+     * @property {string} name -The  simple language 2 letter name. IE: KR, DE, ES, etc.
+     * @property {string} imgPath - path from src to the flag image.
+     * @property {string} alt -The name of the language represented by the flag in case it doesn't load.
+     *
+     */
+    var FlagList = /** @class */ (function () {
+        function FlagList() {
+            this.languages = [
+                {
+                    name: 'KR',
+                    imgPath: '/assets/img/flags/korean.png',
+                    alt: 'Hangeul_KR',
+                },
+                {
+                    name: 'DE',
+                    imgPath: '/assets/img/flags/german.png',
+                    alt: 'Deutsch_DE',
+                },
+                {
+                    name: 'FR',
+                    imgPath: '/assets/img/flags/french.png',
+                    alt: 'French_FR',
+                },
+                {
+                    name: 'ES',
+                    imgPath: '/assets/img/flags/spanish.png',
+                    alt: 'Spanish_MX',
+                }
+            ];
+        }
+        FlagList.prototype.render = function () {
+            return (h("div", { class: "language-card-list" }, this.languages.map(function (demo) { return h("imr-language-card", { name: demo.name, imgPath: demo.imgPath, alt: demo.alt }); })));
+        };
+        Object.defineProperty(FlagList, "is", {
+            get: function () { return "imr-flag-list"; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FlagList, "style", {
+            get: function () { return "/**style-placeholder:imr-flag-list:**/"; },
+            enumerable: true,
+            configurable: true
+        });
+        return FlagList;
+    }());
+    /**
+     *
+     *
+     * @export
+     * @class LanguageCard
+     */
+    var LanguageCard = /** @class */ (function () {
+        function LanguageCard() {
+        }
+        LanguageCard.prototype.render = function () {
+            return (h("div", null, h("div", { class: "demo-card-image" }, h("a", { target: "_blank", rel: "noopener" }, h("img", { src: "" + this.imgPath, srcSet: this.imgPath + " 1x, " + this.imgPath + "@2x 2x", alt: this.alt }))), h("p", null, this.name)));
+        };
+        Object.defineProperty(LanguageCard, "is", {
+            get: function () { return "imr-language-card"; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LanguageCard, "properties", {
+            get: function () {
+                return {
+                    "alt": {
+                        "type": String,
+                        "attr": "alt"
+                    },
+                    "imgPath": {
+                        "type": String,
+                        "attr": "img-path"
+                    },
+                    "name": {
+                        "type": String,
+                        "attr": "name"
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(LanguageCard, "style", {
+            get: function () { return "/**style-placeholder:imr-language-card:**/"; },
+            enumerable: true,
+            configurable: true
+        });
+        return LanguageCard;
+    }());
+    exports.ImrFlagList = FlagList;
+    exports.ImrLanguageCard = LanguageCard;
+    Object.defineProperty(exports, '__esModule', { value: true });
+});

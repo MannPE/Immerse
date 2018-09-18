@@ -7,7 +7,7 @@ import { Component, Prop} from '@stencil/core';
  * @class LanguageCard
  */
 @Component({
-  tag: 'language-card',
+  tag: 'imr-language-card',
   styleUrl: 'language-card.scss'
 })
 export class LanguageCard {
@@ -17,15 +17,9 @@ export class LanguageCard {
   @Prop() alt: string;
 
   render() {
-    return (
-      <div>
-        <div class="demo-card__image">
-          <a target="_blank" rel="noopener">
-            <img src={`${this.imgPath}`} srcSet={`${this.imgPath} 1x, ${this.imgPath}@2x 2x`} alt={this.alt}/>
-          </a>
-        </div>
-        <p>{this.name}</p>
-      </div>
-    );
+    return [
+      <img src={`${this.imgPath}`} srcSet={`${this.imgPath} 1x, ${this.imgPath}@2x 2x`} alt={this.alt}/>,
+      <p>{this.name}</p>
+    ];
   }
 }

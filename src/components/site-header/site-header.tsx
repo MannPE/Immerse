@@ -8,7 +8,7 @@ export class SiteHeader {
 
   @Element() el: Element;
 
-  @State() isMobileMenuShown: boolean;
+  @State() isMobileMenuShown: boolean = true;
 
   @Listen('window:resize')
   handleResize() {
@@ -24,7 +24,7 @@ export class SiteHeader {
   }
 
   componentDidLoad() {
-    this.isMobileMenuShown = false;
+    this.isMobileMenuShown = true;
   }
 
   showNav () {
@@ -73,10 +73,6 @@ export class SiteHeader {
           <stencil-route-link url="/resources"  exact={true} onClick={() => { this.hideNav() }}>
             Resources
           </stencil-route-link>
-          <a class="link--external" target="_blank" href="https://github.com/ionic-team/stencil">
-            GitHub <app-icon name="targetblank"></app-icon>
-          </a>
-
           <div class="header-close" onClick={() => { this.hideNav() }}>
             <app-icon name="close"></app-icon>
           </div>

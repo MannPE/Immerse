@@ -1,0 +1,9 @@
+.demo-card__image {
+  border-radius: 15px;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 7px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 7px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 13px; }
+  .demo-card__image img {
+    width: 100%;
+    vertical-align: bottom; }
