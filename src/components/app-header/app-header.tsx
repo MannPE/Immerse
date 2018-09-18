@@ -62,24 +62,20 @@ export class AppHeader {
           <stencil-route-link url="/words"  exact={true} onClick={() => { this.hideNav() }}>
             My Words
           </stencil-route-link>
-          <stencil-route-link url="/pwa" exact={true} onClick={() => { this.hideNav() }}>
+          <stencil-route-link url="/settings" exact={true} onClick={() => { this.hideNav() }}>
             Settings
           </stencil-route-link>
-          <stencil-route-link url="/resources"  exact={true} onClick={() => { this.hideNav() }}>
+          <stencil-route-link url="/"  exact={true} onClick={() => { this.hideNav() }}>
             Immerse
           </stencil-route-link>
-          <a class="link--external" target="_blank" href="https://github.com/ionic-team/stencil">
-            GitHub <app-icon name="targetblank"></app-icon>
+          <a class="link--external" target="_blank" href="https://paypal.com">
+            Donate <app-icon name="targetblank"></app-icon>
           </a>
-
           <div class="header-close" onClick={() => { this.hideNav() }}>
             <app-icon name="close"></app-icon>
           </div>
         </div>
-
-        <div class="header-overflow" onClick={(e) => { this.showNav(e) }}>
-          <app-icon name="more"></app-icon>
-        </div>
+        
       </div>
     );
   }

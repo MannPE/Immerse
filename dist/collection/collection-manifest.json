@@ -387,37 +387,6 @@
           ]
         }
       }
-    },
-    {
-      "tag": "site-header",
-      "dependencies": [
-        "app-icon",
-        "stencil-route-link"
-      ],
-      "componentClass": "SiteHeader",
-      "componentPath": "components/site-header/site-header.js",
-      "styles": {
-        "$": {
-          "stylePaths": [
-            "components/site-header/site-header.scss"
-          ]
-        }
-      },
-      "states": [
-        {
-          "name": "isMobileMenuShown"
-        }
-      ],
-      "listeners": [
-        {
-          "event": "window:resize",
-          "method": "handleResize",
-          "capture": false
-        }
-      ],
-      "hostElement": {
-        "name": "el"
-      }
     }
   ],
   "collections": [

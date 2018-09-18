@@ -33,7 +33,7 @@ translate-header {
   a {
     transition: border .3s, color .3s;
     font-size: 14px;
-    padding-bottom: 4px;
+    padding-bottom: 1em;
     border-bottom: 3px solid transparent;
     vertical-align: top;
     color: $color-manatee;
@@ -74,21 +74,17 @@ translate-header {
 .header-overflow,
 .header-close {
   transition: opacity 0.3s;
-  position: absolute;
-  top: 15px;
-  right: 15px;
   width: 22px;
   height: 18px;
-  display: none;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.5;
 
   &:hover {
     opacity: 1;
   }
 
   @media screen and (max-width: $breakpoint-md) {
-    display: flex;
+    display: block;
     justify-content: center;
   }
 }
@@ -97,74 +93,4 @@ translate-header {
   .icon-close {
     fill: $color-white;
   }
-}
-
-@media screen and (max-width: $breakpoint-md) {
-  .header-menu {
-    transition: opacity 0.3s;
-    position: fixed;
-    z-index: 9999;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: $color-woodsmoke;
-    opacity: 0;
-    display: none;
-
-    stencil-route-link + stencil-route-link,
-    stencil-route-link + a {
-      margin-left: 0px;
-      margin-top: 38px;
-    }
-
-    a {
-      font-size: 24px;
-      color: rgba($color-whisper, 0.7);
-    }
-
-    a:not(.link--external):hover,
-    a.link-active {
-      border-bottom-color: rgba($color-whisper, 0.4);
-    }
-
-    a.link-active,
-    a.link-active:hover {
-      color: $color-white;
-    }
-
-    stencil-route-link,
-    .link--external {
-      transition: transform 0.4s;
-      transform: translateY(8px);
-    }
-
-    .link--external:hover {
-      color: $color-white;
-    }
-  }
-
-  .show-mobile-menu {
-    z-index: 999999;
-  }
-
-  .show-mobile-menu .header-menu {
-    opacity: 1;
-  }
-
-  .show-mobile-menu .header-menu stencil-route-link,
-  .show-mobile-menu .header-menu .link--external {
-    transform: translateY(0);
-  }
-
-  .show-mobile-menu .header-menu--show + .header-overflow  {
-    display: none;
-  }
-
 }

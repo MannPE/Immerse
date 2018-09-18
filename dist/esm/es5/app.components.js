@@ -14,9 +14,9 @@ export var AppRoot = ["imr-app-root",function(){return(import("./imr-app-header.
 
 export var Input = ["imr-input",function(){return(import("./imr-input.js")).then(function(m){return m.ImrInput})},1,[["description",1,0,1,2],["example",1,0,1,2],["word",1,0,1,2]]];
 
-export var LanguageCard = ["imr-language-card",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
+export var LanguageCard = ["imr-language-card",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
 
-export var LanguageList = ["imr-language-list",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageList})},1];
+export var LanguageList = ["imr-language-list",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageList})},1];
 
 export var MainPage = ["imr-view-main",function(){return(import("./imr-input.js")).then(function(m){return m.ImrViewMain})},1,[["el",7]]];
 
@@ -31,8 +31,6 @@ export var NotFoundPage = ["notfound-page",function(){return(import("./notfound-
 export var pwasPage = ["pwas-page",function(){return(import("./pwas-page.js")).then(function(m){return m.PwasPage})},1];
 
 export var ResourcesPage = ["resources-page",function(){return(import("./lazy-iframe.js")).then(function(m){return m.ResourcesPage})},1];
-
-export var SiteHeader = ["site-header",function(){return(import("./site-header.js")).then(function(m){return m.SiteHeader})},1,[["el",7],["isMobileMenuShown",5]],0,[["window:resize","handleResize",0,1]]];
 
 export var Route = ["stencil-route",function(){return(import("./imr-app-header.js")).then(function(m){return m.StencilRoute})},1,[["component",1,0,1,2],["componentProps",1],["componentUpdated",1],["el",7],["exact",1,0,1,3],["group",1,0,1,2],["groupMatch",1],["history",1],["historyType",1,0,"history-type",2],["location",1],["match",5],["routeRender",1],["routeViewsUpdated",1],["scrollTopOffset",1,0,"scroll-top-offset",4],["url",1,0,1,2]]];
 

@@ -28,10 +28,10 @@
       "$": "imr-input"
     },
     "imr-language-card": {
-      "$": "imr-language-card"
+      "$": "imr-input"
     },
     "imr-language-list": {
-      "$": "imr-language-card"
+      "$": "imr-input"
     },
     "imr-view-main": {
       "$": "imr-input"
@@ -53,9 +53,6 @@
     },
     "resources-page": {
       "$": "lazy-iframe"
-    },
-    "site-header": {
-      "$": "site-header"
     },
     "stencil-route": {
       "$": "imr-app-header"

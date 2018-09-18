@@ -18,7 +18,6 @@ import {
   RouteLink,
   RouteSwitch,
   Router,
-  SiteHeader,
   ViewWordList,
   WordItem,
   pwasPage
@@ -43,7 +42,6 @@ export function defineCustomElements(window, opts) {
     RouteLink,
     RouteSwitch,
     Router,
-    SiteHeader,
     ViewWordList,
     WordItem,
     pwasPage

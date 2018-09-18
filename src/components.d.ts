@@ -446,39 +446,6 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface SiteHeader {
-
-    }
-  }
-
-  interface HTMLSiteHeaderElement extends StencilComponents.SiteHeader, HTMLStencilElement {}
-
-  var HTMLSiteHeaderElement: {
-    prototype: HTMLSiteHeaderElement;
-    new (): HTMLSiteHeaderElement;
-  };
-  interface HTMLElementTagNameMap {
-    'site-header': HTMLSiteHeaderElement;
-  }
-  interface ElementTagNameMap {
-    'site-header': HTMLSiteHeaderElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'site-header': JSXElements.SiteHeaderAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface SiteHeaderAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
     interface ImrViewMain {
 
     }
