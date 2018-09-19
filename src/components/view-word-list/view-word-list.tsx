@@ -6,20 +6,27 @@ import { Component } from '@stencil/core';
   styleUrl: 'view-word-list.scss'
 })
 export class ViewWordList {
-  words=[
+  private words=[
     {
-      "value":"cat",
-      "translation":"Katze",
-      "lang":"en",
-      "type":"noun",
-      "singular":true
+      value:"cat",
+      translation:"Katze",
+      lang:"en",
+      type:"noun",
+      singular:true
     },
     {
-      "value":"dog",
-      "translation":"Hund",
-      "lang":"en",
-      "type":"noun",
-      "singular":true
+      value:"dog",
+      translation:"Hund",
+      lang:"en",
+      type:"noun",
+      singular:true
+    },
+    {
+      value:"dog",
+      translation:"Hund",
+      lang:"en",
+      type:"noun",
+      singular:true
     }
   ]
 
