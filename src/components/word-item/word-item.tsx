@@ -25,12 +25,11 @@ export class WordItem {
   @Prop() singular: boolean;
 
   render() {
-    return (
-      <div>
-          <span class={this.type + " word "+ (this.singular ? "singular":"plural")}>
+    return [
+          <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
             {this.value}
-          </span>
-          <input type="text" value={this.translation}/>
+          </span>,
+          <input type="text" value={this.translation}/>,
           <a
             rel="noopener"
             class="svg-button"
@@ -38,8 +37,7 @@ export class WordItem {
           >
             <app-icon name="trash"/>
           </a>
-      </div>
-    );
+    ];
   }
 }
 

@@ -25,19 +25,15 @@ export class ViewWordList {
 
 
   render() {
-    return (
-      <div>
-        
-        {this.words.map(word=>(
-            <imr-word-item 
-              value={word.value}
-              translation={word.translation} 
-              lang={word.lang}
-              type={word.type} 
-              singular={word.singular}
-            />
-          ))}
-      </div>
-    );
+    return[ 
+      this.words.map(word=>(
+          <imr-word-item 
+            value={word.value}
+            translation={word.translation} 
+            lang={word.lang}
+            type={word.type} 
+            singular={word.singular}
+          />
+    ))];
   }
 }

@@ -1,2 +1,5 @@
-notfound-page {
-  text-align: center; }
+imr-view-word-list {
+  align-content: center;
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-columns: repeat(auto-fill, 1fr); }

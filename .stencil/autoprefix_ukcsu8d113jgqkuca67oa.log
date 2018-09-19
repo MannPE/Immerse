@@ -1,0 +1,8 @@
+imr-view-word-list {
+  -ms-flex-line-pack: center;
+  align-content: center;
+  border: 1px solid black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  grid-auto-rows: auto; }

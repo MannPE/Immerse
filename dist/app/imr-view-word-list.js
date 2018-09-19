@@ -21,10 +21,12 @@ class ViewWordList {
         ];
     }
     render() {
-        return (h("div", null, this.words.map(word => (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })))));
+        return [
+            this.words.map(word => (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })))
+        ];
     }
     static get is() { return "imr-view-word-list"; }
-    static get style() { return "notfound-page {\n  text-align: center; }"; }
+    static get style() { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(auto-fill, 1fr); }"; }
 }
 
 /**
@@ -39,11 +41,12 @@ class ViewWordList {
  */
 class WordItem {
     render() {
-        return (h("div", null,
-            h("span", { class: this.type + " word " + (this.singular ? "singular" : "plural") }, this.value),
+        return [
+            h("span", { class: `${this.type} ${(this.singular ? "singular" : "plural")}` }, this.value),
             h("input", { type: "text", value: this.translation }),
             h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" },
-                h("app-icon", { name: "trash" }))));
+                h("app-icon", { name: "trash" }))
+        ];
     }
     static get is() { return "imr-word-item"; }
     static get properties() { return {
@@ -68,7 +71,7 @@ class WordItem {
             "attr": "value"
         }
     }; }
-    static get style() { return ""; }
+    static get style() { return "imr-word-item {\n  font-size: 1.5em; }"; }
 }
 
 export { ViewWordList as ImrViewWordList, WordItem as ImrWordItem };

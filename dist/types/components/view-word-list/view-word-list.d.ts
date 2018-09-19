@@ -7,5 +7,5 @@ export declare class ViewWordList {
         "type": string;
         "singular": boolean;
     }[];
-    render(): JSX.Element;
+    render(): JSX.Element[][];
 }

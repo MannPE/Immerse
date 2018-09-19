@@ -107,7 +107,7 @@ class LanguageList {
         return (this.languages.map(demo => h("imr-language-card", { name: demo.name, imgPath: demo.imgPath, alt: demo.alt })));
     }
     static get is() { return "imr-language-list"; }
-    static get style() { return "imr-language-list {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 10px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center; }\n  imr-language-list imr-language-card {\n    padding-bottom: 1em;\n    cursor: pointer; }\n    imr-language-list imr-language-card h4 {\n      margin-bottom: 0; }\n    imr-language-list imr-language-card p {\n      margin-top: .5em;\n      margin-bottom: 0;\n      line-height: 1.5; }\n    imr-language-list imr-language-card img {\n      width: 100%; }"; }
+    static get style() { return "imr-language-list {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  grid-gap: 10px;\n  -webkit-box-pack: center;\n  -ms-flex-pack: center;\n  justify-content: center; }\n  imr-language-list imr-language-card {\n    padding-bottom: 1em;\n    cursor: pointer; }\n    imr-language-list imr-language-card h4 {\n      margin-bottom: 0; }\n    imr-language-list imr-language-card p {\n      margin-top: .5em;\n      margin-bottom: 0;\n      line-height: 1.5; }\n    imr-language-list imr-language-card img {\n      width: 100%; }\n      imr-language-list imr-language-card img:hover {\n        border: 1px solid #dadada;\n        border-radius: 4px;\n        outline: none;\n        -webkit-box-shadow: 0 0 2em #9ecaed;\n        box-shadow: 0 0 2em #9ecaed; }"; }
 }
 
 class MainPage {

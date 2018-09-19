@@ -14,3 +14,8 @@ imr-language-list {
       line-height: 1.5; }
     imr-language-list imr-language-card img {
       width: 100%; }
+      imr-language-list imr-language-card img:hover {
+        border: 1px solid #dadada;
+        border-radius: 4px;
+        outline: none;
+        box-shadow: 0 0 2em #9ecaed; }

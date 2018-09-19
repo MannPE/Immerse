@@ -20,7 +20,9 @@ var ViewWordList = /** @class */ (function () {
         ];
     }
     ViewWordList.prototype.render = function () {
-        return (h("div", null, this.words.map(function (word) { return (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })); })));
+        return [
+            this.words.map(function (word) { return (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })); })
+        ];
     };
     Object.defineProperty(ViewWordList, "is", {
         get: function () { return "imr-view-word-list"; },
@@ -28,7 +30,7 @@ var ViewWordList = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(ViewWordList, "style", {
-        get: function () { return "notfound-page {\n  text-align: center; }"; },
+        get: function () { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(auto-fill, 1fr); }"; },
         enumerable: true,
         configurable: true
     });
@@ -48,7 +50,11 @@ var WordItem = /** @class */ (function () {
     function WordItem() {
     }
     WordItem.prototype.render = function () {
-        return (h("div", null, h("span", { class: this.type + " word " + (this.singular ? "singular" : "plural") }, this.value), h("input", { type: "text", value: this.translation }), h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" }, h("app-icon", { name: "trash" }))));
+        return [
+            h("span", { class: this.type + " " + (this.singular ? "singular" : "plural") }, this.value),
+            h("input", { type: "text", value: this.translation }),
+            h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" }, h("app-icon", { name: "trash" }))
+        ];
     };
     Object.defineProperty(WordItem, "is", {
         get: function () { return "imr-word-item"; },
@@ -84,7 +90,7 @@ var WordItem = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(WordItem, "style", {
-        get: function () { return ""; },
+        get: function () { return "imr-word-item {\n  font-size: 1.5em; }"; },
         enumerable: true,
         configurable: true
     });

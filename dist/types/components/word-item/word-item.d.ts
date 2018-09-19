@@ -15,5 +15,5 @@ export declare class WordItem {
     lang: string;
     type: string;
     singular: boolean;
-    render(): JSX.Element;
+    render(): JSX.Element[];
 }

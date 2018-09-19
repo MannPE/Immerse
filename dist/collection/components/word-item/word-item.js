@@ -10,11 +10,12 @@
  */
 export class WordItem {
     render() {
-        return (h("div", null,
-            h("span", { class: this.type + " word " + (this.singular ? "singular" : "plural") }, this.value),
+        return [
+            h("span", { class: `${this.type} ${(this.singular ? "singular" : "plural")}` }, this.value),
             h("input", { type: "text", value: this.translation }),
             h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" },
-                h("app-icon", { name: "trash" }))));
+                h("app-icon", { name: "trash" }))
+        ];
     }
     static get is() { return "imr-word-item"; }
     static get properties() { return {

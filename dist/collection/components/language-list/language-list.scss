@@ -15,6 +15,12 @@ imr-language-list{
         }
         img{
             width: 100%;
+            &:hover{
+                border:1px solid #dadada;
+                border-radius:4px;
+                outline: none;
+                box-shadow: 0 0 2em #9ecaed;
+            }
         }
     }   
     display: grid;
