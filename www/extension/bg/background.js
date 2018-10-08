@@ -1,0 +1,34 @@
+  chrome.browserAction.onClicked.addListener(function (tab) {
+    // for the current tab, inject the "inject.js" file & execute it
+    runFile('extension/bg/tabAction.js',tab.id);
+  });
+
+
+  chrome.tabs.onUpdated.addListener(function (tabId , info) {
+    if (info.status === 'complete') {
+      console.log("stuff is complete");
+      runFile('extension/bg/tabAction.js',tabId);
+    }
+  });
+
+
+  chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      console.log(sender.tab ?
+                  "from a content script:" + sender.tab.url :
+                  "from the extension");
+      runFile('extension/bg/tabAction.js',tabId);
+    });
+
+
+  function runFile(fileName, tabId){
+    console.log("tab was fully loaded, tab");
+    chrome.tabs.executeScript(tabId, {
+      file: fileName
+    }, function(response){
+      if(response){
+        console.log("there was a response", response);
+      }
+    });
+  }
+

@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:e}=window.App;class t{render(){return e("div",null,e("h1",null,"Uh oh! We can't find the page your looking for."),e("p",null,e("stencil-route-link",{url:"/",class:"block"},"Head back to the home page")))}static get is(){return"notfound-page"}static get style(){return"notfound-page{text-align:center}"}}export{t as NotfoundPage};

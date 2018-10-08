@@ -15,8 +15,15 @@
     "128": "assets/img/icon.png"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "https://*/*",
+    "http://*/*",
+    "storage"
   ],
+  "background": {
+    "page": "extension/bg/background.html",
+    "persistent": true
+  },
   "content_scripts": [
     {
       "matches": [
@@ -24,7 +31,7 @@
         "http://*/*"
       ],
       "css": [
-        "extension/inject/inject.css"
+        "extension/bg/tooltip.css"
       ]
     },
     {

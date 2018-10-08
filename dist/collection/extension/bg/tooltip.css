@@ -1,0 +1,13 @@
+.immerse-tooltip{
+    background-color: #1b1f23;
+    font-size: 14px;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    text-align: center;
+    align-content: center;
+    z-index: -1;
+}
+.tooltip-inner{
+    padding: 0px 20px 0px 20px;
+}

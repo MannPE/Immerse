@@ -13,23 +13,11 @@ export class MainPage {
     document.title = `Immerse`;
   }
 
-  componentDidLoad() {
-    console.log('didLoad called on landing page');
-    // unfortunately necessary hack because Edge
-    // dont show the animated youtube video in Edge because
-    // pointer-events: none; is broken in Edge
-    // just link to the youtube video directly like we do on mobile
-    if ((document as any).documentMode || /Edge/.test(navigator.userAgent)) {
-      (this.el.querySelector('#youtube-video') as HTMLElement).style.display = 'none';
-      (this.el.querySelector('#launch-video') as HTMLElement).style.display = 'none';
-      (this.el.querySelector('#background') as HTMLElement).style.display = 'none';
-      (this.el.querySelector('#mobile-video') as HTMLElement).style.display = 'flex';
-    }
-  }
 
   render() {
     return (
       <div class="main-wrapper">
+        <button id="reload">RELOAD</button>
         <imr-language-list></imr-language-list>
         <main>
           <h2>Immerse</h2>

@@ -10,22 +10,29 @@ export class ViewWordList {
     {
       value:"cat",
       translation:"Katze",
-      lang:"en",
+      lang:"de",
       type:"noun",
       singular:true
     },
     {
       value:"dog",
       translation:"Hund",
-      lang:"en",
+      lang:"de",
       type:"noun",
       singular:true
     },
     {
       value:"dog",
       translation:"Hund",
-      lang:"en",
+      lang:"de",
       type:"noun",
+      singular:true
+    },
+    {
+      value:"jump",
+      translation:"도역",
+      lang:"kr",
+      type:"verb",
       singular:true
     }
   ]

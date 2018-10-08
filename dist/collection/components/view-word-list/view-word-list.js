@@ -2,18 +2,32 @@ export class ViewWordList {
     constructor() {
         this.words = [
             {
-                "value": "cat",
-                "translation": "Katze",
-                "lang": "en",
-                "type": "noun",
-                "singular": true
+                value: "cat",
+                translation: "Katze",
+                lang: "de",
+                type: "noun",
+                singular: true
             },
             {
-                "value": "dog",
-                "translation": "Hund",
-                "lang": "en",
-                "type": "noun",
-                "singular": true
+                value: "dog",
+                translation: "Hund",
+                lang: "de",
+                type: "noun",
+                singular: true
+            },
+            {
+                value: "dog",
+                translation: "Hund",
+                lang: "de",
+                type: "noun",
+                singular: true
+            },
+            {
+                value: "jump",
+                translation: "도역",
+                lang: "kr",
+                type: "verb",
+                singular: true
             }
         ];
     }

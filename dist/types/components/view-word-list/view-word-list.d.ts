@@ -1,11 +1,5 @@
 import '../../stencil.core';
 export declare class ViewWordList {
-    words: {
-        "value": string;
-        "translation": string;
-        "lang": string;
-        "type": string;
-        "singular": boolean;
-    }[];
+    private words;
     render(): JSX.Element[][];
 }

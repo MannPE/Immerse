@@ -5,4 +5,16 @@ imr-view-word-list {
   display: grid;
   grid-auto-rows: auto;
   grid-template-columns: repeat(auto-fill, 1fr);
+  grid-gap: 2em;
+
+  .noun{
+    color: #107896;
+  }
+  .verb{
+    color: #829356;
+  }
+  imr-word-item{
+    padding-bottom: 5px;
+    border-bottom: 1px solid gray;
+  }
 }
