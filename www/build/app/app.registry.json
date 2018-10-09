@@ -3,68 +3,68 @@
   "fsNamespace": "app",
   "loader": "../app.js",
   "global": "app.global.js",
-  "core": "app.vwnlfls8.js",
-  "corePolyfilled": "app.tbvjghmf.js",
+  "core": "app.core.js",
+  "corePolyfilled": "app.core.pf.js",
   "components": {
     "app-burger": {
-      "$": "lg1vsmyg"
+      "$": "app-burger"
     },
     "app-icon": {
-      "$": "hvfxhyzg"
+      "$": "app-icon"
     },
     "app-marked": {
-      "$": "zxkyfyba"
+      "$": "app-marked"
     },
     "context-consumer": {
-      "$": "lg1vsmyg"
+      "$": "app-burger"
     },
     "imr-app-header": {
-      "$": "sgqpehnv"
+      "$": "imr-app-header"
     },
     "imr-app-root": {
-      "$": "sgqpehnv"
+      "$": "imr-app-header"
     },
     "imr-input": {
-      "$": "7b0vbfzd"
+      "$": "imr-input"
     },
     "imr-language-card": {
-      "$": "7b0vbfzd"
+      "$": "imr-input"
     },
     "imr-language-list": {
-      "$": "7b0vbfzd"
+      "$": "imr-input"
     },
     "imr-view-main": {
-      "$": "7b0vbfzd"
+      "$": "imr-input"
     },
     "imr-view-word-list": {
-      "$": "oeszzpwc"
+      "$": "imr-view-word-list"
     },
     "imr-word-item": {
-      "$": "oeszzpwc"
+      "$": "imr-view-word-list"
     },
     "lazy-iframe": {
-      "$": "0lepnclc"
+      "$": "lazy-iframe"
     },
     "notfound-page": {
-      "$": "byict7vk"
+      "$": "notfound-page"
     },
     "pwas-page": {
-      "$": "dk3yl607"
+      "$": "pwas-page"
     },
     "resources-page": {
-      "$": "0lepnclc"
+      "$": "lazy-iframe"
     },
     "stencil-route": {
-      "$": "sgqpehnv"
+      "$": "imr-app-header"
     },
     "stencil-route-link": {
-      "$": "eemrtqfw"
+      "$": "stencil-route-link"
     },
     "stencil-route-switch": {
-      "$": "sgqpehnv"
+      "$": "imr-app-header"
     },
     "stencil-router": {
-      "$": "sgqpehnv"
+      "$": "imr-app-header"
     }
   }
 }

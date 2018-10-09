@@ -3768,22 +3768,22 @@ return Tooltip;
 	STOP HERE
 */
 
-// var wordList = 
-//       [
-// 				{word:"dog", translation:"개", insensitive:true, ignoreWhite: false},
-// 				{word:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
-// 				{word:"work", translation:"작업", insensitive:true, ignoreWhite: false},
-// 				{word:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
-// 				{word:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
-// 				{word:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
-// 				{word:"file", translation:"파일", insensitive:true, ignoreWhite: false},
-// 				{word:"yes", translation:"네", insensitive:true, ignoreWhite: false},
-// 				{word:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
-// 				{word:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
-// 			]
-// chrome.storage.sync.set({'imrkorean':wordList}), function(words){
-//   console.log(`Korean words are set to`, wordList);
-// }
+var wordList = 
+      [
+				{word:"dog", translation:"개", insensitive:true, ignoreWhite: false},
+				{word:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
+				{word:"work", translation:"작업", insensitive:true, ignoreWhite: false},
+				{word:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
+				{word:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
+				{word:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
+				{word:"file", translation:"파일", insensitive:true, ignoreWhite: false},
+				{word:"yes", translation:"네", insensitive:true, ignoreWhite: false},
+				{word:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
+				{word:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
+			]
+chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+  console.log(`Korean words are set to`, wordList);
+}
 chrome.storage.sync.get(['imrkorean'], function(result){
   console.log('Value is currently:', result['imrkorean']);
   wordList = result['imrkorean'];

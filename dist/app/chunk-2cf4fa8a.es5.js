@@ -1,2 +1,691 @@
 /*! Built with http://stenciljs.com */
-App.loadBundle("chunk-2cf4fa8a.js",["exports"],function(e){var t=window.App.h,n="/",r="./",i=new RegExp(["(\\\\.)","(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?"].join("|"),"g");function a(e){return e.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1")}function o(e){return e.replace(/([=!:$/()])/g,"\\$1")}function u(e){return e&&e.sensitive?"":"i"}function s(e,t,c){return e instanceof RegExp?function(e,t){if(!t)return e;var n=e.source.match(/\((?!\?)/g);if(n)for(var r=0;r<n.length;r++)t.push({name:r,prefix:null,delimiter:null,optional:!1,repeat:!1,partial:!1,pattern:null});return e}(e,t):Array.isArray(e)?function(e,t,n){for(var r=[],i=0;i<e.length;i++)r.push(s(e[i],t,n).source);return new RegExp("(?:"+r.join("|")+")",u(n))}(e,t,c):function(e,t,s){return function(e,t,i){for(var o=(i=i||{}).strict,s=!1!==i.end,c=a(i.delimiter||n),h=i.delimiters||r,f=[].concat(i.endsWith||[]).map(a).concat("$").join("|"),l="",p=!1,d=0;d<e.length;d++){var v=e[d];if("string"==typeof v)l+=a(v),p=d===e.length-1&&h.indexOf(v[v.length-1])>-1;else{var m=a(v.prefix),g=v.repeat?"(?:"+v.pattern+")(?:"+m+"(?:"+v.pattern+"))*":v.pattern;t&&t.push(v),v.optional?v.partial?l+=m+"("+g+")?":l+="(?:"+m+"("+g+"))?":l+=m+"("+g+")"}}return s?(o||(l+="(?:"+c+")?"),l+="$"===f?"$":"(?="+f+")"):(o||(l+="(?:"+c+"(?="+f+"))?"),p||(l+="(?="+c+"|"+f+")")),new RegExp("^"+l,u(i))}(function(e,t){for(var u,s=[],c=0,h=0,f="",l=t&&t.delimiter||n,p=t&&t.delimiters||r,d=!1;null!==(u=i.exec(e));){var v=u[0],m=u[1],g=u.index;if(f+=e.slice(h,g),h=g+v.length,m)f+=m[1],d=!0;else{var y="",w=e[h],O=u[2],x=u[3],b=u[4],E=u[5];if(!d&&f.length){var A=f.length-1;p.indexOf(f[A])>-1&&(y=f[A],f=f.slice(0,A))}f&&(s.push(f),f="",d=!1);var j=""!==y&&void 0!==w&&w!==y,R="+"===E||"*"===E,P="?"===E||"*"===E,S=y||l,L=x||b;s.push({name:O||c++,prefix:y,delimiter:S,optional:P,repeat:R,partial:j,pattern:L?o(L):"[^"+a(S)+"]+?"})}}return(f||h<e.length)&&s.push(f+e.substr(h)),s}(e,s),t,s)}(e,t,c)}function c(e,t){return new RegExp("^"+t+"(\\/|\\?|#|$)","i").test(e)}function h(e){return"/"===e.charAt(0)}function f(e,t){for(var n=t,r=n+1,i=e.length;r<i;n+=1,r+=1)e[n]=e[r];e.pop()}function l(e,t){if(e===t)return!0;if(null==e||null==t)return!1;if(Array.isArray(e))return Array.isArray(t)&&e.length===t.length&&e.every(function(e,n){return l(e,t[n])});var n=typeof e;if(n!==typeof t)return!1;if("object"===n){var r=e.valueOf(),i=t.valueOf();if(r!==e||i!==t)return l(r,i);var a=Object.keys(e),o=Object.keys(t);return a.length===o.length&&a.every(function(n){return l(e[n],t[n])})}return!1}var p={},d=0,v=function(e,n){void 0===n&&(n=function(e,n){return t("context-consumer",{subscribe:e,renderer:n})});var r=new Map,i={historyType:"browser",location:null,titleSuffix:"",root:"/",history:null,routeViewsUpdated:function(){}};function a(e,t){Array.isArray(e)?e.slice().forEach(function(e){t[e]=i[e]}):t[e]=Object.assign({},i),t.forceUpdate()}function o(e){return function(t){r.has(t)||(r.set(t,e),a(e,t))}}function u(e,t){return o(t)(e),function(){r.delete(e)}}return{Provider:function(e){var t=e.state,n=e.children;return i=t,r.forEach(a),n},Consumer:function(e){var t=e.children;return n(u,t[0])},wrapConsumer:function(e,n){var r=e.is;return function(e){var i=e.children,a=function(e,t){var n={};for(var r in e)Object.prototype.hasOwnProperty.call(e,r)&&t.indexOf(r)<0&&(n[r]=e[r]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(r=Object.getOwnPropertySymbols(e);i<r.length;i++)t.indexOf(r[i])<0&&(n[r[i]]=e[r[i]])}return n}(e,["children"]);return t(r,Object.assign({ref:o(n)},a),i)}},injectProps:function(e,t){var n=null,r=Object.keys(e.properties).find(function(t){return 1==e.properties[t].elementRef});if(void 0==r)throw new Error("Please ensure that your Component "+e.is+' has an attribtue with "@Element" decorator. This is required to be able to inject properties.');var i=e.prototype.componentWillLoad;e.prototype.componentWillLoad=function(){if(n=u(this[r],t),i)return i.bind(this)()};var a=e.prototype.componentDidUnload;e.prototype.componentDidUnload=function(){if(n(),a)return a.bind(this)()}}}}(),m=!("undefined"==typeof window||!window.document||!window.document.createElement);e.matchPath=function(e,t){void 0===t&&(t={}),"string"==typeof t&&(t={path:t});var n=t.path,r=void 0===n?"/":n,i=t.exact,a=void 0!==i&&i,o=t.strict,u=function(e,t){var n=""+t.end+t.strict,r=p[n]||(p[n]={}),i=JSON.stringify(e);if(r[i])return r[i];var a=[],o={re:s(e,a,t),keys:a};return d<1e4&&(r[i]=o,d+=1),o}(r,{end:a,strict:void 0!==o&&o}),c=u.re,h=u.keys,f=c.exec(e);if(!f)return null;var l=f[0],v=f.slice(1),m=e===l;return a&&!m?null:{path:r,url:"/"===r&&""===l?"/":l,isExact:m,params:h.reduce(function(e,t,n){return e[t.name]=v[n],e},{})}},e.matchesAreEqual=function(e,t){return null==e&&null==t||null!=t&&e&&t&&e.path===t.path&&e.url===t.url&&l(e.params,t.params)},e.ActiveRouter=v,e.storageAvailable=function(e){try{var t=window[e],n="__storage_test__";return t.setItem(n,n),t.removeItem(n),!0}catch(e){return e instanceof DOMException&&(22===e.code||1014===e.code||"QuotaExceededError"===e.name||"NS_ERROR_DOM_QUOTA_REACHED"===e.name)&&0!==t.length}},e.createLocation=function(e,t,n,r){var i,a;"string"==typeof e?(i=function(e){var t=e||"/",n="",r="",i=t.indexOf("#");-1!==i&&(r=t.substr(i),t=t.substr(0,i));var a=t.indexOf("?");return-1!==a&&(n=t.substr(a),t=t.substr(0,a)),{pathname:t,search:"?"===n?"":n,hash:"#"===r?"":r}}(e)).state=t:(void 0===(i=Object.assign({},e)).pathname&&(i.pathname=""),i.search?"?"!==i.search.charAt(0)&&(i.search="?"+i.search):i.search="",i.hash?"#"!==i.hash.charAt(0)&&(i.hash="#"+i.hash):i.hash="",void 0!==t&&void 0===i.state&&(i.state=t));try{i.pathname=decodeURI(i.pathname)}catch(e){throw e instanceof URIError?new URIError('Pathname "'+i.pathname+'" could not be decoded. This is likely caused by an invalid percent-encoding.'):e}return n&&(i.key=n),r?i.pathname?"/"!==i.pathname.charAt(0)&&(i.pathname=function(e,t){void 0===t&&(t="");var n,r=e&&e.split("/")||[],i=t&&t.split("/")||[],a=e&&h(e),o=t&&h(t),u=a||o;if(e&&h(e)?i=r:r.length&&(i.pop(),i=i.concat(r)),!i.length)return"/";if(i.length){var s=i[i.length-1];n="."===s||".."===s||""===s}else n=!1;for(var c=0,l=i.length;l>=0;l--){var p=i[l];"."===p?f(i,l):".."===p?(f(i,l),c++):c&&(f(i,l),c--)}if(!u)for(;c--;c)i.unshift("..");!u||""===i[0]||i[0]&&h(i[0])||i.unshift("");var d=i.join("/");return n&&"/"!==d.substr(-1)&&(d+="/"),d}(i.pathname,r.pathname)):i.pathname=r.pathname:i.pathname||(i.pathname="/"),i.query=(a=i.search)?(/^[?#]/.test(a)?a.slice(1):a).split("&").reduce(function(e,t){var n=t.split("="),r=n[0],i=n[1];return e[r]=i?decodeURIComponent(i.replace(/\+/g," ")):"",e},{}):{},i},e.addLeadingSlash=function(e){return"/"===e.charAt(0)?e:"/"+e},e.stripTrailingSlash=function(e){return"/"===e.charAt(e.length-1)?e.slice(0,-1):e},e.hasBasename=c,e.stripBasename=function(e,t){return c(e,t)?e.substr(t.length):e},e.createPath=function(e){var t=e.pathname,n=e.search,r=e.hash,i=t||"/";return n&&"?"!==n&&(i+="?"===n.charAt(0)?n:"?"+n),r&&"#"!==r&&(i+="#"===r.charAt(0)?r:"#"+r),i},e.canUseDOM=m,e.addEventListener=function(e,t,n){return e.addEventListener?e.addEventListener(t,n,!1):e.attachEvent("on"+t,n)},e.removeEventListener=function(e,t,n){return e.removeEventListener?e.removeEventListener(t,n,!1):e.detachEvent("on"+t,n)},e.getConfirmation=function(e,t){return t(window.confirm(e))},e.supportsHistory=function(){var e=window.navigator.userAgent;return(-1===e.indexOf("Android 2.")&&-1===e.indexOf("Android 4.0")||-1===e.indexOf("Mobile Safari")||-1!==e.indexOf("Chrome")||-1!==e.indexOf("Windows Phone"))&&window.history&&"pushState"in window.history},e.supportsPopStateOnHashChange=function(){return-1===window.navigator.userAgent.indexOf("Trident")},e.isExtraneousPopstateEvent=function(e){return void 0===e.state&&-1===navigator.userAgent.indexOf("CriOS")},e.locationsAreEqual=function(e,t){return e.pathname===t.pathname&&e.search===t.search&&e.hash===t.hash&&e.key===t.key&&l(e.state,t.state)},e.stripLeadingSlash=function(e){return"/"===e.charAt(0)?e.substr(1):e},e.supportsGoWithoutReloadUsingHash=function(){return-1===window.navigator.userAgent.indexOf("Firefox")},e.isModifiedEvent=function(e){return e.metaKey||e.altKey||e.ctrlKey||e.shiftKey}});
+App.loadBundle('chunk-2cf4fa8a.js', ['exports'], function (exports) {
+    var h = window.App.h;
+    /**
+     * TS adaption of https://github.com/pillarjs/path-to-regexp/blob/master/index.js
+     */
+    /**
+     * Default configs.
+     */
+    var DEFAULT_DELIMITER = '/';
+    var DEFAULT_DELIMITERS = './';
+    /**
+     * The main path matching regexp utility.
+     */
+    var PATH_REGEXP = new RegExp([
+        // Match escaped characters that would otherwise appear in future matches.
+        // This allows the user to escape special characters that won't transform.
+        '(\\\\.)',
+        // Match Express-style parameters and un-named parameters with a prefix
+        // and optional suffixes. Matches appear as:
+        //
+        // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?"]
+        // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined]
+        '(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?'
+    ].join('|'), 'g');
+    /**
+     * Parse a string for the raw tokens.
+     */
+    function parse(str, options) {
+        var tokens = [];
+        var key = 0;
+        var index = 0;
+        var path = '';
+        var defaultDelimiter = (options && options.delimiter) || DEFAULT_DELIMITER;
+        var delimiters = (options && options.delimiters) || DEFAULT_DELIMITERS;
+        var pathEscaped = false;
+        var res;
+        while ((res = PATH_REGEXP.exec(str)) !== null) {
+            var m = res[0];
+            var escaped = res[1];
+            var offset = res.index;
+            path += str.slice(index, offset);
+            index = offset + m.length;
+            // Ignore already escaped sequences.
+            if (escaped) {
+                path += escaped[1];
+                pathEscaped = true;
+                continue;
+            }
+            var prev = '';
+            var next = str[index];
+            var name = res[2];
+            var capture = res[3];
+            var group = res[4];
+            var modifier = res[5];
+            if (!pathEscaped && path.length) {
+                var k = path.length - 1;
+                if (delimiters.indexOf(path[k]) > -1) {
+                    prev = path[k];
+                    path = path.slice(0, k);
+                }
+            }
+            // Push the current path onto the tokens.
+            if (path) {
+                tokens.push(path);
+                path = '';
+                pathEscaped = false;
+            }
+            var partial = prev !== '' && next !== undefined && next !== prev;
+            var repeat = modifier === '+' || modifier === '*';
+            var optional = modifier === '?' || modifier === '*';
+            var delimiter = prev || defaultDelimiter;
+            var pattern = capture || group;
+            tokens.push({
+                name: name || key++,
+                prefix: prev,
+                delimiter: delimiter,
+                optional: optional,
+                repeat: repeat,
+                partial: partial,
+                pattern: pattern ? escapeGroup(pattern) : '[^' + escapeString(delimiter) + ']+?'
+            });
+        }
+        // Push any remaining characters.
+        if (path || index < str.length) {
+            tokens.push(path + str.substr(index));
+        }
+        return tokens;
+    }
+    /**
+     * Escape a regular expression string.
+     */
+    function escapeString(str) {
+        return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, '\\$1');
+    }
+    /**
+     * Escape the capturing group by escaping special characters and meaning.
+     */
+    function escapeGroup(group) {
+        return group.replace(/([=!:$/()])/g, '\\$1');
+    }
+    /**
+     * Get the flags for a regexp from the options.
+     */
+    function flags(options) {
+        return options && options.sensitive ? '' : 'i';
+    }
+    /**
+     * Pull out keys from a regexp.
+     */
+    function regexpToRegexp(path, keys) {
+        if (!keys)
+            return path;
+        // Use a negative lookahead to match only capturing groups.
+        var groups = path.source.match(/\((?!\?)/g);
+        if (groups) {
+            for (var i = 0; i < groups.length; i++) {
+                keys.push({
+                    name: i,
+                    prefix: null,
+                    delimiter: null,
+                    optional: false,
+                    repeat: false,
+                    partial: false,
+                    pattern: null
+                });
+            }
+        }
+        return path;
+    }
+    /**
+     * Transform an array into a regexp.
+     */
+    function arrayToRegexp(path, keys, options) {
+        var parts = [];
+        for (var i = 0; i < path.length; i++) {
+            parts.push(pathToRegexp(path[i], keys, options).source);
+        }
+        return new RegExp('(?:' + parts.join('|') + ')', flags(options));
+    }
+    /**
+     * Create a path regexp from string input.
+     */
+    function stringToRegexp(path, keys, options) {
+        return tokensToRegExp(parse(path, options), keys, options);
+    }
+    /**
+     * Expose a function for taking tokens and returning a RegExp.
+     */
+    function tokensToRegExp(tokens, keys, options) {
+        options = options || {};
+        var strict = options.strict;
+        var end = options.end !== false;
+        var delimiter = escapeString(options.delimiter || DEFAULT_DELIMITER);
+        var delimiters = options.delimiters || DEFAULT_DELIMITERS;
+        var endsWith = [].concat(options.endsWith || []).map(escapeString).concat('$').join('|');
+        var route = '';
+        var isEndDelimited = false;
+        // Iterate over the tokens and create our regexp string.
+        for (var i = 0; i < tokens.length; i++) {
+            var token = tokens[i];
+            if (typeof token === 'string') {
+                route += escapeString(token);
+                isEndDelimited = i === tokens.length - 1 && delimiters.indexOf(token[token.length - 1]) > -1;
+            }
+            else {
+                var prefix = escapeString(token.prefix);
+                var capture = token.repeat
+                    ? '(?:' + token.pattern + ')(?:' + prefix + '(?:' + token.pattern + '))*'
+                    : token.pattern;
+                if (keys)
+                    keys.push(token);
+                if (token.optional) {
+                    if (token.partial) {
+                        route += prefix + '(' + capture + ')?';
+                    }
+                    else {
+                        route += '(?:' + prefix + '(' + capture + '))?';
+                    }
+                }
+                else {
+                    route += prefix + '(' + capture + ')';
+                }
+            }
+        }
+        if (end) {
+            if (!strict)
+                route += '(?:' + delimiter + ')?';
+            route += endsWith === '$' ? '$' : '(?=' + endsWith + ')';
+        }
+        else {
+            if (!strict)
+                route += '(?:' + delimiter + '(?=' + endsWith + '))?';
+            if (!isEndDelimited)
+                route += '(?=' + delimiter + '|' + endsWith + ')';
+        }
+        return new RegExp('^' + route, flags(options));
+    }
+    /**
+     * Normalize the given path string, returning a regular expression.
+     *
+     * An empty array can be passed in for the keys, which will hold the
+     * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+     * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
+     */
+    function pathToRegexp(path, keys, options) {
+        if (path instanceof RegExp) {
+            return regexpToRegexp(path, keys);
+        }
+        if (Array.isArray(path)) {
+            return arrayToRegexp(path, keys, options);
+        }
+        return stringToRegexp(path, keys, options);
+    }
+    function hasBasename(path, prefix) {
+        return (new RegExp('^' + prefix + '(\\/|\\?|#|$)', 'i')).test(path);
+    }
+    function stripBasename(path, prefix) {
+        return hasBasename(path, prefix) ? path.substr(prefix.length) : path;
+    }
+    function stripTrailingSlash(path) {
+        return path.charAt(path.length - 1) === '/' ? path.slice(0, -1) : path;
+    }
+    function addLeadingSlash(path) {
+        return path.charAt(0) === '/' ? path : '/' + path;
+    }
+    function stripLeadingSlash(path) {
+        return path.charAt(0) === '/' ? path.substr(1) : path;
+    }
+    function parsePath(path) {
+        var pathname = path || '/';
+        var search = '';
+        var hash = '';
+        var hashIndex = pathname.indexOf('#');
+        if (hashIndex !== -1) {
+            hash = pathname.substr(hashIndex);
+            pathname = pathname.substr(0, hashIndex);
+        }
+        var searchIndex = pathname.indexOf('?');
+        if (searchIndex !== -1) {
+            search = pathname.substr(searchIndex);
+            pathname = pathname.substr(0, searchIndex);
+        }
+        return {
+            pathname: pathname,
+            search: search === '?' ? '' : search,
+            hash: hash === '#' ? '' : hash
+        };
+    }
+    function createPath(location) {
+        var pathname = location.pathname, search = location.search, hash = location.hash;
+        var path = pathname || '/';
+        if (search && search !== '?') {
+            path += (search.charAt(0) === '?' ? search : "?" + search);
+        }
+        if (hash && hash !== '#') {
+            path += (hash.charAt(0) === '#' ? hash : "#" + hash);
+        }
+        return path;
+    }
+    function parseQueryString(query) {
+        if (!query) {
+            return {};
+        }
+        return (/^[?#]/.test(query) ? query.slice(1) : query)
+            .split('&')
+            .reduce(function (params, param) {
+            var _b = param.split('='), key = _b[0], value = _b[1];
+            params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+            return params;
+        }, {});
+    }
+    function isAbsolute(pathname) {
+        return pathname.charAt(0) === '/';
+    }
+    // About 1.5x faster than the two-arg version of Array#splice()
+    function spliceOne(list, index) {
+        for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1) {
+            list[i] = list[k];
+        }
+        list.pop();
+    }
+    // This implementation is based heavily on node's url.parse
+    function resolvePathname(to, from) {
+        if (from === void 0) { from = ''; }
+        var toParts = to && to.split('/') || [];
+        var fromParts = from && from.split('/') || [];
+        var isToAbs = to && isAbsolute(to);
+        var isFromAbs = from && isAbsolute(from);
+        var mustEndAbs = isToAbs || isFromAbs;
+        if (to && isAbsolute(to)) {
+            // to is absolute
+            fromParts = toParts;
+        }
+        else if (toParts.length) {
+            // to is relative, drop the filename
+            fromParts.pop();
+            fromParts = fromParts.concat(toParts);
+        }
+        if (!fromParts.length) {
+            return '/';
+        }
+        var hasTrailingSlash;
+        if (fromParts.length) {
+            var last = fromParts[fromParts.length - 1];
+            hasTrailingSlash = (last === '.' || last === '..' || last === '');
+        }
+        else {
+            hasTrailingSlash = false;
+        }
+        var up = 0;
+        for (var i = fromParts.length; i >= 0; i--) {
+            var part = fromParts[i];
+            if (part === '.') {
+                spliceOne(fromParts, i);
+            }
+            else if (part === '..') {
+                spliceOne(fromParts, i);
+                up++;
+            }
+            else if (up) {
+                spliceOne(fromParts, i);
+                up--;
+            }
+        }
+        if (!mustEndAbs) {
+            for (; up--; up) {
+                fromParts.unshift('..');
+            }
+        }
+        if (mustEndAbs && fromParts[0] !== '' && (!fromParts[0] || !isAbsolute(fromParts[0]))) {
+            fromParts.unshift('');
+        }
+        var result = fromParts.join('/');
+        if (hasTrailingSlash && result.substr(-1) !== '/') {
+            result += '/';
+        }
+        return result;
+    }
+    function valueEqual(a, b) {
+        if (a === b) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        if (Array.isArray(a)) {
+            return Array.isArray(b) && a.length === b.length && a.every(function (item, index) {
+                return valueEqual(item, b[index]);
+            });
+        }
+        var aType = typeof a;
+        var bType = typeof b;
+        if (aType !== bType) {
+            return false;
+        }
+        if (aType === 'object') {
+            var aValue = a.valueOf();
+            var bValue = b.valueOf();
+            if (aValue !== a || bValue !== b) {
+                return valueEqual(aValue, bValue);
+            }
+            var aKeys = Object.keys(a);
+            var bKeys = Object.keys(b);
+            if (aKeys.length !== bKeys.length) {
+                return false;
+            }
+            return aKeys.every(function (key) {
+                return valueEqual(a[key], b[key]);
+            });
+        }
+        return false;
+    }
+    function locationsAreEqual(a, b) {
+        return a.pathname === b.pathname &&
+            a.search === b.search &&
+            a.hash === b.hash &&
+            a.key === b.key &&
+            valueEqual(a.state, b.state);
+    }
+    function createLocation(path, state, key, currentLocation) {
+        var location;
+        if (typeof path === 'string') {
+            // Two-arg form: push(path, state)
+            location = parsePath(path);
+            location.state = state;
+        }
+        else {
+            // One-arg form: push(location)
+            location = Object.assign({}, path);
+            if (location.pathname === undefined) {
+                location.pathname = '';
+            }
+            if (location.search) {
+                if (location.search.charAt(0) !== '?') {
+                    location.search = '?' + location.search;
+                }
+            }
+            else {
+                location.search = '';
+            }
+            if (location.hash) {
+                if (location.hash.charAt(0) !== '#') {
+                    location.hash = '#' + location.hash;
+                }
+            }
+            else {
+                location.hash = '';
+            }
+            if (state !== undefined && location.state === undefined) {
+                location.state = state;
+            }
+        }
+        try {
+            location.pathname = decodeURI(location.pathname);
+        }
+        catch (e) {
+            if (e instanceof URIError) {
+                throw new URIError('Pathname "' + location.pathname + '" could not be decoded. ' +
+                    'This is likely caused by an invalid percent-encoding.');
+            }
+            else {
+                throw e;
+            }
+        }
+        if (key) {
+            location.key = key;
+        }
+        if (currentLocation) {
+            // Resolve incomplete/relative pathname relative to current location.
+            if (!location.pathname) {
+                location.pathname = currentLocation.pathname;
+            }
+            else if (location.pathname.charAt(0) !== '/') {
+                location.pathname = resolvePathname(location.pathname, currentLocation.pathname);
+            }
+        }
+        else {
+            // When there is no prior location and pathname is empty, set it to /
+            if (!location.pathname) {
+                location.pathname = '/';
+            }
+        }
+        location.query = parseQueryString(location.search);
+        return location;
+    }
+    var patternCache = {};
+    var cacheLimit = 10000;
+    var cacheCount = 0;
+    // Memoized function for creating the path match regex
+    function compilePath(pattern, options) {
+        var cacheKey = "" + options.end + options.strict;
+        var cache = patternCache[cacheKey] || (patternCache[cacheKey] = {});
+        var cachePattern = JSON.stringify(pattern);
+        if (cache[cachePattern]) {
+            return cache[cachePattern];
+        }
+        var keys = [];
+        var re = pathToRegexp(pattern, keys, options);
+        var compiledPattern = { re: re, keys: keys };
+        if (cacheCount < cacheLimit) {
+            cache[cachePattern] = compiledPattern;
+            cacheCount += 1;
+        }
+        return compiledPattern;
+    }
+    /**
+     * Public API for matching a URL pathname to a path pattern.
+     */
+    function matchPath(pathname, options) {
+        if (options === void 0) { options = {}; }
+        if (typeof options === 'string') {
+            options = { path: options };
+        }
+        var _b = options.path, path = _b === void 0 ? '/' : _b, _c = options.exact, exact = _c === void 0 ? false : _c, _d = options.strict, strict = _d === void 0 ? false : _d;
+        var _e = compilePath(path, { end: exact, strict: strict }), re = _e.re, keys = _e.keys;
+        var match = re.exec(pathname);
+        if (!match) {
+            return null;
+        }
+        var url = match[0], values = match.slice(1);
+        var isExact = pathname === url;
+        if (exact && !isExact) {
+            return null;
+        }
+        return {
+            path: path,
+            url: path === '/' && url === '' ? '/' : url,
+            isExact: isExact,
+            params: keys.reduce(function (memo, key, index) {
+                memo[key.name] = values[index];
+                return memo;
+            }, {})
+        };
+    }
+    function matchesAreEqual(a, b) {
+        if (a == null && b == null) {
+            return true;
+        }
+        if (b == null) {
+            return false;
+        }
+        return a && b &&
+            a.path === b.path &&
+            a.url === b.url &&
+            valueEqual(a.params, b.params);
+    }
+    var __rest = (undefined && undefined.__rest) || function (s, e) {
+        var t = {};
+        for (var p in s)
+            if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+                t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++)
+                if (e.indexOf(p[i]) < 0)
+                    t[p[i]] = s[p[i]];
+        return t;
+    };
+    function defaultConsumerRender(subscribe, child) {
+        return h("context-consumer", { subscribe: subscribe, renderer: child });
+    }
+    function createProviderConsumer(defaultState, consumerRender) {
+        if (consumerRender === void 0) { consumerRender = defaultConsumerRender; }
+        var listeners = new Map();
+        var currentState = defaultState;
+        function notifyConsumers() {
+            listeners.forEach(updateListener);
+        }
+        function updateListener(fields, listener) {
+            if (Array.isArray(fields)) {
+                fields.slice().forEach(function (fieldName) {
+                    listener[fieldName] = currentState[fieldName];
+                });
+            }
+            else {
+                listener[fields] = Object.assign({}, currentState);
+            }
+            listener.forceUpdate();
+        }
+        function attachListener(propList) {
+            return function (el) {
+                if (listeners.has(el)) {
+                    return;
+                }
+                listeners.set(el, propList);
+                updateListener(propList, el);
+            };
+        }
+        function subscribe(el, propList) {
+            attachListener(propList)(el);
+            return function () {
+                listeners.delete(el);
+            };
+        }
+        function Provider(_b) {
+            var state = _b.state, children = _b.children;
+            currentState = state;
+            notifyConsumers();
+            return children;
+        }
+        function Consumer(_b) {
+            var children = _b.children;
+            return consumerRender(subscribe, children[0]);
+        }
+        function wrapConsumer(childComponent, fieldList) {
+            var Child = childComponent.is;
+            return function (_a) {
+                var children = _a.children, props = __rest(_a, ["children"]);
+                return (h(Child, Object.assign({ ref: attachListener(fieldList) }, props), children));
+            };
+        }
+        function injectProps(childComponent, fieldList) {
+            var unsubscribe = null;
+            var elementRefName = Object.keys(childComponent.properties).find(function (propName) {
+                return childComponent.properties[propName].elementRef == true;
+            });
+            if (elementRefName == undefined) {
+                throw new Error("Please ensure that your Component " + childComponent.is + " has an attribtue with \"@Element\" decorator. " +
+                    "This is required to be able to inject properties.");
+            }
+            var prevComponentWillLoad = childComponent.prototype.componentWillLoad;
+            childComponent.prototype.componentWillLoad = function () {
+                unsubscribe = subscribe(this[elementRefName], fieldList);
+                if (prevComponentWillLoad) {
+                    return prevComponentWillLoad.bind(this)();
+                }
+            };
+            var prevComponentDidUnload = childComponent.prototype.componentDidUnload;
+            childComponent.prototype.componentDidUnload = function () {
+                unsubscribe();
+                if (prevComponentDidUnload) {
+                    return prevComponentDidUnload.bind(this)();
+                }
+            };
+        }
+        return {
+            Provider: Provider,
+            Consumer: Consumer,
+            wrapConsumer: wrapConsumer,
+            injectProps: injectProps
+        };
+    }
+    var ActiveRouter = createProviderConsumer({
+        historyType: 'browser',
+        location: null,
+        titleSuffix: '',
+        root: '/',
+        history: null,
+        routeViewsUpdated: function () { }
+    });
+    var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+    var addEventListener = function (node, event, listener) { return (node.addEventListener
+        ? node.addEventListener(event, listener, false)
+        : node.attachEvent('on' + event, listener)); };
+    var removeEventListener = function (node, event, listener) { return (node.removeEventListener
+        ? node.removeEventListener(event, listener, false)
+        : node.detachEvent('on' + event, listener)); };
+    var getConfirmation = function (message, callback) { return (callback(window.confirm(message))); };
+    var isModifiedEvent = function (event) { return (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey); };
+    /**
+     * Returns true if the HTML5 history API is supported. Taken from Modernizr.
+     *
+     * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
+     * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
+     * changed to avoid false negatives for Windows Phones: https://github.com/reactjs/react-router/issues/586
+     */
+    var supportsHistory = function () {
+        var ua = window.navigator.userAgent;
+        if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
+            ua.indexOf('Mobile Safari') !== -1 &&
+            ua.indexOf('Chrome') === -1 &&
+            ua.indexOf('Windows Phone') === -1) {
+            return false;
+        }
+        return window.history && 'pushState' in window.history;
+    };
+    /**
+     * Returns true if browser fires popstate on hash change.
+     * IE10 and IE11 do not.
+     */
+    var supportsPopStateOnHashChange = function () { return (window.navigator.userAgent.indexOf('Trident') === -1); };
+    /**
+     * Returns false if using go(n) with hash history causes a full page reload.
+     */
+    var supportsGoWithoutReloadUsingHash = function () { return (window.navigator.userAgent.indexOf('Firefox') === -1); };
+    var isExtraneousPopstateEvent = function (event) { return (event.state === undefined &&
+        navigator.userAgent.indexOf('CriOS') === -1); };
+    var storageAvailable = function (type) {
+        try {
+            var storage = window[type], x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch (e) {
+            return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                storage.length !== 0;
+        }
+    };
+    exports.matchPath = matchPath;
+    exports.matchesAreEqual = matchesAreEqual;
+    exports.ActiveRouter = ActiveRouter;
+    exports.storageAvailable = storageAvailable;
+    exports.createLocation = createLocation;
+    exports.addLeadingSlash = addLeadingSlash;
+    exports.stripTrailingSlash = stripTrailingSlash;
+    exports.hasBasename = hasBasename;
+    exports.stripBasename = stripBasename;
+    exports.createPath = createPath;
+    exports.canUseDOM = canUseDOM;
+    exports.addEventListener = addEventListener;
+    exports.removeEventListener = removeEventListener;
+    exports.getConfirmation = getConfirmation;
+    exports.supportsHistory = supportsHistory;
+    exports.supportsPopStateOnHashChange = supportsPopStateOnHashChange;
+    exports.isExtraneousPopstateEvent = isExtraneousPopstateEvent;
+    exports.locationsAreEqual = locationsAreEqual;
+    exports.stripLeadingSlash = stripLeadingSlash;
+    exports.supportsGoWithoutReloadUsingHash = supportsGoWithoutReloadUsingHash;
+    exports.isModifiedEvent = isModifiedEvent;
+});

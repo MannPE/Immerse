@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@stencil/sass": "0.0.5",
+    "@types/chrome": "0.0.74",
     "jsdoc": "^3.5.5",
     "typedoc": "^0.11.1"
   },
