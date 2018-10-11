@@ -4,7 +4,7 @@ imr-view-word-list {
   align-content: center;
   display: grid;
   grid-auto-rows: auto;
-  grid-template-columns: repeat(auto-fill, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-gap: 2em;
 
   .noun{
@@ -16,5 +16,15 @@ imr-view-word-list {
   imr-word-item{
     padding-bottom: 5px;
     border-bottom: 1px solid gray;
+    display:inline-flex;
+    span{
+      width:50%;
+    }
+    input{
+      width:30%;
+    }
+    a{
+      width:7%;
+    }
   }
 }

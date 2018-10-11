@@ -1,41 +1,46 @@
 export class ViewWordList {
-    constructor() {
-        this.words = [
-            {
-                value: "cat",
-                translation: "Katze",
-                lang: "de",
-                type: "noun",
-                singular: true
-            },
-            {
-                value: "dog",
-                translation: "Hund",
-                lang: "de",
-                type: "noun",
-                singular: true
-            },
-            {
-                value: "dog",
-                translation: "Hund",
-                lang: "de",
-                type: "noun",
-                singular: true
-            },
-            {
-                value: "jump",
-                translation: "도역",
-                lang: "kr",
-                type: "verb",
-                singular: true
-            }
-        ];
+    componentWillLoad() {
+        console.log("Will load");
+        chrome.storage.sync.get(['imrkorean'], (result) => {
+            this.setWords(result['imrkorean']);
+            console.log("words loaded into wordlist", this.words);
+        });
+    }
+    loadWords() {
+        console.log(this.words);
+    }
+    setWords(any) {
+        this.words = any;
+        console.log("setting words", any, this.words);
     }
     render() {
-        return [
-            this.words.map(word => (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })))
-        ];
+        console.log("rendered", this.words);
+        if (this.words) {
+            let wordItems = [];
+            for (var key in this.words) {
+                let word = this.words[key];
+                console.log(word);
+                wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.insensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
+            }
+            return wordItems;
+        }
+        else
+            return h("div", null, "NO WORDS");
     }
     static get is() { return "imr-view-word-list"; }
+    static get properties() { return {
+        "_el": {
+            "elementRef": true
+        },
+        "loadWords": {
+            "method": true
+        },
+        "setWords": {
+            "method": true
+        },
+        "words": {
+            "state": true
+        }
+    }; }
     static get style() { return "/**style-placeholder:imr-view-word-list:**/"; }
 }

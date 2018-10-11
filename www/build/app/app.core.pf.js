@@ -87,9 +87,7 @@ this && this.__extends || function() {
   } instanceof Array && function(d, b) {
     d.__proto__ = b;
   } || function(d, b) {
-    for (var p in b) {
-      b.hasOwnProperty(p) && (d[p] = b[p]);
-    }
+    for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
   };
 }();
 
@@ -97,9 +95,8 @@ this && this.__extends || function() {
   'use strict';
   /**
      * SSR Attribute Names
-     */
-  var SSR_VNODE_ID = 'data-ssrv';
-  var SSR_CHILD_ID = 'data-ssrc';
+     */  var SSR_VNODE_ID = 'ssrv';
+  var SSR_CHILD_ID = 'ssrc';
   /**
      * Default style mode id
      */  var DEFAULT_STYLE_MODE = '$';
@@ -120,20 +117,10 @@ this && this.__extends || function() {
     'down': 40
   };
   function getScopeId(cmpMeta, mode) {
-    var id = 'data-' + cmpMeta.tagNameMeta;
-    if (mode && mode !== DEFAULT_STYLE_MODE) {
-      return id + '-' + mode;
-    }
-    return id;
+    return 'sc-' + cmpMeta.tagNameMeta + (mode && mode !== DEFAULT_STYLE_MODE ? '-' + mode : '');
   }
-  function getChildScopeAttribute(scopeId) {
-    return scopeId;
-  }
-  function getHostScopeAttribute(scopeId) {
-    return scopeId + '-host';
-  }
-  function getSlotScopeAttribute(scopeId) {
-    return scopeId + '-slot';
+  function getElementScopeId(scopeId, isHostElement) {
+    return scopeId + (isHostElement ? '-h' : '-s');
   }
   function initStyleTemplate(domApi, cmpMeta, encapsulation, style, styleMode) {
     if (style) {
@@ -150,12 +137,11 @@ this && this.__extends || function() {
   }
   function attachStyles(plt, domApi, cmpMeta, hostElm) {
     // first see if we've got a style for a specific mode
-    var encapsulation = cmpMeta.encapsulation;
     // either this host element should use scoped css
     // or it wants to use shadow dom but the browser doesn't support it
     // create a scope id which is useful for scoped css
     // and add the scope attribute to the host
-        var shouldScopeCss = 2 /* ScopedCss */ === encapsulation || 1 /* ShadowDom */ === encapsulation && !plt.domApi.$supportsShadowDom;
+    var shouldScopeCss = 2 /* ScopedCss */ === cmpMeta.encapsulationMeta || 1 /* ShadowDom */ === cmpMeta.encapsulationMeta && !plt.domApi.$supportsShadowDom;
     // create the style id w/ the host element's mode
         var styleId = cmpMeta.tagNameMeta + hostElm.mode;
     var styleTemplate = cmpMeta[styleId];
@@ -172,22 +158,17 @@ this && this.__extends || function() {
       var styleContainerNode = domApi.$doc.head;
       // if this browser supports shadow dom, then let's climb up
       // the dom and see if we're within a shadow dom
-            if (domApi.$supportsShadowDom) {
-        if (1 /* ShadowDom */ === encapsulation) {
-          // we already know we're in a shadow dom
-          // so shadow root is the container for these styles
-          styleContainerNode = hostElm.shadowRoot;
-        } else {
-          // climb up the dom and see if we're in a shadow dom
-          var root = hostElm;
-          while (root = domApi.$parentNode(root)) {
-            if (root.host && root.host.shadowRoot) {
-              // looks like we are in shadow dom, let's use
-              // this shadow root as the container for these styles
-              styleContainerNode = root.host.shadowRoot;
-              break;
-            }
-          }
+            if (domApi.$supportsShadowDom) if (1 /* ShadowDom */ === cmpMeta.encapsulationMeta) 
+      // we already know we're in a shadow dom
+      // so shadow root is the container for these styles
+      styleContainerNode = hostElm.shadowRoot; else {
+        // climb up the dom and see if we're in a shadow dom
+        var root = hostElm;
+        while (root = domApi.$parentNode(root)) if (root.host && root.host.shadowRoot) {
+          // looks like we are in shadow dom, let's use
+          // this shadow root as the container for these styles
+          styleContainerNode = root.host.shadowRoot;
+          break;
         }
       }
       // if this container element already has these styles
@@ -202,15 +183,14 @@ this && this.__extends || function() {
         // es5 builds are not usig <template> because of ie11 issues
         // instead the "template" is just the style text as a string
         // create a new style element and add as innerHTML
-        if (plt.customStyle) {
-          styleElm = plt.customStyle.createHostStyle(hostElm, styleId, styleTemplate);
-        } else {
+        if (true, plt.customStyle) styleElm = plt.customStyle.createHostStyle(hostElm, styleId, styleTemplate); else {
           styleElm = domApi.$createElement('style');
           styleElm.innerHTML = styleTemplate;
           // remember we don't need to do this again for this element
                     appliedStyles[styleId] = true;
         }
         if (styleElm) {
+          true;
           // add a style attributes, but only useful during dev
           domApi.$setAttribute(styleElm, 'data-style-tag', cmpMeta.tagNameMeta);
           hostElm.mode && domApi.$setAttribute(styleElm, 'data-style-mode', cmpMeta.tagNameMeta);
@@ -226,11 +206,6 @@ this && this.__extends || function() {
   };
   var toLowerCase = function(str) {
     return str.toLowerCase();
-  };
-  var dashToPascalCase = function(str) {
-    return toLowerCase(str).split('-').map(function(segment) {
-      return segment.charAt(0).toUpperCase() + segment.slice(1);
-    }).join('');
   };
   var noop = function() {};
   function createDomApi(App, win, doc) {
@@ -274,6 +249,9 @@ this && this.__extends || function() {
       $appendChild: function(parentNode, childNode) {
         return parentNode.appendChild(childNode);
       },
+      $addClass: function(elm, cssClass) {
+        return elm.classList.add(cssClass);
+      },
       $childNodes: function(node) {
         return node.childNodes;
       },
@@ -314,21 +292,11 @@ this && this.__extends || function() {
         return elm.getAttribute('mode') || (App.Context || {}).mode;
       },
       $elementRef: function(elm, referenceName) {
-        if ('child' === referenceName) {
-          return elm.firstElementChild;
-        }
-        if ('parent' === referenceName) {
-          return domApi.$parentElement(elm);
-        }
-        if ('body' === referenceName) {
-          return doc.body;
-        }
-        if ('document' === referenceName) {
-          return doc;
-        }
-        if ('window' === referenceName) {
-          return win;
-        }
+        if ('child' === referenceName) return elm.firstElementChild;
+        if ('parent' === referenceName) return domApi.$parentElement(elm);
+        if ('body' === referenceName) return doc.body;
+        if ('document' === referenceName) return doc;
+        if ('window' === referenceName) return win;
         return elm;
       },
       $addEventListener: function(assignerElm, eventName, listenerCallback, useCapture, usePassive, attachTo, eventListenerOpts, splt) {
@@ -342,15 +310,13 @@ this && this.__extends || function() {
         // removed any existing listeners for this event for the assigner element
         // this element already has this listener, so let's unregister it now
         assignersUnregListeners[assignersEventName]();
-        if ('string' === typeof attachTo) {
-          // attachTo is a string, and is probably something like
-          // "parent", "window", or "document"
-          // and the eventName would be like "mouseover" or "mousemove"
-          attachToElm = domApi.$elementRef(assignerElm, attachTo);
-        } else if ('object' === typeof attachTo) {
-          // we were passed in an actual element to attach to
-          attachToElm = attachTo;
-        } else {
+        if ('string' === typeof attachTo) 
+        // attachTo is a string, and is probably something like
+        // "parent", "window", or "document"
+        // and the eventName would be like "mouseover" or "mousemove"
+        attachToElm = domApi.$elementRef(assignerElm, attachTo); else if ('object' === typeof attachTo) 
+        // we were passed in an actual element to attach to
+        attachToElm = attachTo; else {
           // depending on the event name, we could actually be attaching
           // this element to something like the document or window
           splt = eventName.split(':');
@@ -362,11 +328,10 @@ this && this.__extends || function() {
             eventName = splt[1];
           }
         }
-        if (!attachToElm) {
-          // somehow we're referencing an element that doesn't exist
-          // let's not continue
-          return;
-        }
+        if (!attachToElm) 
+        // somehow we're referencing an element that doesn't exist
+        // let's not continue
+        return;
         var eventListener = listenerCallback;
         // test to see if we're looking for an exact keycode
                 splt = eventName.split('.');
@@ -412,14 +377,7 @@ this && this.__extends || function() {
         }));
       }
     };
-    domApi.$attachShadow = function(elm, shadowRootInit) {
-      return elm.attachShadow(shadowRootInit);
-    };
-    domApi.$supportsShadowDom = !!domApi.$doc.documentElement.attachShadow;
-    win.location.search.indexOf('shadow=false') > 0 && (
-    // by adding ?shadow=false it'll force the slot polyfill
-    // only add this check when in dev mode
-    domApi.$supportsShadowDom = false);
+    false;
     true;
     if ('function' !== typeof win.CustomEvent) {
       // CustomEvent polyfill
@@ -433,6 +391,7 @@ this && this.__extends || function() {
     domApi.$dispatchEvent = function(elm, eventName, data) {
       return elm && elm.dispatchEvent(new win.CustomEvent(eventName, data));
     };
+    false, true;
     // test if this browser supports event options or not
     try {
       win.addEventListener('e', null, Object.defineProperty({}, 'passive', {
@@ -469,19 +428,17 @@ this && this.__extends || function() {
     // this data only includes props that are attributes that need to be observed
     // it does not include all of the props yet
         var memberData = cmpData[3];
-    if (memberData) {
-      for (i = 0; i < memberData.length; i++) {
-        d = memberData[i];
-        cmpMeta.membersMeta[d[0]] = {
-          memberType: d[1],
-          reflectToAttrib: !!d[2],
-          attribName: 'string' === typeof d[3] ? d[3] : d[3] ? d[0] : 0,
-          propType: d[4]
-        };
-      }
+    if (memberData) for (i = 0; i < memberData.length; i++) {
+      d = memberData[i];
+      cmpMeta.membersMeta[d[0]] = {
+        memberType: d[1],
+        reflectToAttrib: !!d[2],
+        attribName: 'string' === typeof d[3] ? d[3] : d[3] ? d[0] : 0,
+        propType: d[4]
+      };
     }
     // encapsulation
-        cmpMeta.encapsulation = cmpData[4];
+        cmpMeta.encapsulationMeta = cmpData[4];
     cmpData[5] && (
     // parse listener meta
     cmpMeta.listenersMeta = cmpData[5].map(parseListenerData));
@@ -503,41 +460,21 @@ this && this.__extends || function() {
     // which wouldn't have Constructor data yet, and because this method is reused
     // within proxy where we don't have meta data, but only constructor data
     if (isDef(propValue) && 'object' !== typeof propValue && 'function' !== typeof propValue) {
-      if (propType === Boolean || 3 /* Boolean */ === propType) {
-        // per the HTML spec, any string value means it is a boolean true value
-        // but we'll cheat here and say that the string "false" is the boolean false
-        return 'false' !== propValue && ('' === propValue || !!propValue);
-      }
-      if (propType === Number || 4 /* Number */ === propType) {
-        // force it to be a number
-        return parseFloat(propValue);
-      }
-      if (propType === String || 2 /* String */ === propType) {
-        // could have been passed as a number or boolean
-        // but we still want it as a string
-        return propValue.toString();
-      }
+      if (propType === Boolean || 3 /* Boolean */ === propType) 
+      // per the HTML spec, any string value means it is a boolean true value
+      // but we'll cheat here and say that the string "false" is the boolean false
+      return 'false' !== propValue && ('' === propValue || !!propValue);
+      if (propType === Number || 4 /* Number */ === propType) 
+      // force it to be a number
+      return parseFloat(propValue);
+      if (propType === String || 2 /* String */ === propType) 
+      // could have been passed as a number or boolean
+      // but we still want it as a string
+      return propValue.toString();
     }
     // not sure exactly what type we want
     // so no need to change to a different type
         return propValue;
-  }
-  function initEventEmitters(plt, cmpEvents, instance) {
-    if (cmpEvents) {
-      var elm_1 = plt.hostElementMap.get(instance);
-      cmpEvents.forEach(function(eventMeta) {
-        instance[eventMeta.method] = {
-          emit: function(data) {
-            plt.emitEvent(elm_1, eventMeta.name, {
-              bubbles: eventMeta.bubbles,
-              composed: eventMeta.composed,
-              cancelable: eventMeta.cancelable,
-              detail: data
-            });
-          }
-        };
-      });
-    }
   }
   function proxyComponentInstance(plt, cmpConstructor, elm, instance, hostSnapshot, properties, memberName) {
     // at this point we've got a specific node of a host element, and created a component class instance
@@ -561,9 +498,7 @@ this && this.__extends || function() {
       type: String
     };
     // define each of the members and initialize what their role is
-        for (memberName in properties) {
-      defineMember(plt, properties[memberName], elm, instance, memberName, hostSnapshot);
-    }
+        for (memberName in properties) defineMember(plt, properties[memberName], elm, instance, memberName, hostSnapshot);
   }
   function initComponentInstance(plt, elm, hostSnapshot, instance, componentConstructor, queuedEvents, i) {
     try {
@@ -575,9 +510,8 @@ this && this.__extends || function() {
       // let's upgrade the data on the host element
       // and let the getters/setters do their jobs
             proxyComponentInstance(plt, componentConstructor, elm, instance, hostSnapshot);
-      // add each of the event emitters which wire up instance methods
-      // to fire off dom events from the host element
-      initEventEmitters(plt, componentConstructor.events, instance);
+      false;
+      true;
       try {
         // replay any event listeners on the instance that
         // were queued up between the time the element was
@@ -587,13 +521,12 @@ this && this.__extends || function() {
           // events may have already fired before the instance was even ready
           // now that the instance is ready, let's replay all of the events that
           // we queued up earlier that were originally meant for the instance
-          for (i = 0; i < queuedEvents.length; i += 2) {
-            // data was added in sets of two
-            // first item the eventMethodName
-            // second item is the event data
-            // take a look at initElementListener()
-            instance[queuedEvents[i]](queuedEvents[i + 1]);
-          }
+          for (i = 0; i < queuedEvents.length; i += 2) 
+          // data was added in sets of two
+          // first item the eventMethodName
+          // second item is the event data
+          // take a look at initElementListener()
+          instance[queuedEvents[i]](queuedEvents[i + 1]);
           plt.queuedEvents.delete(elm);
         }
       } catch (e) {
@@ -610,12 +543,11 @@ this && this.__extends || function() {
     return instance;
   }
   function initComponentLoaded(plt, elm, hydratedCssClass, instance, onReadyCallbacks) {
-    if (true, !allChildrenHaveConnected(plt, elm)) {
-      // this check needs to be done when using the customElements polyfill
-      // since the polyfill uses MutationObserver which causes the
-      // connectedCallbacks to fire async, which isn't ideal for the code below
-      return;
-    }
+    if (true, !allChildrenHaveConnected(plt, elm)) 
+    // this check needs to be done when using the customElements polyfill
+    // since the polyfill uses MutationObserver which causes the
+    // connectedCallbacks to fire async, which isn't ideal for the code below
+    return;
     // all is good, this component has been told it's time to finish loading
     // it's possible that we've already decided to destroy this element
     // check if this element has any actively loading child elements
@@ -639,6 +571,7 @@ this && this.__extends || function() {
           });
           plt.onReadyCallbacksMap.delete(elm);
         }
+        true;
         // fire off the user's componentDidLoad method (if one was provided)
         // componentDidLoad only runs ONCE, after the instance's element has been
         // assigned as the host element, and AFTER render() has been called
@@ -648,7 +581,7 @@ this && this.__extends || function() {
         plt.onError(e, 4 /* DidLoadError */ , elm);
       }
       // add the css class that this element has officially hydrated
-            elm.classList.add(hydratedCssClass);
+            plt.domApi.$addClass(elm, hydratedCssClass);
       // ( •_•)
       // ( •_•)>⌐■-■
       // (⌐■_■)
@@ -659,18 +592,14 @@ this && this.__extends || function() {
   }
   function allChildrenHaveConnected(plt, elm) {
     // Note: in IE11 <svg> does not have the "children" property
-    for (var i = 0; i < elm.childNodes.length; i++) {
-      if (1 /* ElementNode */ === elm.childNodes[i].nodeType) {
-        if (plt.getComponentMeta(elm.childNodes[i]) && !plt.hasConnectedMap.has(elm.childNodes[i])) {
-          // this is a defined componnent
-          // but it hasn't connected yet
-          return false;
-        }
-        if (!allChildrenHaveConnected(plt, elm.childNodes[i])) {
-          // one of the defined child components hasn't connected yet
-          return false;
-        }
-      }
+    for (var i = 0; i < elm.childNodes.length; i++) if (1 /* ElementNode */ === elm.childNodes[i].nodeType) {
+      if (plt.getComponentMeta(elm.childNodes[i]) && !plt.hasConnectedMap.has(elm.childNodes[i])) 
+      // this is a defined componnent
+      // but it hasn't connected yet
+      return false;
+      if (!allChildrenHaveConnected(plt, elm.childNodes[i])) 
+      // one of the defined child components hasn't connected yet
+      return false;
     }
     // everything has connected, we're good
         return true;
@@ -715,16 +644,10 @@ this && this.__extends || function() {
     var children = null;
     var lastSimple = false;
     var simple = false;
-    for (var i = arguments.length; i-- > 2; ) {
-      stack.push(arguments[i]);
-    }
+    for (var i = arguments.length; i-- > 2; ) stack.push(arguments[i]);
     while (stack.length > 0) {
       var child = stack.pop();
-      if (child && void 0 !== child.pop) {
-        for (i = child.length; i--; ) {
-          stack.push(child[i]);
-        }
-      } else {
+      if (child && void 0 !== child.pop) for (i = child.length; i--; ) stack.push(child[i]); else {
         'boolean' === typeof child && (child = null);
         (simple = 'function' !== typeof nodeName) && (null == child ? child = '' : 'number' === typeof child ? child = String(child) : 'string' !== typeof child && (simple = false));
         simple && lastSimple ? children[children.length - 1].vtext += child : null === children ? children = [ simple ? {
@@ -741,21 +664,16 @@ this && this.__extends || function() {
       // normalize class / classname attributes
       vnodeData.className && (vnodeData.class = vnodeData.className);
       if ('object' === typeof vnodeData.class) {
-        for (i in vnodeData.class) {
-          vnodeData.class[i] && stack.push(i);
-        }
+        for (i in vnodeData.class) vnodeData.class[i] && stack.push(i);
         vnodeData.class = stack.join(' ');
         stack.length = 0;
       }
       null != vnodeData.key && (vkey = vnodeData.key);
       null != vnodeData.name && (vname = vnodeData.name);
     }
-    if ('function' === typeof nodeName) {
-      // nodeName is a functional component
-      return nodeName(Object.assign({}, vnodeData, {
-        children: children
-      }), utils);
-    }
+    if ('function' === typeof nodeName) 
+    // nodeName is a functional component
+    return nodeName(vnodeData, children || [], utils);
     return {
       vtag: nodeName,
       vchildren: children,
@@ -767,21 +685,36 @@ this && this.__extends || function() {
       ishost: false
     };
   }
+  function childToVNode(child) {
+    return {
+      vtag: child.vtag,
+      vchildren: child.vchildren,
+      vtext: child.vtext,
+      vattrs: child.vattrs,
+      vkey: child.vkey,
+      vname: child.vname
+    };
+  }
+  function VNodeToChild(vnode) {
+    return {
+      'vtag': vnode.vtag,
+      'vchildren': vnode.vchildren,
+      'vtext': vnode.vtext,
+      'vattrs': vnode.vattrs,
+      'vkey': vnode.vkey,
+      'vname': vnode.vname
+    };
+  }
   var utils = {
-    'getTag': function(vnode) {
-      return vnode.vtag;
+    'forEach': function(children, cb) {
+      children.forEach(function(item, index, array) {
+        return cb(VNodeToChild(item), index, array);
+      });
     },
-    'getChildren': function(vnode) {
-      return vnode.vchildren;
-    },
-    'getText': function(vnode) {
-      return vnode.vtext;
-    },
-    'getAttributes': function(vnode) {
-      return vnode.vattrs;
-    },
-    'replaceAttributes': function(vnode, attributes) {
-      return vnode.vattrs = attributes;
+    'map': function(children, cb) {
+      return children.map(function(item, index, array) {
+        return childToVNode(cb(VNodeToChild(item), index, array));
+      });
     }
   };
   function render(plt, cmpMeta, hostElm, instance) {
@@ -796,9 +729,12 @@ this && this.__extends || function() {
             var useNativeShadowDom = 'shadow' === encapsulation && plt.domApi.$supportsShadowDom;
       var reflectHostAttr = void 0;
       var rootElm = void 0;
-      reflectHostAttr = reflectInstanceValuesToHostAttributes(cmpMeta.componentConstructor.properties, instance);
-      rootElm = useNativeShadowDom ? hostElm.shadowRoot : hostElm;
-      if (!hostElm['s-rn']) {
+      false;
+      !useNativeShadowDom && (
+      // not using, or can't use shadow dom
+      // set the root element, which will be the shadow root when enabled
+      rootElm = hostElm);
+      if (true, !hostElm['s-rn']) {
         // attach the styles this component needs, if any
         // this fn figures out if the styles should go in a
         // shadow root or if they should be global
@@ -806,8 +742,8 @@ this && this.__extends || function() {
         // if no render function
                 var scopeId = hostElm['s-sc'];
         if (scopeId) {
-          plt.domApi.$setAttribute(hostElm, getHostScopeAttribute(scopeId), '');
-          instance.render || plt.domApi.$setAttribute(hostElm, getSlotScopeAttribute(scopeId), '');
+          plt.domApi.$addClass(hostElm, getElementScopeId(scopeId, true));
+          instance.render || plt.domApi.$addClass(hostElm, getElementScopeId(scopeId));
         }
       }
       if (instance.render || instance.hostData || hostMeta || reflectHostAttr) {
@@ -817,48 +753,27 @@ this && this.__extends || function() {
         plt.activeRender = true;
         var vnodeChildren = instance.render && instance.render();
         var vnodeHostData = void 0;
-        // user component provided a "hostData()" method
-        // the returned data/attributes are used on the host element
-        vnodeHostData = instance.hostData && instance.hostData();
-        if (vnodeHostData && cmpMeta.membersMeta) {
-          var foundHostKeys = Object.keys(vnodeHostData).reduce(function(err, k) {
-            if (cmpMeta.membersMeta[k]) {
-              return err.concat(k);
-            }
-            if (cmpMeta.membersMeta[dashToPascalCase(k)]) {
-              return err.concat(dashToPascalCase(k));
-            }
-            return err;
-          }, []);
-          if (foundHostKeys.length > 0) {
-            throw new Error('The following keys were attempted to be set with hostData() from the ' + cmpMeta.tagNameMeta + ' component: ' + foundHostKeys.join(', ') + '. If you would like to modify these please set @Prop({ mutable: true, reflectToAttr: true}) on the @Prop() decorator.');
-          }
-        }
-        reflectHostAttr && (vnodeHostData = vnodeHostData ? Object.assign(vnodeHostData, reflectHostAttr) : reflectHostAttr);
+        false;
+        false;
         // tell the platform we're done rendering
         // now any changes will again queue
-                plt.activeRender = false;
-        hostMeta && (
-        // component meta data has a "theme"
-        // use this to automatically generate a good css class
-        // from the mode and color to add to the host element
-        vnodeHostData = applyComponentHostData(vnodeHostData, hostMeta, instance));
+        plt.activeRender = false;
+        false;
         // looks like we've got child nodes to render into this host element
         // or we need to update the css class/attrs on the host element
         // if we haven't already created a vnode, then we give the renderer the actual element
         // if this is a re-render, then give the renderer the last vnode we already created
-                var oldVNode = plt.vnodeMap.get(hostElm) || {};
+        var oldVNode = plt.vnodeMap.get(hostElm) || {};
         oldVNode.elm = rootElm;
         var hostVNode = h(null, vnodeHostData, vnodeChildren);
-        // only care if we're reflecting values to the host element
-        hostVNode.ishost = true;
+        false;
         // each patch always gets a new vnode
         // the host element itself isn't patched because it already exists
         // kick off the actual render and any DOM updates
         plt.vnodeMap.set(hostElm, plt.render(hostElm, oldVNode, hostVNode, useNativeShadowDom, encapsulation));
       }
       // update styles!
-            plt.customStyle && plt.customStyle.updateHost(hostElm);
+            (true, plt.customStyle) && plt.customStyle.updateHost(hostElm);
       // it's official, this element has rendered
             hostElm['s-rn'] = true;
       hostElm.$onRender && (
@@ -877,43 +792,6 @@ this && this.__extends || function() {
       plt.activeRender = false;
       plt.onError(e, 8 /* RenderError */ , hostElm, true);
     }
-  }
-  function applyComponentHostData(vnodeHostData, hostMeta, instance) {
-    vnodeHostData = vnodeHostData || {};
-    // component meta data has a "theme"
-    // use this to automatically generate a good css class
-    // from the mode and color to add to the host element
-        Object.keys(hostMeta).forEach(function(key) {
-      'theme' === key ? 
-      // host: { theme: 'button' }
-      // adds css classes w/ mode and color combinations
-      // class="button button-md button-primary button-md-primary"
-      convertCssNamesToObj(vnodeHostData.class = vnodeHostData.class || {}, hostMeta[key], instance.mode, instance.color) : 'class' === key ? 
-      // host: { class: 'multiple css-classes' }
-      // class="multiple css-classes"
-      convertCssNamesToObj(vnodeHostData[key] = vnodeHostData[key] || {}, hostMeta[key]) : 
-      // rando attribute/properties
-      vnodeHostData[key] = hostMeta[key];
-    });
-    return vnodeHostData;
-  }
-  function convertCssNamesToObj(cssClassObj, className, mode, color) {
-    className.split(' ').forEach(function(cssClass) {
-      cssClassObj[cssClass] = true;
-      if (mode) {
-        cssClassObj[cssClass + '-' + mode] = true;
-        color && (cssClassObj[cssClass + '-' + mode + '-' + color] = cssClassObj[cssClass + '-' + color] = true);
-      }
-    });
-  }
-  function reflectInstanceValuesToHostAttributes(properties, instance, reflectHostAttr) {
-    properties && Object.keys(properties).forEach(function(memberName) {
-      if (properties[memberName].reflectToAttr) {
-        reflectHostAttr = reflectHostAttr || {};
-        reflectHostAttr[memberName] = instance[memberName];
-      }
-    });
-    return reflectHostAttr;
   }
   function queueUpdate(plt, elm) {
     // only run patch if it isn't queued already
@@ -966,6 +844,7 @@ this && this.__extends || function() {
         // create the instance from the user's component class
         // https://www.youtube.com/watch?v=olLxrojmvMg
                 instance = initComponentInstance(plt, elm, plt.hostSnapshotMap.get(elm));
+        true;
         // fire off the user's componentWillLoad method (if one was provided)
         // componentWillLoad only runs ONCE, after instance's element has been
         // assigned as the host element, but BEFORE render() has been called
@@ -975,6 +854,7 @@ this && this.__extends || function() {
           plt.onError(e, 3 /* WillLoadError */ , elm);
         }
       } else {
+        true;
         // already created an instance and this is an update
         // fire off the user's componentWillUpdate method (if one was provided)
         // componentWillUpdate runs BEFORE render() has been called
@@ -1003,17 +883,19 @@ this && this.__extends || function() {
     // it off and generate a vnode for this
     render(plt, plt.getComponentMeta(elm), elm, instance);
     try {
-      if (isInitialLoad) {
-        // so this was the initial load i guess
-        elm['s-init']();
-        // componentDidLoad just fired off
-            } else {
+      if (isInitialLoad) 
+      // so this was the initial load i guess
+      elm['s-init']();
+      // componentDidLoad just fired off
+       else {
+        true;
         // fire off the user's componentDidUpdate method (if one was provided)
         // componentDidUpdate runs AFTER render() has been called
         // but only AFTER an UPDATE and not after the intial render
         instance.componentDidUpdate && instance.componentDidUpdate();
         callNodeRefs(plt.vnodeMap.get(elm));
       }
+      true;
       elm['s-hmr-load'] && elm['s-hmr-load']();
     } catch (e) {
       // derp
@@ -1030,7 +912,10 @@ this && this.__extends || function() {
     function setComponentProp(newValue, elm) {
       // component instance prop/state setter (cannot be arrow fn)
       elm = plt.hostElementMap.get(this);
-      elm && (property.state || property.mutable ? setValue(plt, elm, memberName, newValue) : console.warn('@Prop() "' + memberName + '" on "' + elm.tagName + '" cannot be modified.'));
+      if (elm) if (property.state || property.mutable) setValue(plt, elm, memberName, newValue); else {
+        true;
+        console.warn('@Prop() "' + memberName + '" on "' + elm.tagName + '" cannot be modified.');
+      }
     }
     if (property.type || property.state) {
       var values = plt.valuesMap.get(elm);
@@ -1071,25 +956,20 @@ this && this.__extends || function() {
       // add getter/setter to the component instance
       // these will be pointed to the internal data set from the above checks
             definePropertyGetterSetter(instance, memberName, getComponentProp, setComponentProp);
-    } else if (property.elementRef) {
-      // @Element()
-      // add a getter to the element reference using
-      // the member name the component meta provided
-      definePropertyValue(instance, memberName, elm);
-    } else if (property.method) {
-      // @Method()
-      // add a property "value" on the host element
-      // which we'll bind to the instance's method
-      definePropertyValue(elm, memberName, instance[memberName].bind(instance));
-    } else if (property.context) {
+    } else if (true, property.elementRef) 
+    // @Element()
+    // add a getter to the element reference using
+    // the member name the component meta provided
+    definePropertyValue(instance, memberName, elm); else if (true, property.method) 
+    // @Method()
+    // add a property "value" on the host element
+    // which we'll bind to the instance's method
+    definePropertyValue(elm, memberName, instance[memberName].bind(instance)); else if (true, 
+    property.context) {
       // @Prop({ context: 'config' })
       var contextObj = plt.getContextItem(property.context);
       void 0 !== contextObj && definePropertyValue(instance, memberName, contextObj.getContext && contextObj.getContext(elm) || contextObj);
-    } else {
-      property.connect && 
-      // @Prop({ connect: 'ion-loading-ctrl' })
-      definePropertyValue(instance, memberName, plt.propConnect(property.connect));
-    }
+    } else false;
   }
   function setValue(plt, elm, memberName, newVal, values, instance, watchMethods) {
     // get the internal values object, which should always come from the host element instance
@@ -1107,16 +987,13 @@ this && this.__extends || function() {
       if (instance) {
         // get an array of method names of watch functions to call
         watchMethods = values[WATCH_CB_PREFIX + memberName];
-        if (watchMethods) {
-          // this instance is watching for when this property changed
-          for (var i = 0; i < watchMethods.length; i++) {
-            try {
-              // fire off each of the watch methods that are watching this property
-              instance[watchMethods[i]].call(instance, newVal, oldVal, memberName);
-            } catch (e) {
-              console.error(e);
-            }
-          }
+        if (true, watchMethods) 
+        // this instance is watching for when this property changed
+        for (var i = 0; i < watchMethods.length; i++) try {
+          // fire off each of the watch methods that are watching this property
+          instance[watchMethods[i]].call(instance, newVal, oldVal, memberName);
+        } catch (e) {
+          console.error(e);
         }
         !plt.activeRender && elm['s-rn'] && 
         // looks like this value actually changed, so we've got work to do!
@@ -1143,91 +1020,59 @@ this && this.__extends || function() {
     });
   }
   var WATCH_CB_PREFIX = 'wc-';
-  function updateAttribute(elm, memberName, newValue, isBoolean, forceRemove) {
+  function updateAttribute(elm, memberName, newValue, isBooleanAttr) {
+    void 0 === isBooleanAttr && (isBooleanAttr = 'boolean' === typeof newValue);
     var isXlinkNs = memberName !== (memberName = memberName.replace(/^xlink\:?/, ''));
-    var isBooleanAttr = BOOLEAN_ATTRS[memberName] || isBoolean;
-    if (isBooleanAttr && (!newValue || 'false' === newValue) || forceRemove) {
-      isXlinkNs ? elm.removeAttributeNS(XLINK_NS$1, toLowerCase(memberName)) : elm.removeAttribute(memberName);
-    } else if ('function' !== typeof newValue) {
-      isBooleanAttr && (newValue = '');
+    if (null == newValue || isBooleanAttr && (!newValue || 'false' === newValue)) isXlinkNs ? elm.removeAttributeNS(XLINK_NS$1, toLowerCase(memberName)) : elm.removeAttribute(memberName); else if ('function' !== typeof newValue) {
+      newValue = isBooleanAttr ? '' : newValue.toString();
       isXlinkNs ? elm.setAttributeNS(XLINK_NS$1, toLowerCase(memberName), newValue) : elm.setAttribute(memberName, newValue);
     }
   }
-  var BOOLEAN_ATTRS = {
-    'allowfullscreen': 1,
-    'async': 1,
-    'autofocus': 1,
-    'autoplay': 1,
-    'checked': 1,
-    'controls': 1,
-    'disabled': 1,
-    'enabled': 1,
-    'formnovalidate': 1,
-    'hidden': 1,
-    'multiple': 1,
-    'noresize': 1,
-    'readonly': 1,
-    'required': 1,
-    'selected': 1,
-    'spellcheck': 1
-  };
   var XLINK_NS$1 = 'http://www.w3.org/1999/xlink';
   function setAccessor(plt, elm, memberName, oldValue, newValue, isSvg, isHostElement) {
-    if ('class' !== memberName || isSvg) {
-      if ('style' === memberName) {
-        // update style attribute, css properties and values
-        for (var prop in oldValue) {
-          newValue && null != newValue[prop] || (/-/.test(prop) ? elm.style.removeProperty(prop) : elm.style[prop] = '');
-        }
-        for (var prop in newValue) {
-          oldValue && newValue[prop] === oldValue[prop] || (/-/.test(prop) ? elm.style.setProperty(prop, newValue[prop]) : elm.style[prop] = newValue[prop]);
-        }
-      } else if ('o' !== memberName[0] || 'n' !== memberName[1] || !/[A-Z]/.test(memberName[2]) || memberName in elm) {
-        if ('list' !== memberName && 'type' !== memberName && !isSvg && (memberName in elm || -1 !== [ 'object', 'function' ].indexOf(typeof newValue) && null !== newValue) || false) {
-          // Properties
-          // - list and type are attributes that get applied as values on the element
-          // - all svgs get values as attributes not props
-          // - check if elm contains name or if the value is array, object, or function
-          var cmpMeta = plt.getComponentMeta(elm);
-          if (cmpMeta && cmpMeta.membersMeta && cmpMeta.membersMeta[memberName]) {
-            // we know for a fact that this element is a known component
-            // and this component has this member name as a property,
-            // let's set the known @Prop on this element
-            // set it directly as property on the element
-            setProperty(elm, memberName, newValue);
-            isHostElement && cmpMeta.membersMeta[memberName].reflectToAttrib && 
-            // we also want to set this data to the attribute
-            updateAttribute(elm, cmpMeta.membersMeta[memberName].attribName, newValue, 3 /* Boolean */ === cmpMeta.membersMeta[memberName].propType, null == newValue);
-          } else if ('ref' !== memberName) {
-            // this member name is a property on this element, but it's not a component
-            // this is a native property like "value" or something
-            // also we can ignore the "ref" member name at this point
-            setProperty(elm, memberName, null == newValue ? '' : newValue);
-            null != newValue && false !== newValue || plt.domApi.$removeAttribute(elm, memberName);
-          }
-        } else {
-          null != newValue && 'key' !== memberName ? 
-          // Element Attributes
-          updateAttribute(elm, memberName, newValue) : (isSvg || plt.domApi.$hasAttribute(elm, memberName) && (null == newValue || false === newValue)) && 
-          // remove svg attribute
-          plt.domApi.$removeAttribute(elm, memberName);
-        }
-      } else {
-        // Event Handlers
-        // so if the member name starts with "on" and the 3rd characters is
-        // a capital letter, and it's not already a member on the element,
-        // then we're assuming it's an event listener
-        // standard event
-        // the JSX attribute could have been "onMouseOver" and the
-        // member name "onmouseover" is on the element's prototype
-        // so let's add the listener "mouseover", which is all lowercased
-        memberName = toLowerCase(memberName) in elm ? toLowerCase(memberName.substring(2)) : toLowerCase(memberName[2]) + memberName.substring(3);
-        newValue ? newValue !== oldValue && 
-        // add listener
-        plt.domApi.$addEventListener(elm, memberName, newValue) : 
-        // remove listener
-        plt.domApi.$removeEventListener(elm, memberName);
+    if ('class' !== memberName || isSvg) if ('style' === memberName) {
+      // update style attribute, css properties and values
+      for (var prop in oldValue) newValue && null != newValue[prop] || (/-/.test(prop) ? elm.style.removeProperty(prop) : elm.style[prop] = '');
+      for (var prop in newValue) oldValue && newValue[prop] === oldValue[prop] || (/-/.test(prop) ? elm.style.setProperty(prop, newValue[prop]) : elm.style[prop] = newValue[prop]);
+    } else if ('o' !== memberName[0] || 'n' !== memberName[1] || !/[A-Z]/.test(memberName[2]) || memberName in elm) if ('list' !== memberName && 'type' !== memberName && !isSvg && (memberName in elm || -1 !== [ 'object', 'function' ].indexOf(typeof newValue) && null !== newValue) || false) {
+      // Properties
+      // - list and type are attributes that get applied as values on the element
+      // - all svgs get values as attributes not props
+      // - check if elm contains name or if the value is array, object, or function
+      var cmpMeta = plt.getComponentMeta(elm);
+      if (cmpMeta && cmpMeta.membersMeta && cmpMeta.membersMeta[memberName]) {
+        // we know for a fact that this element is a known component
+        // and this component has this member name as a property,
+        // let's set the known @Prop on this element
+        // set it directly as property on the element
+        setProperty(elm, memberName, newValue);
+        false;
+      } else if ('ref' !== memberName) {
+        // this member name is a property on this element, but it's not a component
+        // this is a native property like "value" or something
+        // also we can ignore the "ref" member name at this point
+        setProperty(elm, memberName, null == newValue ? '' : newValue);
+        null != newValue && false !== newValue || plt.domApi.$removeAttribute(elm, memberName);
       }
+    } else null != newValue && 'key' !== memberName ? 
+    // Element Attributes
+    updateAttribute(elm, memberName, newValue) : (isSvg || plt.domApi.$hasAttribute(elm, memberName) && (null == newValue || false === newValue)) && 
+    // remove svg attribute
+    plt.domApi.$removeAttribute(elm, memberName); else {
+      // Event Handlers
+      // so if the member name starts with "on" and the 3rd characters is
+      // a capital letter, and it's not already a member on the element,
+      // then we're assuming it's an event listener
+      // standard event
+      // the JSX attribute could have been "onMouseOver" and the
+      // member name "onmouseover" is on the element's prototype
+      // so let's add the listener "mouseover", which is all lowercased
+      memberName = toLowerCase(memberName) in elm ? toLowerCase(memberName.substring(2)) : toLowerCase(memberName[2]) + memberName.substring(3);
+      newValue ? newValue !== oldValue && 
+      // add listener
+      plt.domApi.$addEventListener(elm, memberName, newValue) : 
+      // remove listener
+      plt.domApi.$removeEventListener(elm, memberName);
     } else 
     // Class
     if (oldValue !== newValue) {
@@ -1267,13 +1112,9 @@ this && this.__extends || function() {
     var oldVnodeAttrs = oldVnode && oldVnode.vattrs || EMPTY_OBJ;
     var newVnodeAttrs = newVnode.vattrs || EMPTY_OBJ;
     // remove attributes no longer present on the vnode by setting them to undefined
-        for (memberName in oldVnodeAttrs) {
-      newVnodeAttrs && null != newVnodeAttrs[memberName] || null == oldVnodeAttrs[memberName] || setAccessor(plt, elm, memberName, oldVnodeAttrs[memberName], void 0, isSvgMode, newVnode.ishost);
-    }
+        for (memberName in oldVnodeAttrs) newVnodeAttrs && null != newVnodeAttrs[memberName] || null == oldVnodeAttrs[memberName] || setAccessor(plt, elm, memberName, oldVnodeAttrs[memberName], void 0, isSvgMode, newVnode.ishost);
     // add new & update changed attributes
-        for (memberName in newVnodeAttrs) {
-      memberName in oldVnodeAttrs && newVnodeAttrs[memberName] === ('value' === memberName || 'checked' === memberName ? elm[memberName] : oldVnodeAttrs[memberName]) || setAccessor(plt, elm, memberName, oldVnodeAttrs[memberName], newVnodeAttrs[memberName], isSvgMode, newVnode.ishost);
-    }
+        for (memberName in newVnodeAttrs) memberName in oldVnodeAttrs && newVnodeAttrs[memberName] === ('value' === memberName || 'checked' === memberName ? elm[memberName] : oldVnodeAttrs[memberName]) || setAccessor(plt, elm, memberName, oldVnodeAttrs[memberName], newVnodeAttrs[memberName], isSvgMode, newVnode.ishost);
   }
   var isSvgMode = false;
   function createRendererPatch(plt, domApi) {
@@ -1282,13 +1123,13 @@ this && this.__extends || function() {
     // which gets called numerous times by each component
     function createElm(oldParentVNode, newParentVNode, childIndex, parentElm, i, elm, childNode, newVNode, oldVNode) {
       newVNode = newParentVNode.vchildren[childIndex];
-      if (!useNativeShadowDom) {
+      if (true, !useNativeShadowDom) {
         // remember for later we need to check to relocate nodes
         checkSlotRelocate = true;
         if ('slot' === newVNode.vtag) {
           scopeId && 
           // scoped css needs to add its scoped id to the parent element
-          domApi.$setAttribute(parentElm, scopeId + '-slot', '');
+          domApi.$addClass(parentElm, scopeId + '-s');
           newVNode.vchildren ? 
           // slot element has fallback content
           // still create an element that "mocks" the slot element
@@ -1299,50 +1140,39 @@ this && this.__extends || function() {
           newVNode.isSlotReference = true;
         }
       }
-      if (isDef(newVNode.vtext)) {
-        // create text node
-        newVNode.elm = domApi.$createTextNode(newVNode.vtext);
-      } else if (newVNode.isSlotReference) {
-        // create a slot reference html text node
-        newVNode.elm = domApi.$createTextNode('');
-      } else {
+      if (isDef(newVNode.vtext)) 
+      // create text node
+      newVNode.elm = domApi.$createTextNode(newVNode.vtext); else if (true, newVNode.isSlotReference) 
+      // create a slot reference html text node
+      newVNode.elm = domApi.$createTextNode(''); else {
         // create element
-        elm = newVNode.elm = isSvgMode || 'svg' === newVNode.vtag ? domApi.$createElementNS('http://www.w3.org/2000/svg', newVNode.vtag) : domApi.$createElement(newVNode.isSlotFallback ? 'slot-fb' : newVNode.vtag);
+        elm = newVNode.elm = (true, isSvgMode || 'svg' === newVNode.vtag ? domApi.$createElementNS('http://www.w3.org/2000/svg', newVNode.vtag) : domApi.$createElement((true, 
+        newVNode.isSlotFallback ? 'slot-fb' : newVNode.vtag)));
+        true;
         isSvgMode = 'svg' === newVNode.vtag || 'foreignObject' !== newVNode.vtag && isSvgMode;
         // add css classes, attrs, props, listeners, etc.
         updateElement(plt, null, newVNode, isSvgMode);
         isDef(scopeId) && elm['s-si'] !== scopeId && 
         // if there is a scopeId and this is the initial render
         // then let's add the scopeId as an attribute
-        domApi.$setAttribute(elm, elm['s-si'] = scopeId, '');
-        isDef(ssrId) && 
-        // SSR ONLY: this is an SSR render and this
-        // logic does not run on the client
-        // give this element the SSR child id that can be read by the client
-        domApi.$setAttribute(elm, SSR_CHILD_ID, ssrId + '.' + childIndex + (hasChildNodes(newVNode.vchildren) ? '' : '.'));
-        if (newVNode.vchildren) {
-          for (i = 0; i < newVNode.vchildren.length; ++i) {
-            // create the node
-            childNode = createElm(oldParentVNode, newVNode, i, elm);
-            // return node could have been null
-                        if (childNode) {
-              isDef(ssrId) && 3 /* TextNode */ === childNode.nodeType && !childNode['s-cr'] && 
-              // SSR ONLY: add the text node's start comment
-              domApi.$appendChild(elm, domApi.$createComment('s.' + ssrId + '.' + i));
-              // append our new node
-                            domApi.$appendChild(elm, childNode);
-              if (isDef(ssrId) && 3 /* TextNode */ === childNode.nodeType && !childNode['s-cr']) {
-                // SSR ONLY: add the text node's end comment
-                domApi.$appendChild(elm, domApi.$createComment('/'));
-                domApi.$appendChild(elm, domApi.$createTextNode(' '));
-              }
-            }
+        domApi.$addClass(elm, elm['s-si'] = scopeId);
+        false;
+        if (newVNode.vchildren) for (i = 0; i < newVNode.vchildren.length; ++i) {
+          // create the node
+          childNode = createElm(oldParentVNode, newVNode, i, elm);
+          // return node could have been null
+                    if (childNode) {
+            false;
+            // append our new node
+            domApi.$appendChild(elm, childNode);
+            false;
           }
         }
-        'svg' === newVNode.vtag && (
+        (true, 'svg' === newVNode.vtag) && (
         // Only reset the SVG context when we're exiting SVG element
         isSvgMode = false);
       }
+      true;
       newVNode.elm['s-hn'] = hostTagName;
       if (newVNode.isSlotFallback || newVNode.isSlotReference) {
         // remember the content reference comment
@@ -1387,32 +1217,29 @@ this && this.__extends || function() {
       var contentRef = parentElm['s-cr'] || parentElm.$defaultHolder;
       containerElm = contentRef && domApi.$parentNode(contentRef) || parentElm;
       containerElm.shadowRoot && domApi.$tagName(containerElm) === hostTagName && (containerElm = containerElm.shadowRoot);
-      for (;startIdx <= endIdx; ++startIdx) {
-        if (vnodes[startIdx]) {
-          childNode = isDef(vnodes[startIdx].vtext) ? domApi.$createTextNode(vnodes[startIdx].vtext) : createElm(null, parentVNode, startIdx, parentElm);
-          if (childNode) {
-            vnodes[startIdx].elm = childNode;
-            domApi.$insertBefore(containerElm, childNode, referenceNode(before));
-          }
+      for (;startIdx <= endIdx; ++startIdx) if (vnodes[startIdx]) {
+        childNode = isDef(vnodes[startIdx].vtext) ? domApi.$createTextNode(vnodes[startIdx].vtext) : createElm(null, parentVNode, startIdx, parentElm);
+        if (childNode) {
+          vnodes[startIdx].elm = childNode;
+          domApi.$insertBefore(containerElm, childNode, referenceNode(before));
         }
       }
     }
     function removeVnodes(vnodes, startIdx, endIdx, node) {
-      for (;startIdx <= endIdx; ++startIdx) {
-        if (isDef(vnodes[startIdx])) {
-          node = vnodes[startIdx].elm;
-          // we're removing this element
-          // so it's possible we need to show slot fallback content now
-          checkSlotFallbackVisibility = true;
-          node['s-ol'] ? 
-          // remove the original location comment
-          domApi.$remove(node['s-ol']) : 
-          // it's possible that child nodes of the node
-          // that's being removed are slot nodes
-          putBackInOriginalLocation(node, true);
-          // remove the vnode's element from the dom
-          domApi.$remove(node);
-        }
+      for (;startIdx <= endIdx; ++startIdx) if (isDef(vnodes[startIdx])) {
+        node = vnodes[startIdx].elm;
+        true;
+        // we're removing this element
+        // so it's possible we need to show slot fallback content now
+        checkSlotFallbackVisibility = true;
+        node['s-ol'] ? 
+        // remove the original location comment
+        domApi.$remove(node['s-ol']) : 
+        // it's possible that child nodes of the node
+        // that's being removed are slot nodes
+        putBackInOriginalLocation(node, true);
+        // remove the vnode's element from the dom
+        domApi.$remove(node);
       }
     }
     function updateChildren(parentElm, oldCh, newVNode, newCh, idxInOld, i, node, elmToMove) {
@@ -1423,64 +1250,51 @@ this && this.__extends || function() {
       var newEndIdx = newCh.length - 1;
       var newStartVnode = newCh[0];
       var newEndVnode = newCh[newEndIdx];
-      while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-        if (null == oldStartVnode) {
-          // Vnode might have been moved left
-          oldStartVnode = oldCh[++oldStartIdx];
-        } else if (null == oldEndVnode) {
-          oldEndVnode = oldCh[--oldEndIdx];
-        } else if (null == newStartVnode) {
-          newStartVnode = newCh[++newStartIdx];
-        } else if (null == newEndVnode) {
-          newEndVnode = newCh[--newEndIdx];
-        } else if (isSameVnode(oldStartVnode, newStartVnode)) {
-          patchVNode(oldStartVnode, newStartVnode);
-          oldStartVnode = oldCh[++oldStartIdx];
-          newStartVnode = newCh[++newStartIdx];
-        } else if (isSameVnode(oldEndVnode, newEndVnode)) {
-          patchVNode(oldEndVnode, newEndVnode);
-          oldEndVnode = oldCh[--oldEndIdx];
-          newEndVnode = newCh[--newEndIdx];
-        } else if (isSameVnode(oldStartVnode, newEndVnode)) {
-          // Vnode moved right
-          'slot' !== oldStartVnode.vtag && 'slot' !== newEndVnode.vtag || putBackInOriginalLocation(domApi.$parentNode(oldStartVnode.elm));
-          patchVNode(oldStartVnode, newEndVnode);
-          domApi.$insertBefore(parentElm, oldStartVnode.elm, domApi.$nextSibling(oldEndVnode.elm));
-          oldStartVnode = oldCh[++oldStartIdx];
-          newEndVnode = newCh[--newEndIdx];
-        } else if (isSameVnode(oldEndVnode, newStartVnode)) {
-          // Vnode moved left
-          'slot' !== oldStartVnode.vtag && 'slot' !== newEndVnode.vtag || putBackInOriginalLocation(domApi.$parentNode(oldEndVnode.elm));
-          patchVNode(oldEndVnode, newStartVnode);
-          domApi.$insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
-          oldEndVnode = oldCh[--oldEndIdx];
+      while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) if (null == oldStartVnode) 
+      // Vnode might have been moved left
+      oldStartVnode = oldCh[++oldStartIdx]; else if (null == oldEndVnode) oldEndVnode = oldCh[--oldEndIdx]; else if (null == newStartVnode) newStartVnode = newCh[++newStartIdx]; else if (null == newEndVnode) newEndVnode = newCh[--newEndIdx]; else if (isSameVnode(oldStartVnode, newStartVnode)) {
+        patchVNode(oldStartVnode, newStartVnode);
+        oldStartVnode = oldCh[++oldStartIdx];
+        newStartVnode = newCh[++newStartIdx];
+      } else if (isSameVnode(oldEndVnode, newEndVnode)) {
+        patchVNode(oldEndVnode, newEndVnode);
+        oldEndVnode = oldCh[--oldEndIdx];
+        newEndVnode = newCh[--newEndIdx];
+      } else if (isSameVnode(oldStartVnode, newEndVnode)) {
+        // Vnode moved right
+        'slot' !== oldStartVnode.vtag && 'slot' !== newEndVnode.vtag || putBackInOriginalLocation(domApi.$parentNode(oldStartVnode.elm));
+        patchVNode(oldStartVnode, newEndVnode);
+        domApi.$insertBefore(parentElm, oldStartVnode.elm, domApi.$nextSibling(oldEndVnode.elm));
+        oldStartVnode = oldCh[++oldStartIdx];
+        newEndVnode = newCh[--newEndIdx];
+      } else if (isSameVnode(oldEndVnode, newStartVnode)) {
+        // Vnode moved left
+        'slot' !== oldStartVnode.vtag && 'slot' !== newEndVnode.vtag || putBackInOriginalLocation(domApi.$parentNode(oldEndVnode.elm));
+        patchVNode(oldEndVnode, newStartVnode);
+        domApi.$insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
+        oldEndVnode = oldCh[--oldEndIdx];
+        newStartVnode = newCh[++newStartIdx];
+      } else {
+        // createKeyToOldIdx
+        idxInOld = null;
+        for (i = oldStartIdx; i <= oldEndIdx; ++i) if (oldCh[i] && isDef(oldCh[i].vkey) && oldCh[i].vkey === newStartVnode.vkey) {
+          idxInOld = i;
+          break;
+        }
+        if (isDef(idxInOld)) {
+          elmToMove = oldCh[idxInOld];
+          if (elmToMove.vtag !== newStartVnode.vtag) node = createElm(oldCh && oldCh[newStartIdx], newVNode, idxInOld, parentElm); else {
+            patchVNode(elmToMove, newStartVnode);
+            oldCh[idxInOld] = void 0;
+            node = elmToMove.elm;
+          }
           newStartVnode = newCh[++newStartIdx];
         } else {
-          // createKeyToOldIdx
-          idxInOld = null;
-          for (i = oldStartIdx; i <= oldEndIdx; ++i) {
-            if (oldCh[i] && isDef(oldCh[i].vkey) && oldCh[i].vkey === newStartVnode.vkey) {
-              idxInOld = i;
-              break;
-            }
-          }
-          if (isDef(idxInOld)) {
-            elmToMove = oldCh[idxInOld];
-            if (elmToMove.vtag !== newStartVnode.vtag) {
-              node = createElm(oldCh && oldCh[newStartIdx], newVNode, idxInOld, parentElm);
-            } else {
-              patchVNode(elmToMove, newStartVnode);
-              oldCh[idxInOld] = void 0;
-              node = elmToMove.elm;
-            }
-            newStartVnode = newCh[++newStartIdx];
-          } else {
-            // new element
-            node = createElm(oldCh && oldCh[newStartIdx], newVNode, newStartIdx, parentElm);
-            newStartVnode = newCh[++newStartIdx];
-          }
-          node && domApi.$insertBefore(parentReferenceNode(oldStartVnode.elm), node, referenceNode(oldStartVnode.elm));
+          // new element
+          node = createElm(oldCh && oldCh[newStartIdx], newVNode, newStartIdx, parentElm);
+          newStartVnode = newCh[++newStartIdx];
         }
+        node && domApi.$insertBefore(parentReferenceNode(oldStartVnode.elm), node, referenceNode(oldStartVnode.elm));
       }
       oldStartIdx > oldEndIdx ? addVnodes(parentElm, null == newCh[newEndIdx + 1] ? null : newCh[newEndIdx + 1].elm, newVNode, newCh, newStartIdx, newEndIdx) : newStartIdx > newEndIdx && removeVnodes(oldCh, oldStartIdx, oldEndIdx);
     }
@@ -1488,21 +1302,20 @@ this && this.__extends || function() {
       // compare if two vnode to see if they're "technically" the same
       // need to have the same element tag, and same key to be the same
       if (vnode1.vtag === vnode2.vtag && vnode1.vkey === vnode2.vkey) {
-        if ('slot' === vnode1.vtag) {
-          return vnode1.vname === vnode2.vname;
-        }
+        true;
+        if ('slot' === vnode1.vtag) return vnode1.vname === vnode2.vname;
         return true;
       }
       return false;
     }
     function referenceNode(node) {
-      if (node && node['s-ol']) {
-        // this node was relocated to a new location in the dom
-        // because of some other component's slot
-        // but we still have an html comment in place of where
-        // it's original location was according to it's original vdom
-        return node['s-ol'];
-      }
+      true;
+      if (node && node['s-ol']) 
+      // this node was relocated to a new location in the dom
+      // because of some other component's slot
+      // but we still have an html comment in place of where
+      // it's original location was according to it's original vdom
+      return node['s-ol'];
       return node;
     }
     function parentReferenceNode(node) {
@@ -1512,40 +1325,37 @@ this && this.__extends || function() {
       var elm = newVNode.elm = oldVNode.elm;
       var oldChildren = oldVNode.vchildren;
       var newChildren = newVNode.vchildren;
+      true;
       // test if we're rendering an svg element, or still rendering nodes inside of one
       // only add this to the when the compiler sees we're using an svg somewhere
       isSvgMode = newVNode.elm && isDef(domApi.$parentElement(newVNode.elm)) && void 0 !== newVNode.elm.ownerSVGElement;
       isSvgMode = 'svg' === newVNode.vtag || 'foreignObject' !== newVNode.vtag && isSvgMode;
-      if (isDef(newVNode.vtext)) {
-        (defaultHolder = elm['s-cr'] || elm.$defaultHolder /* $defaultHolder deprecated 2018-04-02 */) ? 
-        // this element has slotted content
-        domApi.$setTextContent(domApi.$parentNode(defaultHolder), newVNode.vtext) : oldVNode.vtext !== newVNode.vtext && 
-        // update the text content for the text only vnode
-        // and also only if the text is different than before
-        domApi.$setTextContent(elm, newVNode.vtext);
-      } else {
+      if (isDef(newVNode.vtext)) true, (defaultHolder = elm['s-cr'] || elm.$defaultHolder /* $defaultHolder deprecated 2018-04-02 */) ? 
+      // this element has slotted content
+      domApi.$setTextContent(domApi.$parentNode(defaultHolder), newVNode.vtext) : oldVNode.vtext !== newVNode.vtext && 
+      // update the text content for the text only vnode
+      // and also only if the text is different than before
+      domApi.$setTextContent(elm, newVNode.vtext); else {
         // element node
         'slot' !== newVNode.vtag && 
         // either this is the first render of an element OR it's an update
         // AND we already know it's possible it could have changed
         // this updates the element's css classes, attrs, props, listeners, etc.
         updateElement(plt, oldVNode, newVNode, isSvgMode);
-        if (isDef(oldChildren) && isDef(newChildren)) {
-          // looks like there's child vnodes for both the old and new vnodes
-          updateChildren(elm, oldChildren, newVNode, newChildren);
-        } else if (isDef(newChildren)) {
+        if (isDef(oldChildren) && isDef(newChildren)) 
+        // looks like there's child vnodes for both the old and new vnodes
+        updateChildren(elm, oldChildren, newVNode, newChildren); else if (isDef(newChildren)) {
           // no old child vnodes, but there are new child vnodes to add
           isDef(oldVNode.vtext) && 
           // the old vnode was text, so be sure to clear it out
           domApi.$setTextContent(elm, '');
           // add the new vnode children
                     addVnodes(elm, null, newVNode, newChildren, 0, newChildren.length - 1);
-        } else {
-          isDef(oldChildren) && 
-          // no new child vnodes, but there are old child vnodes to remove
-          removeVnodes(oldChildren, 0, oldChildren.length - 1);
-        }
+        } else isDef(oldChildren) && 
+        // no new child vnodes, but there are old child vnodes to remove
+        removeVnodes(oldChildren, 0, oldChildren.length - 1);
       }
+      true;
       // reset svgMode when svg node is fully patched
       isSvgMode && 'svg' === newVNode.vtag && (isSvgMode = false);
     }
@@ -1561,24 +1371,22 @@ this && this.__extends || function() {
             // by default always show a fallback slot node
             // then hide it if there are other slots in the light dom
                         childNode.hidden = false;
-            for (j = 0; j < ilen; j++) {
-              if (childNodes[j]['s-hn'] !== childNode['s-hn']) {
-                // this sibling node is from a different component
-                nodeType = domApi.$nodeType(childNodes[j]);
-                if ('' !== slotNameAttr) {
-                  // this is a named fallback slot node
-                  if (1 /* ElementNode */ === nodeType && slotNameAttr === domApi.$getAttribute(childNodes[j], 'slot')) {
-                    childNode.hidden = true;
-                    break;
-                  }
-                } else 
-                // this is a default fallback slot node
-                // any element or text node (with content)
-                // should hide the default fallback slot node
-                if (1 /* ElementNode */ === nodeType || 3 /* TextNode */ === nodeType && '' !== domApi.$getTextContent(childNodes[j]).trim()) {
+            for (j = 0; j < ilen; j++) if (childNodes[j]['s-hn'] !== childNode['s-hn']) {
+              // this sibling node is from a different component
+              nodeType = domApi.$nodeType(childNodes[j]);
+              if ('' !== slotNameAttr) {
+                // this is a named fallback slot node
+                if (1 /* ElementNode */ === nodeType && slotNameAttr === domApi.$getAttribute(childNodes[j], 'slot')) {
                   childNode.hidden = true;
                   break;
                 }
+              } else 
+              // this is a default fallback slot node
+              // any element or text node (with content)
+              // should hide the default fallback slot node
+              if (1 /* ElementNode */ === nodeType || 3 /* TextNode */ === nodeType && '' !== domApi.$getTextContent(childNodes[j]).trim()) {
+                childNode.hidden = true;
+                break;
               }
             }
           }
@@ -1625,7 +1433,7 @@ this && this.__extends || function() {
       }
     }
     // internal variables to be reused per patch() call
-        var useNativeShadowDom, ssrId, scopeId, checkSlotFallbackVisibility, checkSlotRelocate, hostTagName, contentRef;
+        var useNativeShadowDom, scopeId, checkSlotFallbackVisibility, checkSlotRelocate, hostTagName, contentRef;
     return function patch(hostElm, oldVNode, newVNode, useNativeShadowDomVal, encapsulation, ssrPatchId, i, relocateNode, orgLocationNode, refNode, parentNodeRef, insertBeforeNode) {
       // patchVNode() is synchronous
       // so it is safe to set these variables and internally
@@ -1633,17 +1441,16 @@ this && this.__extends || function() {
       hostTagName = domApi.$tagName(hostElm);
       contentRef = hostElm['s-cr'];
       useNativeShadowDom = useNativeShadowDomVal;
-      ssrId = 'shadow' !== encapsulation ? ssrPatchId : null;
+      false;
+      true;
       // get the scopeId
       scopeId = hostElm['s-sc'];
       // always reset
             checkSlotRelocate = checkSlotFallbackVisibility = false;
       // synchronous patch
       patchVNode(oldVNode, newVNode);
-      isDef(ssrId) && 
-      // SSR ONLY: we've been given an SSR id, so the host element
-      // should be given the ssr id attribute
-      domApi.$setAttribute(oldVNode.elm, SSR_VNODE_ID, ssrId);
+      false;
+      true;
       if (checkSlotRelocate) {
         relocateSlotContent(newVNode.elm);
         for (i = 0; i < relocateNodes.length; i++) {
@@ -1666,11 +1473,9 @@ this && this.__extends || function() {
                     parentNodeRef = domApi.$parentNode(relocateNode.slotRefNode);
           insertBeforeNode = domApi.$nextSibling(relocateNode.slotRefNode);
           orgLocationNode = relocateNode.nodeToRelocate['s-ol'];
-          while (orgLocationNode = domApi.$previousSibling(orgLocationNode)) {
-            if ((refNode = orgLocationNode['s-nr']) && refNode && refNode['s-sn'] === relocateNode.nodeToRelocate['s-sn'] && parentNodeRef === domApi.$parentNode(refNode) && (refNode = domApi.$nextSibling(refNode)) && refNode && !refNode['s-nr']) {
-              insertBeforeNode = refNode;
-              break;
-            }
+          while (orgLocationNode = domApi.$previousSibling(orgLocationNode)) if ((refNode = orgLocationNode['s-nr']) && refNode && refNode['s-sn'] === relocateNode.nodeToRelocate['s-sn'] && parentNodeRef === domApi.$parentNode(refNode) && (refNode = domApi.$nextSibling(refNode)) && refNode && !refNode['s-nr']) {
+            insertBeforeNode = refNode;
+            break;
           }
           if ((!insertBeforeNode && parentNodeRef !== domApi.$parentNode(relocateNode.nodeToRelocate) || domApi.$nextSibling(relocateNode.nodeToRelocate) !== insertBeforeNode) && relocateNode.nodeToRelocate !== insertBeforeNode) {
             // remove the node from the dom
@@ -1698,19 +1503,6 @@ this && this.__extends || function() {
       });
     }
   }
-  function hasChildNodes(children) {
-    // SSR ONLY: check if there are any more nested child elements
-    // if there aren't, this info is useful so the client runtime
-    // doesn't have to climb down and check so many elements
-    if (children) {
-      for (var i = 0; i < children.length; i++) {
-        if ('slot' !== children[i].vtag || hasChildNodes(children[i].vchildren)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
   function createVNodesFromSsr(plt, domApi, rootElm) {
     var allSsrElms = rootElm.querySelectorAll('[' + SSR_VNODE_ID + ']');
     var ilen = allSsrElms.length;
@@ -1723,9 +1515,7 @@ this && this.__extends || function() {
         ssrVNode = {};
         ssrVNode.vtag = domApi.$tagName(ssrVNode.elm = elm);
         plt.vnodeMap.set(elm, ssrVNode);
-        for (j = 0, jlen = elm.childNodes.length; j < jlen; j++) {
-          addChildSsrVNodes(domApi, elm.childNodes[j], ssrVNode, ssrVNodeId, true);
-        }
+        for (j = 0, jlen = elm.childNodes.length; j < jlen; j++) addChildSsrVNodes(domApi, elm.childNodes[j], ssrVNode, ssrVNodeId, true);
       }
     }
   }
@@ -1757,9 +1547,7 @@ this && this.__extends || function() {
         }
       }
       // keep drilling down through the elements
-            for (var i = 0; i < node.childNodes.length; i++) {
-        addChildSsrVNodes(domApi, node.childNodes[i], parentVNode, ssrVNodeId, checkNestedElements);
-      }
+            for (var i = 0; i < node.childNodes.length; i++) addChildSsrVNodes(domApi, node.childNodes[i], parentVNode, ssrVNodeId, checkNestedElements);
     } else if (3 /* TextNode */ === nodeType && (previousComment = node.previousSibling) && 8 /* CommentNode */ === domApi.$nodeType(previousComment)) {
       // split the start comment's data with a period
       childVNodeSplt = domApi.$getTextContent(previousComment).split('.');
@@ -1792,23 +1580,20 @@ this && this.__extends || function() {
     var rafPending = false;
     App.raf || (App.raf = win.requestAnimationFrame.bind(win));
     function consume(queue) {
-      for (var i = 0; i < queue.length; i++) {
-        try {
-          queue[i]();
-        } catch (e) {
-          console.error(e);
-        }
+      for (var i = 0; i < queue.length; i++) try {
+        queue[i](now());
+      } catch (e) {
+        console.error(e);
       }
       queue.length = 0;
     }
     function consumeTimeout(queue, timeout) {
       var i = 0;
-      while (i < queue.length && now() < timeout) {
-        try {
-          queue[i++]();
-        } catch (e) {
-          console.error(e);
-        }
+      var ts;
+      while (i < queue.length && (ts = now()) < timeout) try {
+        queue[i++](ts);
+      } catch (e) {
+        console.error(e);
       }
       i === queue.length ? queue.length = 0 : 0 !== i && queue.splice(0, i);
     }
@@ -1881,10 +1666,9 @@ this && this.__extends || function() {
     return function(ev) {
       // get the instance if it exists
       val = plt.instanceMap.get(elm);
-      if (val) {
-        // instance is ready, let's call it's member method for this event
-        val[eventMethodName](ev);
-      } else {
+      if (val) 
+      // instance is ready, let's call it's member method for this event
+      val[eventMethodName](ev); else {
         // instance is not ready!!
         // let's queue up this event data and replay it later
         // when the instance is ready
@@ -1899,25 +1683,23 @@ this && this.__extends || function() {
       // cool, we've got an instance, it's get the element it's on
       var elm = plt.hostElementMap.get(instance);
       var cmpMeta = plt.getComponentMeta(elm);
-      if (cmpMeta && cmpMeta.listenersMeta) {
-        // alrighty, so this cmp has listener meta
-        if (shouldEnable) {
-          // we want to enable this event
-          // find which listen meta we're talking about
-          var listenMeta_1 = cmpMeta.listenersMeta.find(function(l) {
-            return l.eventName === eventName;
-          });
-          listenMeta_1 && 
-          // found the listen meta, so let's add the listener
-          plt.domApi.$addEventListener(elm, eventName, function(ev) {
-            return instance[listenMeta_1.eventMethodName](ev);
-          }, listenMeta_1.eventCapture, void 0 === passive ? listenMeta_1.eventPassive : !!passive, attachTo);
-        } else {
-          // we're disabling the event listener
-          // so let's just remove it entirely
-          plt.domApi.$removeEventListener(elm, eventName);
-        }
-      }
+      if (cmpMeta && cmpMeta.listenersMeta) 
+      // alrighty, so this cmp has listener meta
+      if (shouldEnable) {
+        // we want to enable this event
+        // find which listen meta we're talking about
+        var listenMeta_1 = cmpMeta.listenersMeta.find(function(l) {
+          return l.eventName === eventName;
+        });
+        listenMeta_1 && 
+        // found the listen meta, so let's add the listener
+        plt.domApi.$addEventListener(elm, eventName, function(ev) {
+          return instance[listenMeta_1.eventMethodName](ev);
+        }, listenMeta_1.eventCapture, void 0 === passive ? listenMeta_1.eventPassive : !!passive, attachTo);
+      } else 
+      // we're disabling the event listener
+      // so let's just remove it entirely
+      plt.domApi.$removeEventListener(elm, eventName);
     }
   }
   function generateDevInspector(App, namespace, win, plt) {
@@ -1954,18 +1736,16 @@ this && this.__extends || function() {
     var app = {
       namespace: namespace,
       getInstance: function(elm) {
-        if (elm && elm.tagName) {
-          return Promise.all([ getComponentMeta(plt, elm.tagName), getComponentInstance(plt, elm) ]).then(function(results) {
-            if (results[0] && results[1]) {
-              var cmp = {
-                meta: results[0],
-                instance: results[1]
-              };
-              return cmp;
-            }
-            return null;
-          });
-        }
+        if (elm && elm.tagName) return Promise.all([ getComponentMeta(plt, elm.tagName), getComponentInstance(plt, elm) ]).then(function(results) {
+          if (results[0] && results[1]) {
+            var cmp = {
+              meta: results[0],
+              instance: results[1]
+            };
+            return cmp;
+          }
+          return null;
+        });
         return Promise.resolve(null);
       },
       getComponent: function(tagName) {
@@ -1993,11 +1773,7 @@ this && this.__extends || function() {
       if (prop.state) {
         category = 'states';
         member.watchers = prop.watchCallbacks || [];
-      } else if (prop.elementRef) {
-        category = 'elements';
-      } else if (prop.method) {
-        category = 'methods';
-      } else {
+      } else if (prop.elementRef) category = 'elements'; else if (prop.method) category = 'methods'; else {
         category = 'props';
         var type = 'any';
         if (prop.type) {
@@ -2024,9 +1800,7 @@ this && this.__extends || function() {
       nodeName: tagName
     };
     var internalMeta = plt.getComponentMeta(elm);
-    if (!internalMeta || !internalMeta.componentConstructor) {
-      return Promise.resolve(null);
-    }
+    if (!internalMeta || !internalMeta.componentConstructor) return Promise.resolve(null);
     var cmpCtr = internalMeta.componentConstructor;
     var members = getMembersMeta(cmpCtr.properties || {});
     var listeners = (internalMeta.listenersMeta || []).map(function(listenerMeta) {
@@ -2063,65 +1837,56 @@ this && this.__extends || function() {
         return false;
       }
       var cmpMeta = plt.getComponentMeta(elm);
-      if (cmpMeta) {
-        if (plt.hasLoadedMap.has(elm)) {
-          // element has already loaded, pass the resolve the element component
-          // so we know that the resolve knows it this element is an app component
-          resolve(elm);
-        } else {
-          // element hasn't loaded yet
-          // add this resolve specifically to this elements on ready queue
-          var onReadyCallbacks = plt.onReadyCallbacksMap.get(elm) || [];
-          onReadyCallbacks.push(resolve);
-          plt.onReadyCallbacksMap.set(elm, onReadyCallbacks);
-        }
+      if (cmpMeta) if (plt.hasLoadedMap.has(elm)) 
+      // element has already loaded, pass the resolve the element component
+      // so we know that the resolve knows it this element is an app component
+      resolve(elm); else {
+        // element hasn't loaded yet
+        // add this resolve specifically to this elements on ready queue
+        var onReadyCallbacks = plt.onReadyCallbacksMap.get(elm) || [];
+        onReadyCallbacks.push(resolve);
+        plt.onReadyCallbacksMap.set(elm, onReadyCallbacks);
       }
       // return a boolean if this app recognized this element or not
             return !!cmpMeta;
     };
     if (queuedComponentOnReadys) {
       // we've got some componentOnReadys in the queue before the app was ready
-      for (i = queuedComponentOnReadys.length - 1; i >= 0; i--) {
-        // go through each element and see if this app recongizes it
-        App.componentOnReady(queuedComponentOnReadys[i][0], queuedComponentOnReadys[i][1]) && 
-        // turns out this element belongs to this app
-        // remove the resolve from the queue so in the end
-        // all that's left in the queue are elements not apart of any apps
-        queuedComponentOnReadys.splice(i, 1);
-      }
-      for (i = 0; i < apps.length; i++) {
-        if (!win[apps[i]].componentOnReady) {
-          // there is at least 1 apps that isn't ready yet
-          // so let's stop here cuz there's still app cores loading
-          return;
-        }
-      }
+      for (i = queuedComponentOnReadys.length - 1; i >= 0; i--) 
+      // go through each element and see if this app recongizes it
+      App.componentOnReady(queuedComponentOnReadys[i][0], queuedComponentOnReadys[i][1]) && 
+      // turns out this element belongs to this app
+      // remove the resolve from the queue so in the end
+      // all that's left in the queue are elements not apart of any apps
+      queuedComponentOnReadys.splice(i, 1);
+      for (i = 0; i < apps.length; i++) if (!win[apps[i]].componentOnReady) 
+      // there is at least 1 apps that isn't ready yet
+      // so let's stop here cuz there's still app cores loading
+      return;
       // if we got to this point then that means all of the apps are ready
       // and they would have removed any of their elements from queuedComponentOnReadys
       // so let's do the cleanup of the  remaining queuedComponentOnReadys
-            for (i = 0; i < queuedComponentOnReadys.length; i++) {
-        // resolve any queued componentsOnReadys that are left over
-        // since these elements were not apart of any apps
-        // call the resolve fn, but pass null so it's know this wasn't a known app component
-        queuedComponentOnReadys[i][1](null);
-      }
+            for (i = 0; i < queuedComponentOnReadys.length; i++) 
+      // resolve any queued componentsOnReadys that are left over
+      // since these elements were not apart of any apps
+      // call the resolve fn, but pass null so it's know this wasn't a known app component
+      queuedComponentOnReadys[i][1](null);
       queuedComponentOnReadys.length = 0;
     }
   }
   function attributeChangedCallback(membersMeta, elm, attribName, oldVal, newVal, propName, memberMeta) {
     // only react if the attribute values actually changed
-    if (membersMeta && oldVal !== newVal) {
-      // using the known component meta data
-      // look up to see if we have a property wired up to this attribute name
-      for (propName in membersMeta) {
-        memberMeta = membersMeta[propName];
-        // normalize the attribute name w/ lower case
-                if (memberMeta.attribName && toLowerCase(memberMeta.attribName) === toLowerCase(attribName)) {
-          // cool we've got a prop using this attribute name, the value will
-          // be a string, so let's convert it to the correct type the app wants
-          elm[propName] = parsePropertyValue(memberMeta.propType, newVal);
-          break;
-        }
+    if (membersMeta && oldVal !== newVal) 
+    // using the known component meta data
+    // look up to see if we have a property wired up to this attribute name
+    for (propName in membersMeta) {
+      memberMeta = membersMeta[propName];
+      // normalize the attribute name w/ lower case
+            if (memberMeta.attribName && toLowerCase(memberMeta.attribName) === toLowerCase(attribName)) {
+        // cool we've got a prop using this attribute name, the value will
+        // be a string, so let's convert it to the correct type the app wants
+        elm[propName] = parsePropertyValue(memberMeta.propType, newVal);
+        break;
       }
     }
   }
@@ -2136,10 +1901,11 @@ this && this.__extends || function() {
     // first check if there's an attribute
     // next check the app's global
     hostElm.mode = domApi.$getMode(hostElm));
+    true;
     // if the slot polyfill is required we'll need to put some nodes
     // in here to act as original content anchors as we move nodes around
     // host element has been connected to the DOM
-    if (!hostElm['s-cr'] && !domApi.$getAttribute(hostElm, SSR_VNODE_ID) && (!domApi.$supportsShadowDom || 1 /* ShadowDom */ !== cmpMeta.encapsulation)) {
+    if (!hostElm['s-cr'] && !domApi.$getAttribute(hostElm, SSR_VNODE_ID) && (!domApi.$supportsShadowDom || 1 /* ShadowDom */ !== cmpMeta.encapsulationMeta)) {
       // only required when we're NOT using native shadow dom (slot)
       // or this browser doesn't support native shadow dom
       // and this host element was NOT created with SSR
@@ -2150,20 +1916,14 @@ this && this.__extends || function() {
       hostElm['s-cr']['s-cn'] = true;
       domApi.$insertBefore(hostElm, hostElm['s-cr'], domApi.$childNodes(hostElm)[0]);
     }
-    if (!domApi.$supportsShadowDom && 1 /* ShadowDom */ === cmpMeta.encapsulation) {
-      true;
+    if (!domApi.$supportsShadowDom && 1 /* ShadowDom */ === cmpMeta.encapsulationMeta) {
+      true, true;
       // it's possible we're manually forcing the slot polyfill
       // but this browser may already support the read-only shadowRoot
       // do an extra check here, but only for dev mode on the client
       'shadowRoot' in HTMLElement.prototype || (hostElm.shadowRoot = hostElm);
     }
-    1 /* ShadowDom */ === cmpMeta.encapsulation && domApi.$supportsShadowDom && !hostElm.shadowRoot && 
-    // this component is using shadow dom
-    // and this browser supports shadow dom
-    // add the read-only property "shadowRoot" to the host element
-    domApi.$attachShadow(hostElm, {
-      mode: 'open'
-    });
+    false;
     // create a host snapshot object we'll
     // use to store all host data about to be read later
     hostSnapshot = {
@@ -2178,6 +1938,7 @@ this && this.__extends || function() {
     return hostSnapshot;
   }
   function connectedCallback(plt, cmpMeta, elm) {
+    true;
     // initialize our event listeners on the host element
     // we do this now so that we can listening to events that may
     // have fired even before the instance is ready
@@ -2218,24 +1979,23 @@ this && this.__extends || function() {
     // find the first ancestor host element (if there is one) and register
     // this element as one of the actively loading child elements for its ancestor
     ancestorHostElement = elm;
-    while (ancestorHostElement = plt.domApi.$parentElement(ancestorHostElement)) {
-      // climb up the ancestors looking for the first registered component
-      if (plt.isDefinedComponent(ancestorHostElement)) {
-        // we found this elements the first ancestor host element
-        // if the ancestor already loaded then do nothing, it's too late
-        if (!plt.hasLoadedMap.has(elm)) {
-          // keep a reference to this element's ancestor host element
-          // elm._ancestorHostElement = ancestorHostElement;
-          plt.ancestorHostElementMap.set(elm, ancestorHostElement);
-          // ensure there is an array to contain a reference to each of the child elements
-          // and set this element as one of the ancestor's child elements it should wait on
-                    ancestorHostElement.$activeLoading && (
-          // $activeLoading deprecated 2018-04-02
-          ancestorHostElement['s-ld'] = ancestorHostElement.$activeLoading);
-          (ancestorHostElement['s-ld'] = ancestorHostElement['s-ld'] || []).push(elm);
-        }
-        break;
+    while (ancestorHostElement = plt.domApi.$parentElement(ancestorHostElement)) 
+    // climb up the ancestors looking for the first registered component
+    if (plt.isDefinedComponent(ancestorHostElement)) {
+      // we found this elements the first ancestor host element
+      // if the ancestor already loaded then do nothing, it's too late
+      if (!plt.hasLoadedMap.has(elm)) {
+        // keep a reference to this element's ancestor host element
+        // elm._ancestorHostElement = ancestorHostElement;
+        plt.ancestorHostElementMap.set(elm, ancestorHostElement);
+        // ensure there is an array to contain a reference to each of the child elements
+        // and set this element as one of the ancestor's child elements it should wait on
+                ancestorHostElement.$activeLoading && (
+        // $activeLoading deprecated 2018-04-02
+        ancestorHostElement['s-ld'] = ancestorHostElement.$activeLoading);
+        (ancestorHostElement['s-ld'] = ancestorHostElement['s-ld'] || []).push(elm);
       }
+      break;
     }
   }
   function disconnectedCallback(plt, elm) {
@@ -2257,6 +2017,7 @@ this && this.__extends || function() {
       // remove all of this element's event, which is good
             plt.domApi.$removeEventListener(elm);
       plt.hasListenersMap.delete(elm);
+      true;
       // call instance componentDidUnload
       // if we've created an instance for this
       var instance = plt.instanceMap.get(elm);
@@ -2264,7 +2025,7 @@ this && this.__extends || function() {
       // call the user's componentDidUnload if there is one
       instance.componentDidUnload && instance.componentDidUnload();
       // clear CSS var-shim tracking
-      plt.customStyle && plt.customStyle.removeHost(elm);
+      (true, plt.customStyle) && plt.customStyle.removeHost(elm);
       // clear any references to other elements
       // more than likely we've already deleted these references
       // but let's double check there pal
@@ -2275,9 +2036,7 @@ this && this.__extends || function() {
   }
   function isDisconnected(domApi, elm) {
     while (elm) {
-      if (!domApi.$parentNode(elm)) {
-        return 9 /* DocumentNode */ !== domApi.$nodeType(elm);
-      }
+      if (!domApi.$parentNode(elm)) return 9 /* DocumentNode */ !== domApi.$nodeType(elm);
       elm = domApi.$parentNode(elm);
     }
   }
@@ -2362,6 +2121,7 @@ this && this.__extends || function() {
       // coolsville, our host element has just hit the DOM
       connectedCallback(plt, cmpMeta, this);
     };
+    true;
     HostElementConstructor.attributeChangedCallback = function(attribName, oldVal, newVal) {
       // the browser has just informed us that an attribute
       // on the host element has changed
@@ -2374,6 +2134,7 @@ this && this.__extends || function() {
     HostElementConstructor['s-init'] = function() {
       initComponentLoaded(plt, this, hydratedCssClass);
     };
+    true;
     HostElementConstructor['s-hmr'] = function(hmrVersionId) {
       hmrStart(plt, cmpMeta, this, hmrVersionId);
     };
@@ -2422,19 +2183,18 @@ this && this.__extends || function() {
     var controllerComponents = {};
     var App = win[namespace] = win[namespace] || {};
     var domApi = createDomApi(App, win, doc);
-    domApi.$supportsShadowDom && customStyle && console.error('Unsupported browser. Native shadow-dom available but CSS Custom Properites are not.');
+    (true, false) && domApi.$supportsShadowDom && customStyle && console.error('Unsupported browser. Native shadow-dom available but CSS Custom Properites are not.');
     // set App Context
         Context.isServer = Context.isPrerender = !(Context.isClient = true);
     Context.window = win;
     Context.location = win.location;
     Context.document = doc;
     Context.resourcesUrl = Context.publicPath = resourcesUrl;
+    true;
     Context.enableListener = function(instance, eventName, enabled, attachTo, passive) {
       return enableEventListener(plt, instance, eventName, enabled, attachTo, passive);
     };
-    Context.emit = function(elm, eventName, data) {
-      return domApi.$dispatchEvent(elm, Context.eventNameFn ? Context.eventNameFn(eventName) : eventName, data);
-    };
+    false;
     // add the h() fn to the app's global namespace
     App.h = h;
     App.Context = Context;
@@ -2511,16 +2271,15 @@ this && this.__extends || function() {
         // initialize the members on the host element prototype
         // keep a ref to the metadata with the tag as the key
                 initHostElement(plt, cmpRegistry[cmpMeta.tagNameMeta] = cmpMeta, HostElementConstructor.prototype, hydratedCssClass);
+        true;
         // add which attributes should be observed
         var observedAttributes = [];
         // at this point the membersMeta only includes attributes which should
         // be observed, it does not include all props yet, so it's safe to
         // loop through all of the props (attrs) and observed them
-                for (var propName in cmpMeta.membersMeta) {
-          cmpMeta.membersMeta[propName].attribName && observedAttributes.push(
-          // add this attribute to our array of attributes we need to observe
-          cmpMeta.membersMeta[propName].attribName);
-        }
+                for (var propName in cmpMeta.membersMeta) cmpMeta.membersMeta[propName].attribName && observedAttributes.push(
+        // add this attribute to our array of attributes we need to observe
+        cmpMeta.membersMeta[propName].attribName);
         // set the array of all the attributes to keep an eye on
         // https://www.youtube.com/watch?v=RBs21CFBALI
                 HostElementConstructor.observedAttributes = observedAttributes;
@@ -2529,37 +2288,27 @@ this && this.__extends || function() {
       }
     }
     function getLoadedBundle(bundleId, hmrVersionId) {
-      hmrVersionId && loadedBundles.delete(bundleId.replace(/^\.\//, ''));
-      if (null == bundleId) {
-        return null;
-      }
+      (true, hmrVersionId) && loadedBundles.delete(bundleId.replace(/^\.\//, ''));
+      if (null == bundleId) return null;
       return loadedBundles.get(bundleId.replace(/^\.\//, ''));
     }
     function isLoadedBundle(id) {
-      if ('exports' === id || 'require' === id) {
-        return true;
-      }
+      if ('exports' === id || 'require' === id) return true;
       return !!getLoadedBundle(id);
     }
     function execBundleCallback(bundleId, deps, callback) {
       var bundleExports = {};
       try {
         callback.apply(null, deps.map(function(d) {
-          if ('exports' === d) {
-            return bundleExports;
-          }
-          if ('require' === d) {
-            return userRequire;
-          }
+          if ('exports' === d) return bundleExports;
+          if ('require' === d) return userRequire;
           return getLoadedBundle(d);
         }));
       } catch (e) {
         console.error(e);
       }
       // If name is undefined then this callback was fired by component callback
-            if (void 0 === bundleId) {
-        return;
-      }
+            if (void 0 === bundleId) return;
       loadedBundles.set(bundleId, bundleExports);
       // If name contains chunk then this callback was associated with a dependent bundle loading
       // let's add a reference to the constructors on each components metadata
@@ -2574,7 +2323,7 @@ this && this.__extends || function() {
             if (cmpMeta) {
               // get the component constructor from the module
               cmpMeta.componentConstructor = bundleExports[pascalCasedTagName];
-              initStyleTemplate(domApi, cmpMeta, cmpMeta.encapsulation, cmpMeta.componentConstructor.style, cmpMeta.componentConstructor.styleMode);
+              initStyleTemplate(domApi, cmpMeta, cmpMeta.encapsulationMeta, cmpMeta.componentConstructor.style, cmpMeta.componentConstructor.styleMode);
             }
             break;
           }
@@ -2610,28 +2359,25 @@ this && this.__extends || function() {
     }
     App.loadBundle = loadBundle;
     var requestBundleQueue = [];
-    customStyle && customStyle.init().then(function() {
+    (true, customStyle) && customStyle.init().then(function() {
       // loaded all the css, let's run all the request bundle callbacks
-      while (requestBundleQueue.length) {
-        requestBundleQueue.shift()();
-      }
+      while (requestBundleQueue.length) requestBundleQueue.shift()();
       // set to null to we know we're loaded
             requestBundleQueue = null;
     });
     // This is executed by the component's connected callback.
         function requestBundle(cmpMeta, elm, hmrVersionId) {
       var bundleId = 'string' === typeof cmpMeta.bundleIds ? cmpMeta.bundleIds : cmpMeta.bundleIds[elm.mode];
-      if (getLoadedBundle(bundleId, hmrVersionId)) {
-        // sweet, we've already loaded this bundle
-        queueUpdate(plt, elm);
-      } else {
+      if (getLoadedBundle(bundleId, hmrVersionId)) 
+      // sweet, we've already loaded this bundle
+      queueUpdate(plt, elm); else {
         // never seen this bundle before, let's start the request
         // and add it to the callbacks to fire when it has loaded
         bundleQueue.push([ void 0, [ bundleId ], function() {
           queueUpdate(plt, elm);
         } ]);
         // when to request the bundle depends is we're using the css shim or not
-                customStyle && requestBundleQueue ? 
+                true, customStyle && requestBundleQueue ? 
         // add this to the loadBundleQueue to run when css is ready
         requestBundleQueue.push(function() {
           return requestComponentBundle(cmpMeta, bundleId, hmrVersionId);
@@ -2644,9 +2390,9 @@ this && this.__extends || function() {
     function requestComponentBundle(cmpMeta, bundleId, hmrVersionId) {
       // create the url we'll be requesting
       // always use the es5/jsonp callback module
-      var useScoped = 2 /* ScopedCss */ === cmpMeta.encapsulation || 1 /* ShadowDom */ === cmpMeta.encapsulation && !domApi.$supportsShadowDom;
+      var useScoped = 2 /* ScopedCss */ === cmpMeta.encapsulationMeta || 1 /* ShadowDom */ === cmpMeta.encapsulationMeta && !domApi.$supportsShadowDom;
       var url = resourcesUrl + bundleId + (useScoped ? '.sc' : '') + '.es5.js';
-      hmrVersionId && (url += '?s-hmr=' + hmrVersionId);
+      (true, hmrVersionId) && (url += '?s-hmr=' + hmrVersionId);
       requestUrl(url);
     }
     // Use JSONP to load in bundles
@@ -2679,9 +2425,11 @@ this && this.__extends || function() {
                 domApi.$appendChild(domApi.$doc.head, scriptElm);
       }
     }
+    true;
     plt.attachStyles = function(plt, domApi, cmpMeta, elm) {
       attachStyles(plt, domApi, cmpMeta, elm);
     };
+    true;
     generateDevInspector(App, namespace, win, plt);
     // register all the components now that everything's ready
     (App.components || []).map(function(data) {
@@ -2751,20 +2499,18 @@ this && this.__extends || function() {
     root.start = 0;
     root.end = text.length;
     var n = root;
-    for (var i = 0, l = text.length; i < l; i++) {
-      if (text[i] === OPEN_BRACE) {
-        n.rules || (n.rules = []);
-        var p = n;
-        var previous = p.rules[p.rules.length - 1] || null;
-        n = new StyleNode();
-        n.start = i + 1;
-        n.parent = p;
-        n.previous = previous;
-        p.rules.push(n);
-      } else if (text[i] === CLOSE_BRACE) {
-        n.end = i + 1;
-        n = n.parent || root;
-      }
+    for (var i = 0, l = text.length; i < l; i++) if (text[i] === OPEN_BRACE) {
+      n.rules || (n.rules = []);
+      var p = n;
+      var previous = p.rules[p.rules.length - 1] || null;
+      n = new StyleNode();
+      n.start = i + 1;
+      n.parent = p;
+      n.previous = previous;
+      p.rules.push(n);
+    } else if (text[i] === CLOSE_BRACE) {
+      n.end = i + 1;
+      n = n.parent || root;
     }
     return root;
   }
@@ -2788,22 +2534,14 @@ this && this.__extends || function() {
       node.atRule = 0 === s.indexOf(AT_START);
       // note, support a subset of rule types...
             if (node.atRule) {
-        if (0 === s.indexOf(MEDIA_START)) {
-          node.type = types.MEDIA_RULE;
-        } else if (s.match(RX.keyframesRule)) {
+        if (0 === s.indexOf(MEDIA_START)) node.type = types.MEDIA_RULE; else if (s.match(RX.keyframesRule)) {
           node.type = types.KEYFRAMES_RULE;
           node.keyframesName = node.selector.split(RX.multipleSpaces).pop();
         }
-      } else {
-        0 === s.indexOf(VAR_START) ? node.type = types.MIXIN_RULE : node.type = types.STYLE_RULE;
-      }
+      } else 0 === s.indexOf(VAR_START) ? node.type = types.MIXIN_RULE : node.type = types.STYLE_RULE;
     }
     var r$ = node.rules;
-    if (r$) {
-      for (var i = 0, l = r$.length, r = void 0; i < l && (r = r$[i]); i++) {
-        parseCss(r, text);
-      }
-    }
+    if (r$) for (var i = 0, l = r$.length, r = void 0; i < l && (r = r$[i]); i++) parseCss(r, text);
     return node;
   }
   /**
@@ -2814,9 +2552,7 @@ this && this.__extends || function() {
      */  function _expandUnicodeEscapes(s) {
     return s.replace(/\\([0-9a-f]{1,6})\s/gi, function() {
       var code = arguments[1], repeat = 6 - code.length;
-      while (repeat--) {
-        code = '0' + code;
-      }
+      while (repeat--) code = '0' + code;
       return '\\' + code;
     });
   }
@@ -2830,7 +2566,7 @@ this && this.__extends || function() {
   var CLOSE_BRACE = '}';
   // helper regexp's
     var RX = {
-    comments: /\/\*[^*]*\*+([^/*][^*]*\*+)*\//gim,
+    comments: /\/\*[^*]*\*+([^\/*][^*]*\*+)*\//gim,
     port: /@import[^;]*;/gim,
     customProp: /(?:^[^;\-\s}]+)?--[^;{}]*?:[^{};]*?(?:[;\n]|$)/gim,
     mixinProp: /(?:^[^;\-\s}]+)?--[^;{}]*?:[^{};]*?{[^}]*?}(?:[;\n]|$)?/gim,
@@ -2856,16 +2592,12 @@ this && this.__extends || function() {
   }
   var VAR_USAGE_START = /\bvar\(/;
   var VAR_ASSIGN_START = /\B--[\w-]+\s*:/;
-  var COMMENTS = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//gim;
+  var COMMENTS = /\/\*[^*]*\*+([^\/*][^*]*\*+)*\//gim;
   var TRAILING_LINES = /^[\t ]+\n/gm;
   var EMPTY_SELECTORS = /[^{}]*{\s*}/gm;
   function resolveVar(props, prop, fallback) {
-    if (props[prop]) {
-      return props[prop];
-    }
-    if (fallback) {
-      return executeTemplate(fallback, props);
-    }
+    if (props[prop]) return props[prop];
+    if (fallback) return executeTemplate(fallback, props);
     return '';
   }
   function findVarEndIndex(cssText, offset) {
@@ -2873,22 +2605,16 @@ this && this.__extends || function() {
     var i = offset;
     for (;i < cssText.length; i++) {
       var c = cssText[i];
-      if ('(' === c) {
-        count++;
-      } else if (')' === c) {
+      if ('(' === c) count++; else if (')' === c) {
         count--;
-        if (count <= 0) {
-          return i + 1;
-        }
+        if (count <= 0) return i + 1;
       }
     }
     return i;
   }
   function parseVar(cssText, offset) {
     var varPos = findRegex(VAR_USAGE_START, cssText, offset);
-    if (!varPos) {
-      return null;
-    }
+    if (!varPos) return null;
     var endVar = findVarEndIndex(cssText, varPos.start);
     var varContent = cssText.substring(varPos.end, endVar - 1);
     var _a = varContent.split(','), propName = _a[0], fallback = _a.slice(1);
@@ -2936,12 +2662,8 @@ this && this.__extends || function() {
         onStr = true;
         double = false;
       } else {
-        if (';' === c) {
-          return i + 1;
-        }
-        if ('}' === c) {
-          return i;
-        }
+        if (';' === c) return i + 1;
+        if ('}' === c) return i;
       }
     }
     return i;
@@ -2953,9 +2675,7 @@ this && this.__extends || function() {
       var assignPos = findRegex(VAR_ASSIGN_START, cssText, offset);
       var start = assignPos ? assignPos.start : cssText.length;
       final += cssText.substring(offset, start);
-      if (!assignPos) {
-        break;
-      }
+      if (!assignPos) break;
       offset = findEndValue(cssText, start);
     }
     return final;
@@ -2965,9 +2685,7 @@ this && this.__extends || function() {
     cssText = cssText.replace(COMMENTS, '');
     cssText = removeCustomAssigns(cssText).replace(EMPTY_SELECTORS, '').replace(TRAILING_LINES, '');
     var segments = [];
-    while (index < cssText.length) {
-      index = compileVar(cssText, segments, index);
-    }
+    while (index < cssText.length) index = compileVar(cssText, segments, index);
     return segments;
   }
   function resolveValues(selectors) {
@@ -2989,23 +2707,17 @@ this && this.__extends || function() {
           dirty = true;
         }
       });
-      if (!dirty) {
-        return 'break';
-      }
+      if (!dirty) return 'break';
     };
     for (var i = 0; i < 10; i++) {
       var state_1 = _loop_1(i);
-      if ('break' === state_1) {
-        break;
-      }
+      if ('break' === state_1) break;
     }
     return propsValues;
   }
   function getSelectors(root, index) {
     void 0 === index && (index = 0);
-    if (!root.rules) {
-      return [];
-    }
+    if (!root.rules) return [];
     var selectors = [];
     root.rules.filter(function(rule) {
       return rule.type === types.STYLE_RULE;
@@ -3074,9 +2786,7 @@ this && this.__extends || function() {
   }
   function sortSelectors(selectors) {
     selectors.sort(function(a, b) {
-      if (a.specificity === b.specificity) {
-        return a.nu - b.nu;
-      }
+      if (a.specificity === b.specificity) return a.nu - b.nu;
       return a.specificity - b.specificity;
     });
     return selectors;
@@ -3132,9 +2842,9 @@ this && this.__extends || function() {
     });
   }
   function replaceScope(original, oldScopeId, newScopeId) {
-    original = replaceAll(original, '\\[' + getHostScopeAttribute(oldScopeId) + '\\]', '[' + getHostScopeAttribute(newScopeId) + ']');
-    original = replaceAll(original, '\\[' + getChildScopeAttribute(oldScopeId) + '\\]', '[' + getChildScopeAttribute(newScopeId) + ']');
-    original = replaceAll(original, '\\[' + getSlotScopeAttribute(oldScopeId) + '\\]', '[' + getSlotScopeAttribute(newScopeId) + ']');
+    original = replaceAll(original, '\\[' + getElementScopeId(oldScopeId, true) + '\\]', '[' + getElementScopeId(newScopeId, true) + ']');
+    original = replaceAll(original, '\\[' + oldScopeId + '\\]', '[' + newScopeId + ']');
+    original = replaceAll(original, '\\[' + getElementScopeId(oldScopeId) + '\\]', '[' + getElementScopeId(newScopeId) + ']');
     return original;
   }
   function replaceAll(input, find, replace) {
@@ -3148,16 +2858,12 @@ this && this.__extends || function() {
   function loadDocumentLinks(doc, globalScopes) {
     var promises = [];
     var linkElms = doc.querySelectorAll('link[rel="stylesheet"][href]');
-    for (var i = 0; i < linkElms.length; i++) {
-      promises.push(addGlobalLink(doc, globalScopes, linkElms[i]));
-    }
+    for (var i = 0; i < linkElms.length; i++) promises.push(addGlobalLink(doc, globalScopes, linkElms[i]));
     return Promise.all(promises);
   }
   function loadDocumentStyles(doc, globalScopes) {
     var styleElms = doc.querySelectorAll('style');
-    for (var i = 0; i < styleElms.length; i++) {
-      addGlobalStyle(globalScopes, styleElms[i]);
-    }
+    for (var i = 0; i < styleElms.length; i++) addGlobalStyle(globalScopes, styleElms[i]);
   }
   function addGlobalLink(doc, globalScopes, linkElm) {
     var url = linkElm.href;
@@ -3191,14 +2897,14 @@ this && this.__extends || function() {
     return css.indexOf('var(') > -1 || CSS_VARIABLE_REGEXP.test(css);
   }
   // This regexp find all url() usages with relative urls
-    var CSS_URL_REGEXP = /url[\s]*\([\s]*['"]?(?![http|/])([^\'\"\)]*)[\s]*['"]?\)[\s]*/gim;
+    var CSS_URL_REGEXP = /url[\s]*\([\s]*['"]?(?![http|\/])([^\'\"\)]*)[\s]*['"]?\)[\s]*/gim;
   function hasRelativeUrls(css) {
     CSS_URL_REGEXP.lastIndex = 0;
     return CSS_URL_REGEXP.test(css);
   }
   function fixRelativeUrls(css, originalUrl) {
     // get the basepath from the original import url
-    var basePath = originalUrl.replace(/[^/]*$/, '');
+    var basePath = originalUrl.replace(/[^\/]*$/, '');
     // replace the relative url, with the new relative url
         return css.replace(CSS_URL_REGEXP, function(fullMatch, url) {
       // rhe new relative path is the base path + uri
@@ -3241,16 +2947,12 @@ this && this.__extends || function() {
       this.updateGlobal();
     };
     CustomStyle.prototype.createHostStyle = function(hostEl, templateName, cssText) {
-      if (this.hostScopeMap.has(hostEl)) {
-        return null;
-      }
+      if (this.hostScopeMap.has(hostEl)) return null;
       var cssScopeId = hostEl['s-sc'];
       var baseScope = this.registerHostTemplate(cssText, templateName, cssScopeId);
       var isDynamicScoped = baseScope.isDynamic && baseScope.cssScopeId;
       var needStyleEl = isDynamicScoped || !baseScope.styleEl;
-      if (!needStyleEl) {
-        return null;
-      }
+      if (!needStyleEl) return null;
       var styleEl = this.doc.createElement('style');
       if (isDynamicScoped) {
         var newScopeId = baseScope.cssScopeId + '-' + this.count;
@@ -3302,7 +3004,9 @@ this && this.__extends || function() {
   // es5 build which does not use es module imports or dynamic imports
   // and requires the es5 way of extending HTMLElement
   var customStyle = void 0;
+  true;
   var needShim = !supportsCssVars(window);
+  true;
   window.location.search.indexOf('cssvars=false') > 0 && (
   // by adding ?shadow=false it'll force the slot polyfill
   // only add this check when in dev mode

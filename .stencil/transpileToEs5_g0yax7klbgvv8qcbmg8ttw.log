@@ -1,0 +1,160 @@
+/*! Built with http://stenciljs.com */
+import { h } from '../app.core.js';
+var Input = /** @class */ (function () {
+    function Input() {
+    }
+    Input.prototype.render = function () {
+        return (h("div", null, h("div", { class: "translate-input" }, h("h4", null, this.description), h("input", { type: "text", value: this.word, placeholder: this.example }))));
+    };
+    Object.defineProperty(Input, "is", {
+        get: function () { return "imr-input"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Input, "properties", {
+        get: function () {
+            return {
+                "description": {
+                    "type": String,
+                    "attr": "description"
+                },
+                "example": {
+                    "type": String,
+                    "attr": "example"
+                },
+                "word": {
+                    "type": String,
+                    "attr": "word"
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Input, "style", {
+        get: function () { return "/**style-placeholder:imr-input:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return Input;
+}());
+var LanguageCard = /** @class */ (function () {
+    function LanguageCard() {
+    }
+    LanguageCard.prototype.render = function () {
+        return [
+            h("img", { src: "" + this.imgPath, srcSet: this.imgPath + " 1x, " + this.imgPath + "@2x 2x", alt: this.alt }),
+            h("p", null, this.name)
+        ];
+    };
+    Object.defineProperty(LanguageCard, "is", {
+        get: function () { return "imr-language-card"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LanguageCard, "properties", {
+        get: function () {
+            return {
+                "alt": {
+                    "type": String,
+                    "attr": "alt"
+                },
+                "imgPath": {
+                    "type": String,
+                    "attr": "img-path"
+                },
+                "name": {
+                    "type": String,
+                    "attr": "name"
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LanguageCard, "style", {
+        get: function () { return "/**style-placeholder:imr-language-card:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return LanguageCard;
+}());
+var LanguageList = /** @class */ (function () {
+    function LanguageList() {
+        this.languages = [
+            {
+                name: 'KR',
+                imgPath: '/assets/img/flags/korean.png',
+                alt: 'Hangeul_KR',
+            },
+            {
+                name: 'DE',
+                imgPath: '/assets/img/flags/german.png',
+                alt: 'Deutsch_DE',
+            },
+            {
+                name: 'FR',
+                imgPath: '/assets/img/flags/french.png',
+                alt: 'French_FR',
+            },
+            {
+                name: 'ES',
+                imgPath: '/assets/img/flags/spanish.png',
+                alt: 'Spanish_MX',
+            }
+        ];
+    }
+    LanguageList.prototype.render = function () {
+        return (this.languages.map(function (demo) { return h("imr-language-card", { name: demo.name, imgPath: demo.imgPath, alt: demo.alt }); }));
+    };
+    Object.defineProperty(LanguageList, "is", {
+        get: function () { return "imr-language-list"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LanguageList, "style", {
+        get: function () { return "/**style-placeholder:imr-language-list:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return LanguageList;
+}());
+var MainPage = /** @class */ (function () {
+    function MainPage() {
+        this.reload = function () {
+            document.getElementById('reload').onclick = function () {
+                chrome.runtime.sendMessage({ message: "reload" }, function (response) {
+                    console.log("SENT GREETING atm");
+                    console.log(response);
+                });
+            };
+        };
+        document.title = "Immerse";
+    }
+    MainPage.prototype.render = function () {
+        return (h("div", { class: "main-wrapper" }, h("button", { id: "reload", onClick: this.reload }, "RELOAD"), h("imr-language-list", null), h("main", null, h("h2", null, "Immerse"), h("imr-input", { description: "Old word", example: "cat" }), h("imr-input", { description: "New word", example: "Katze" }), h("button", { id: "add-button" }, "Add"))));
+    };
+    Object.defineProperty(MainPage, "is", {
+        get: function () { return "imr-view-main"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MainPage, "properties", {
+        get: function () {
+            return {
+                "el": {
+                    "elementRef": true
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MainPage, "style", {
+        get: function () { return "/**style-placeholder:imr-view-main:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return MainPage;
+}());
+export { Input as ImrInput, LanguageCard as ImrLanguageCard, LanguageList as ImrLanguageList, MainPage as ImrViewMain };

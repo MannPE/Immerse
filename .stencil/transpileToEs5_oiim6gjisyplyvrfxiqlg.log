@@ -1,0 +1,113 @@
+/*! Built with http://stenciljs.com */
+import { h } from './app.core.js';
+/**
+ *
+ * @export
+ * @class TranslateInput
+ * Represents a custom input that includes a title and placeholder.
+ * @property {string} word - the value inside of the input.
+ * @property {string} description - This will be the title of such input.
+ * @property {string} example - The placeholder inside of the input.
+ */
+var Input = /** @class */ (function () {
+    function Input() {
+    }
+    Input.prototype.render = function () {
+        return (h("div", null, h("div", { class: "translate-input" }, h("h4", null, this.description), h("input", { type: "text", value: this.word, placeholder: this.example }))));
+    };
+    Object.defineProperty(Input, "is", {
+        get: function () { return "imr-input"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Input, "properties", {
+        get: function () {
+            return {
+                "description": {
+                    "type": String,
+                    "attr": "description"
+                },
+                "example": {
+                    "type": String,
+                    "attr": "example"
+                },
+                "word": {
+                    "type": String,
+                    "attr": "word"
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Input, "style", {
+        get: function () { return "/**style-placeholder:imr-input:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return Input;
+}());
+var MainPage = /** @class */ (function () {
+    function MainPage() {
+        var _this = this;
+        this.reload = function () {
+            document.getElementById('reload').onclick = function () {
+                chrome.runtime.sendMessage({ message: "reload" }, function (response) {
+                    console.log("SENT GREETING atm");
+                    console.log(response);
+                });
+            };
+        };
+        this.settings = {
+            value: "",
+            translation: "",
+            insensitive: true,
+            ignoreWhiteSpace: false
+        };
+        this.addWord = function () {
+            chrome.storage.sync.get(['imrkorean'], function (result) {
+                console.log("found our word");
+                var newItems = result['imrkorean'];
+                newItems[_this.settings.value] = _this.settings;
+                chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
+                    console.log("adding word this");
+                };
+            });
+            console.log("adding word", _this.settings);
+        };
+        document.title = "Immerse";
+    }
+    MainPage.prototype.valueBind = function (event) {
+        this.settings.value = event.target.value;
+    };
+    MainPage.prototype.translationBind = function (event) {
+        this.settings.translation = event.target.value;
+    };
+    MainPage.prototype.render = function () {
+        var _this = this;
+        return (h("div", { class: "main-wrapper" }, h("button", { id: "reload", onClick: this.reload }, "RELOAD"), h("imr-language-list", null), h("main", null, h("h2", null, "Immerse"), h("imr-input", { description: "Old word", example: "cat", onChange: function (event) { return _this.valueBind(event); } }), h("imr-input", { description: "New word", example: "Katze", onChange: function (event) { return _this.translationBind(event); } }), h("button", { id: "add-button", onClick: this.addWord }, "Add"))));
+    };
+    Object.defineProperty(MainPage, "is", {
+        get: function () { return "imr-view-main"; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MainPage, "properties", {
+        get: function () {
+            return {
+                "el": {
+                    "elementRef": true
+                }
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MainPage, "style", {
+        get: function () { return "/**style-placeholder:imr-view-main:**/"; },
+        enumerable: true,
+        configurable: true
+    });
+    return MainPage;
+}());
+export { Input as ImrInput, MainPage as ImrViewMain };

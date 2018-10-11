@@ -3,49 +3,63 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
     var h = window.App.h;
     var ViewWordList = /** @class */ (function () {
         function ViewWordList() {
-            this.words = [
-                {
-                    value: "cat",
-                    translation: "Katze",
-                    lang: "de",
-                    type: "noun",
-                    singular: true
-                },
-                {
-                    value: "dog",
-                    translation: "Hund",
-                    lang: "de",
-                    type: "noun",
-                    singular: true
-                },
-                {
-                    value: "dog",
-                    translation: "Hund",
-                    lang: "de",
-                    type: "noun",
-                    singular: true
-                },
-                {
-                    value: "jump",
-                    translation: "도역",
-                    lang: "kr",
-                    type: "verb",
-                    singular: true
-                }
-            ];
         }
+        ViewWordList.prototype.componentWillLoad = function () {
+            var _this = this;
+            console.log("Will load");
+            chrome.storage.sync.get(['imrkorean'], function (result) {
+                _this.setWords(result['imrkorean']);
+                console.log("words loaded into wordlist", _this.words);
+            });
+        };
+        ViewWordList.prototype.loadWords = function () {
+            console.log(this.words);
+        };
+        ViewWordList.prototype.setWords = function (any) {
+            this.words = any;
+            console.log("setting words", any, this.words);
+        };
         ViewWordList.prototype.render = function () {
-            return [
-                this.words.map(function (word) { return (h("imr-word-item", { value: word.value, translation: word.translation, lang: word.lang, type: word.type, singular: word.singular })); })
-            ];
+            console.log("rendered", this.words);
+            if (this.words) {
+                var wordItems = [];
+                for (var key in this.words) {
+                    var word = this.words[key];
+                    console.log(word);
+                    wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.insensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
+                }
+                return wordItems;
+            }
+            else
+                return h("div", null, "NO WORDS");
         };
         Object.defineProperty(ViewWordList, "is", {
             get: function () { return "imr-view-word-list"; },
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(ViewWordList, "properties", {
+            get: function () {
+                return {
+                    "_el": {
+                        "elementRef": true
+                    },
+                    "loadWords": {
+                        "method": true
+                    },
+                    "setWords": {
+                        "method": true
+                    },
+                    "words": {
+                        "state": true
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(ViewWordList, "style", {
-            get: function () { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(auto-fill, 1fr);\n  grid-gap: 2em; }\n  imr-view-word-list .noun {\n    color: #107896; }\n  imr-view-word-list .verb {\n    color: #829356; }\n  imr-view-word-list imr-word-item {\n    padding-bottom: 5px;\n    border-bottom: 1px solid gray; }"; },
+            get: function () { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(1, 1fr);\n  grid-gap: 2em; }\n  imr-view-word-list .noun {\n    color: #107896; }\n  imr-view-word-list .verb {\n    color: #829356; }\n  imr-view-word-list imr-word-item {\n    padding-bottom: 5px;\n    border-bottom: 1px solid gray;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex; }\n    imr-view-word-list imr-word-item span {\n      width: 50%; }\n    imr-view-word-list imr-word-item input {\n      width: 30%; }\n    imr-view-word-list imr-word-item a {\n      width: 7%; }"; },
             enumerable: true,
             configurable: true
         });
@@ -64,11 +78,29 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
     var WordItem = /** @class */ (function () {
         function WordItem() {
         }
+        WordItem.prototype.removeItem = function () {
+            var _this = this;
+            console.log("REMOVING ^");
+            chrome.storage.sync.get(['imrkorean'], function (result) {
+                console.log("found our word");
+                var newItems = result['imrkorean'];
+                delete newItems[_this.value];
+                console.log("gonna sync now");
+                chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
+                    console.log("deleting this");
+                };
+                _this._el.parentElement.setWords(newItems);
+            });
+        };
         WordItem.prototype.render = function () {
+            var _this = this;
+            var trashstyle = { color: "red" };
+            var checkstyle = { color: "green" };
             return [
                 h("span", { class: this.type + " " + (this.singular ? "singular" : "plural") }, this.value),
                 h("input", { type: "text", value: this.translation }),
-                h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" }, h("app-icon", { name: "trash" }))
+                h("a", { onClick: function () { return _this.removeItem(); } }, h("i", { class: "far fa-trash-alt", style: trashstyle })),
+                h("a", null, h("i", { class: "far fa-check-circle", style: checkstyle }))
             ];
         };
         Object.defineProperty(WordItem, "is", {
@@ -79,9 +111,16 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
         Object.defineProperty(WordItem, "properties", {
             get: function () {
                 return {
-                    "lang": {
-                        "type": String,
-                        "attr": "lang"
+                    "_el": {
+                        "elementRef": true
+                    },
+                    "ignoreWhiteSpace": {
+                        "type": Boolean,
+                        "attr": "ignore-white-space"
+                    },
+                    "insensitive": {
+                        "type": Boolean,
+                        "attr": "insensitive"
                     },
                     "singular": {
                         "type": Boolean,

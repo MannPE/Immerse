@@ -7,64 +7,104 @@
   "corePolyfilled": "app.core.pf.js",
   "components": {
     "app-burger": {
-      "$": "app-burger"
+      "bundleIds": {
+        "$": "app-burger"
+      }
     },
     "app-icon": {
-      "$": "app-icon"
+      "bundleIds": {
+        "$": "app-icon"
+      }
     },
     "app-marked": {
-      "$": "app-marked"
+      "bundleIds": {
+        "$": "app-marked"
+      }
     },
     "context-consumer": {
-      "$": "app-burger"
+      "bundleIds": {
+        "$": "app-burger"
+      }
     },
     "imr-app-header": {
-      "$": "imr-app-header"
+      "bundleIds": {
+        "$": "imr-app-header"
+      }
     },
     "imr-app-root": {
-      "$": "imr-app-header"
+      "bundleIds": {
+        "$": "imr-app-header"
+      }
     },
     "imr-input": {
-      "$": "imr-input"
+      "bundleIds": {
+        "$": "imr-input"
+      }
     },
     "imr-language-card": {
-      "$": "imr-input"
+      "bundleIds": {
+        "$": "imr-language-card"
+      }
     },
     "imr-language-list": {
-      "$": "imr-input"
+      "bundleIds": {
+        "$": "imr-language-card"
+      }
     },
     "imr-view-main": {
-      "$": "imr-input"
+      "bundleIds": {
+        "$": "imr-input"
+      }
     },
     "imr-view-word-list": {
-      "$": "imr-view-word-list"
+      "bundleIds": {
+        "$": "imr-view-word-list"
+      }
     },
     "imr-word-item": {
-      "$": "imr-view-word-list"
+      "bundleIds": {
+        "$": "imr-view-word-list"
+      }
     },
     "lazy-iframe": {
-      "$": "lazy-iframe"
+      "bundleIds": {
+        "$": "lazy-iframe"
+      }
     },
     "notfound-page": {
-      "$": "notfound-page"
+      "bundleIds": {
+        "$": "notfound-page"
+      }
     },
     "pwas-page": {
-      "$": "pwas-page"
+      "bundleIds": {
+        "$": "pwas-page"
+      }
     },
     "resources-page": {
-      "$": "lazy-iframe"
+      "bundleIds": {
+        "$": "lazy-iframe"
+      }
     },
     "stencil-route": {
-      "$": "imr-app-header"
+      "bundleIds": {
+        "$": "imr-app-header"
+      }
     },
     "stencil-route-link": {
-      "$": "stencil-route-link"
+      "bundleIds": {
+        "$": "stencil-route-link"
+      }
     },
     "stencil-route-switch": {
-      "$": "imr-app-header"
+      "bundleIds": {
+        "$": "imr-app-header"
+      }
     },
     "stencil-router": {
-      "$": "imr-app-header"
+      "bundleIds": {
+        "$": "imr-app-header"
+      }
     }
   }
 }

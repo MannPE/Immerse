@@ -14,23 +14,54 @@ export class MainPage {
 
   reload = function(){
     document.getElementById('reload').onclick = function(){
-      chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+      chrome.runtime.sendMessage({message: "reload"}, function(response) {
         console.log("SENT GREETING atm");
         console.log(response);
       });
     }
   }
+  settings = {
+    value: "",
+    translation:"",
+    insensitive: true,
+    ignoreWhiteSpace: false
+  };
+
+  valueBind(event){
+    this.settings.value = event.target.value;
+  }
+
+  translationBind(event){
+    this.settings.translation = event.target.value;
+  }
+
+  addWord = () =>{
+    chrome.storage.sync.get(['imrkorean'], (result) => {
+      console.log(`found our word`);  
+      let newItems = result['imrkorean']
+      newItems[this.settings.value] = this.settings
+      chrome.storage.sync.set({'imrkorean':newItems}), function(){
+        console.log("adding word this")
+      }
+      console.log("adding word", newItems);
+      var inputs  = this.el.querySelectorAll("imr-input")
+      inputs.forEach(function(imrinput){
+        imrinput.word = "";
+      });
+    });
+  }
 
   render() {
+
     return (
       <div class="main-wrapper">
         <button id="reload" onClick={this.reload}>RELOAD</button>
         <imr-language-list></imr-language-list>
         <main>
           <h2>Immerse</h2>
-          <imr-input description="Old word" example="cat"></imr-input>
-          <imr-input description="New word" example="Katze"></imr-input>
-          <button id="add-button">Add</button>
+          <imr-input description="Old word" example="cat" onChange={(event:UIEvent) => this.valueBind(event)}></imr-input>
+          <imr-input description="New word" example="Katze" onChange={(event:UIEvent) => this.translationBind(event)}></imr-input>
+          <button id="add-button" onClick={this.addWord}>Add</button>
         </main>
       </div>
     );

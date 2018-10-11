@@ -58,6 +58,7 @@ ol {
   p a,
   ul a,
   ol a {
+    -webkit-transition: border 0.3s;
     transition: border 0.3s;
     color: #5851ff;
     text-decoration: none;
@@ -111,6 +112,7 @@ pre {
     overflow-x: auto;
     word-wrap: normal;
     white-space: pre;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     font-size: 14px;
     line-height: 20px; }
@@ -176,22 +178,33 @@ pre {
   left: 0; }
 
 .list--columns {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-top: 42px; }
   .list--columns li {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
     flex: 0 0 25%;
     line-height: 1.4;
     margin-bottom: 10px;
     padding-right: 18px; }
     @media screen and (max-width: 1024px) {
       .list--columns li {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 33.33%;
         flex: 0 0 33.33%; } }
     @media screen and (max-width: 768px) {
       .list--columns li {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
         flex: 0 0 50%; } }
     @media screen and (max-width: 480px) {
       .list--columns li {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
         flex: 0 0 100%; } }
 
 .list--numbered-badge {
@@ -199,27 +212,40 @@ pre {
   padding: 0;
   list-style-type: none; }
   .list--numbered-badge li {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     counter-increment: step-counter;
     margin-bottom: 10px; }
   .list--numbered-badge li + li {
     margin-top: 36px; }
   .list--numbered-badge li::before {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 32px;
     flex: 0 0 32px;
     content: counter(step-counter);
     margin-right: 5px;
     width: 32px;
     height: 32px;
     border-radius: 32px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     margin-right: 16px;
     background: #5851ff;
     color: #fff;
     font-size: 15px;
     font-weight: bold;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 7px 0 rgba(0, 0, 0, 0.09);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14), 0 4px 7px 0 rgba(0, 0, 0, 0.09); }
 
 .measure-xl {
@@ -247,6 +273,7 @@ pre {
     margin-bottom: 60px; } }
 
 .btn {
+  -webkit-transition: all .15s ease;
   transition: all .15s ease;
   text-decoration: none;
   border: none;
@@ -257,10 +284,13 @@ pre {
   padding: 16px 20px;
   border-radius: 2px;
   letter-spacing: 0.04em;
+  -webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   cursor: pointer; }
   .btn:hover {
+    -webkit-transform: translateY(1px);
     transform: translateY(1px);
+    -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08); }
 
 .btn--primary {
@@ -272,6 +302,7 @@ pre {
   background: #fff; }
 
 .text-link {
+  -webkit-transition: border 0.3s;
   transition: border 0.3s;
   font-size: 13px;
   line-height: 20px;
@@ -294,5 +325,6 @@ pre {
 
 .screenshot {
   max-width: 100%;
+  -webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px; }

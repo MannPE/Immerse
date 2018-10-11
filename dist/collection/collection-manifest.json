@@ -245,13 +245,27 @@
             "components/view-word-list/view-word-list.scss"
           ]
         }
+      },
+      "states": [
+        {
+          "name": "words"
+        }
+      ],
+      "methods": [
+        {
+          "name": "loadWords"
+        },
+        {
+          "name": "setWords"
+        }
+      ],
+      "hostElement": {
+        "name": "_el"
       }
     },
     {
       "tag": "imr-word-item",
-      "dependencies": [
-        "app-icon"
-      ],
+      "dependencies": [],
       "componentClass": "WordItem",
       "componentPath": "components/word-item/word-item.js",
       "styles": {
@@ -263,9 +277,14 @@
       },
       "props": [
         {
-          "name": "lang",
-          "type": "String",
-          "attr": "lang"
+          "name": "ignoreWhiteSpace",
+          "type": "Boolean",
+          "attr": "ignore-white-space"
+        },
+        {
+          "name": "insensitive",
+          "type": "Boolean",
+          "attr": "insensitive"
         },
         {
           "name": "singular",
@@ -287,7 +306,10 @@
           "type": "String",
           "attr": "value"
         }
-      ]
+      ],
+      "hostElement": {
+        "name": "_el"
+      }
     },
     {
       "tag": "lazy-iframe",
@@ -417,7 +439,7 @@
   ],
   "compiler": {
     "name": "@stencil/core",
-    "version": "0.10.6",
+    "version": "0.11.4",
     "typescriptVersion": "2.9.2"
   },
   "bundles": []

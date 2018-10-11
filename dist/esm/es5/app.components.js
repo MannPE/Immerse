@@ -14,15 +14,15 @@ export var AppRoot = ["imr-app-root",function(){return(import("./imr-app-header.
 
 export var Input = ["imr-input",function(){return(import("./imr-input.js")).then(function(m){return m.ImrInput})},1,[["description",1,0,1,2],["example",1,0,1,2],["word",1,0,1,2]]];
 
-export var LanguageCard = ["imr-language-card",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
+export var LanguageCard = ["imr-language-card",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
 
-export var LanguageList = ["imr-language-list",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageList})},1];
+export var LanguageList = ["imr-language-list",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageList})},1];
 
 export var MainPage = ["imr-view-main",function(){return(import("./imr-input.js")).then(function(m){return m.ImrViewMain})},1,[["el",7]]];
 
-export var ViewWordList = ["imr-view-word-list",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrViewWordList})},1];
+export var ViewWordList = ["imr-view-word-list",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrViewWordList})},1,[["_el",7],["loadWords",6],["setWords",6],["words",5]]];
 
-export var WordItem = ["imr-word-item",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrWordItem})},1,[["lang",1,0,1,2],["singular",1,0,1,3],["translation",1,0,1,2],["type",1,0,1,2],["value",1,0,1,2]]];
+export var WordItem = ["imr-word-item",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrWordItem})},1,[["_el",7],["ignoreWhiteSpace",1,0,"ignore-white-space",3],["insensitive",1,0,1,3],["singular",1,0,1,3],["translation",1,0,1,2],["type",1,0,1,2],["value",1,0,1,2]]];
 
 export var LazyIframe = ["lazy-iframe",function(){return(import("./lazy-iframe.js")).then(function(m){return m.LazyIframe})},1,[["el",7],["frameBorder",1,0,"frame-border",2],["height",1,0,1,2],["name",1,0,1,2],["realSrc",5],["scrolling",1,0,1,2],["src",1,0,1,2],["width",1,0,1,2]]];
 

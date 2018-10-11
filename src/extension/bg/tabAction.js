@@ -3768,28 +3768,29 @@ return Tooltip;
 	STOP HERE
 */
 
-var wordList = 
-      [
-				{word:"dog", translation:"개", insensitive:true, ignoreWhite: false},
-				{word:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
-				{word:"work", translation:"작업", insensitive:true, ignoreWhite: false},
-				{word:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
-				{word:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
-				{word:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
-				{word:"file", translation:"파일", insensitive:true, ignoreWhite: false},
-				{word:"yes", translation:"네", insensitive:true, ignoreWhite: false},
-				{word:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
-				{word:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
-			]
-chrome.storage.sync.set({'imrkorean':wordList}), function(words){
-  console.log(`Korean words are set to`, wordList);
-}
+// var wordList = 
+//       {
+// 				"dog":{value:"dog", translation:"개", insensitive:true, ignoreWhite: false},
+// 				"thank you":{value:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
+// 				"work":{value:"work", translation:"작업", insensitive:true, ignoreWhite: false},
+// 				"computer":{value:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
+// 				"bug":{value:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
+// 				"virus":{value:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
+// 				"file":{value:"file", translation:"파일", insensitive:true, ignoreWhite: false},
+// 				"yes":{value:"yes", translation:"네", insensitive:true, ignoreWhite: false},
+// 				"hours":{value:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
+// 				"download":{value:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
+//       }
+// chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+//   console.log(`Korean words are set to`, wordList);
+// }
 chrome.storage.sync.get(['imrkorean'], function(result){
   console.log('Value is currently:', result['imrkorean']);
   wordList = result['imrkorean'];
-  for (let word of wordList) {
+  for (var wordkey in wordList) {
+    let word = wordList[wordkey]
     //Step 1 - Create the regex
-    let regex = word.insensitive? new RegExp("(^|\\W|\\d)"+word.word+"($|\\W|\\d)",'gi'): new RegExp(word.word,'g');
+    let regex = word.insensitive? new RegExp("(^|\\W|\\d)"+word.value+"($|\\W|\\d)",'gi'): new RegExp(word.value,'g');
     console.log("testing for", regex);
     //Step2 - find the regex-matching words and replace
     findAndReplaceDOMText((document.body),{
@@ -3798,13 +3799,13 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       replace: function(portion, match){
         //Step 2.1 - We create a span element and assign it a class
         var translatedSpan = document.createElement("span");
-        translatedSpan.className = "immerse-translation imr-"+word.word;
+        translatedSpan.className = "immerse-translation imr-"+word.value;
         let preChars, postChars;
         //Step 2.2 - Find characters that were part of the match but aren't part of the word
         if(match){
-          let start = match[0].toLowerCase().indexOf(word.word.toLowerCase());
+          let start = match[0].toLowerCase().indexOf(word.value.toLowerCase());
           preChars = match[0].substring(0,start);
-          postChars = match[0].substring(start+word.word.length)
+          postChars = match[0].substring(start+word.value.length)
         }
         //Step 2.3 - Create reult string with translated word with the additional characters.
         let newContent = preChars? preChars+word.translation: word.translation;
@@ -3816,12 +3817,12 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       }
     });
     //Step 3 - Add tooltip to all of the word translations
-    var translations = document.querySelectorAll('.imr-'+word.word);
-    console.log(`Found ${translations.length} translations for ${word.word}/${word.translation}`)
+    var translations = document.querySelectorAll('.imr-'+word.value);
+    console.log(`Found ${translations.length} translations for ${word.value}/${word.translation}`)
     for (const translation of translations) {
       new Tooltip(translation, {
         placement: "bottom",
-        title: word.word,
+        title: word.value,
         template: '<div class="immerse-tooltip"><div class="tooltip-inner"></div></div>'
       });
     }

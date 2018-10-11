@@ -17,26 +17,39 @@ import { Component, Prop } from '@stencil/core';
 })
 
 export class WordItem {
-
   @Prop() value: string;
   @Prop() translation: string;
-  @Prop() lang: string;
   @Prop() type: string;
   @Prop() singular: boolean;
+  @Prop() insensitive: boolean;
+  @Prop() ignoreWhiteSpace: boolean;
+  @Element() _el: HTMLElement;
+
+
+  removeItem(){
+    console.log("REMOVING ^");
+    chrome.storage.sync.get(['imrkorean'], (result) => {
+      console.log(`found our word`);  
+      let newItems = result['imrkorean']
+      delete newItems[this.value];  
+      console.log("gonna sync now");
+      chrome.storage.sync.set({'imrkorean':newItems}), function(){
+        console.log("deleting this")
+      }
+      this._el.parentElement.setWords(newItems);
+    });
+  }
 
   render() {
+    var trashstyle = {color:"red"}
+    var checkstyle = {color:"green"}
     return [
           <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
             {this.value}
           </span>,
           <input type="text" value={this.translation}/>,
-          <a
-            rel="noopener"
-            class="svg-button"
-            title="Remove this word from the immerse list"
-          >
-            <app-icon name="trash"/>
-          </a>
+          <a onClick={()=>this.removeItem()}><i class="far fa-trash-alt" style={trashstyle}></i></a>,
+          <a><i class="far fa-check-circle" style={checkstyle}></i></a>
     ];
   }
 }

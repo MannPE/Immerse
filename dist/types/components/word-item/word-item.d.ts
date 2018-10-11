@@ -12,8 +12,11 @@ import '../../stencil.core';
 export declare class WordItem {
     value: string;
     translation: string;
-    lang: string;
     type: string;
     singular: boolean;
+    insensitive: boolean;
+    ignoreWhiteSpace: boolean;
+    _el: HTMLElement;
+    removeItem(): void;
     render(): JSX.Element[];
 }

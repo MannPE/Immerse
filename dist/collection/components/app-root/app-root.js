@@ -26,11 +26,19 @@ export class AppRoot {
             h("imr-app-header", null),
             h("div", { class: "root" },
                 h("div", { class: "container" },
-                    h("stencil-router", { scrollTopOffset: 0 },
-                        h("stencil-route-switch", null,
-                            h("stencil-route", { url: "/words", component: "imr-view-word-list" }),
-                            h("stencil-route", { url: "/settings", component: "pwas-page" }),
-                            h("stencil-route", { component: "imr-view-main" })))),
+                    h("stencil-router", null,
+                        h("stencil-route", { routeRender: (props) => {
+                                try {
+                                    console.log(props);
+                                    return (h("stencil-route-switch", null,
+                                        h("stencil-route", { url: "/words", component: "imr-view-word-list" }),
+                                        h("stencil-route", { url: "/settings", component: "pwas-page" }),
+                                        h("stencil-route", { component: "imr-view-main" })));
+                                }
+                                catch (e) {
+                                    console.log(e);
+                                }
+                            } }))),
                 ",",
                 h("footer", null,
                     h("div", { class: "container" },

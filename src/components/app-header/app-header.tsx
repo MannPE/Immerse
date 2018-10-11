@@ -28,7 +28,6 @@ export class AppHeader {
   }
 
   showNav (e) {
-    console.log("should show now open", this.isMobileMenuShown,e);
     if (this.isMobileMenuShown) return;
     this.isMobileMenuShown = true;
 
@@ -42,7 +41,6 @@ export class AppHeader {
   }
 
   hideNav () {
-    console.log("should show now close", this.isMobileMenuShown);
     if (!this.isMobileMenuShown) return;
     this.isMobileMenuShown = false;
 

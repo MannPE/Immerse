@@ -9,19 +9,43 @@
  * @property {boolean} singular - Indicates if the word is for singular or plural
  */
 export class WordItem {
+    removeItem() {
+        console.log("REMOVING ^");
+        chrome.storage.sync.get(['imrkorean'], (result) => {
+            console.log(`found our word`);
+            let newItems = result['imrkorean'];
+            delete newItems[this.value];
+            console.log("gonna sync now");
+            chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
+                console.log("deleting this");
+            };
+            this._el.parentElement.setWords(newItems);
+        });
+    }
     render() {
+        var trashstyle = { color: "red" };
+        var checkstyle = { color: "green" };
         return [
             h("span", { class: `${this.type} ${(this.singular ? "singular" : "plural")}` }, this.value),
             h("input", { type: "text", value: this.translation }),
-            h("a", { rel: "noopener", class: "svg-button", title: "Remove this word from the immerse list" },
-                h("app-icon", { name: "trash" }))
+            h("a", { onClick: () => this.removeItem() },
+                h("i", { class: "far fa-trash-alt", style: trashstyle })),
+            h("a", null,
+                h("i", { class: "far fa-check-circle", style: checkstyle }))
         ];
     }
     static get is() { return "imr-word-item"; }
     static get properties() { return {
-        "lang": {
-            "type": String,
-            "attr": "lang"
+        "_el": {
+            "elementRef": true
+        },
+        "ignoreWhiteSpace": {
+            "type": Boolean,
+            "attr": "ignore-white-space"
+        },
+        "insensitive": {
+            "type": Boolean,
+            "attr": "insensitive"
         },
         "singular": {
             "type": Boolean,

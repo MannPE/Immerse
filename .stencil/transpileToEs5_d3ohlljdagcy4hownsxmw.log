@@ -1,0 +1,76 @@
+/*! Built with http://stenciljs.com */
+App.loadBundle('/**:bundle-id:**/', ['exports'], function (exports) {
+    var h = window.App.h;
+    var ViewWordList = /** @class */ (function () {
+        function ViewWordList() {
+            this.words = [];
+        }
+        ViewWordList.prototype.componentWillLoad = function () {
+            chrome.storage.sync.get(['imrkorean'], function (result) {
+                this.words = result['imrkorean'];
+                console.log("words loaded into wordlist", this.words);
+            });
+        };
+        ViewWordList.prototype.componentDidLoad = function () {
+            console.log("did load");
+            console.log(this);
+            console.log(this["el"]);
+            console.log(this._el);
+            this._el.forceUpdate();
+        };
+        ViewWordList.prototype.componentWillUpdate = function () {
+            console.log("will update");
+            console.log(this);
+        };
+        ViewWordList.prototype.componentDidUpdate = function () {
+            console.log("did update");
+            console.log(this);
+        };
+        ViewWordList.prototype.render = function () {
+            console.log("rendered");
+            // if(this.words)
+            // return[ 
+            //   this.words.map(word=>(
+            //       <imr-word-item 
+            //         value = {word.value}
+            //         translation = {word.translation}
+            //         insensitive = {word.insensitive}
+            //         ignoreWhiteSpace = {word.ignoreWhiteSpace}
+            //       />
+            // ))];
+            if (this.words.lenght > 0)
+                return h("div", null, "LOTS OF WORDS");
+            else
+                return h("div", null, "NO WORDS");
+        };
+        Object.defineProperty(ViewWordList, "is", {
+            get: function () { return "imr-view-word-list"; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ViewWordList, "properties", {
+            get: function () {
+                return {
+                    "_el": {
+                        "elementRef": true
+                    },
+                    "words": {
+                        "type": "Any",
+                        "attr": "words",
+                        "watchCallbacks": ["render"]
+                    }
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ViewWordList, "style", {
+            get: function () { return "/**style-placeholder:imr-view-word-list:**/"; },
+            enumerable: true,
+            configurable: true
+        });
+        return ViewWordList;
+    }());
+    exports.ImrViewWordList = ViewWordList;
+    Object.defineProperty(exports, '__esModule', { value: true });
+});

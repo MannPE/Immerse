@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, Element , State,  Method} from '@stencil/core';
 
 
 @Component({
@@ -6,48 +6,48 @@ import { Component } from '@stencil/core';
   styleUrl: 'view-word-list.scss'
 })
 export class ViewWordList {
-  private words=[
-    {
-      value:"cat",
-      translation:"Katze",
-      lang:"de",
-      type:"noun",
-      singular:true
-    },
-    {
-      value:"dog",
-      translation:"Hund",
-      lang:"de",
-      type:"noun",
-      singular:true
-    },
-    {
-      value:"dog",
-      translation:"Hund",
-      lang:"de",
-      type:"noun",
-      singular:true
-    },
-    {
-      value:"jump",
-      translation:"도역",
-      lang:"kr",
-      type:"verb",
-      singular:true
-    }
-  ]
+  @State() words: any;
+  @Element() _el: HTMLElement;
+  
+ 
 
+  componentWillLoad(){
+    console.log("Will load");
+    chrome.storage.sync.get(['imrkorean'], (result) => {
+      this.setWords(result['imrkorean']);
+      console.log("words loaded into wordlist",this.words);
+    });
+  }
+
+  @Method()
+  loadWords(){
+    console.log(this.words);
+  }
+
+  @Method()
+  setWords(any){
+    this.words = any;
+    console.log("setting words", any, this.words)
+  }
 
   render() {
-    return[ 
-      this.words.map(word=>(
-          <imr-word-item 
-            value={word.value}
-            translation={word.translation} 
-            lang={word.lang}
-            type={word.type} 
-            singular={word.singular}
-          />
-    ))];
+    console.log("rendered",this.words);
+    if(this.words){
+      let wordItems = [];
+        for(var key in this.words){
+          let word=this.words[key];
+          console.log(word);
+          wordItems.push(
+            <imr-word-item 
+              value = {word.value}
+              translation = {word.translation}
+              insensitive = {word.insensitive}
+              ignoreWhiteSpace = {word.ignoreWhiteSpace}
+            />);
+        }
+        return wordItems;
+    }
+    else
+        return <div>NO WORDS</div>
   }
 }

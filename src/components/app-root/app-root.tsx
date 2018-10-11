@@ -40,12 +40,22 @@ export class AppRoot {
         <imr-app-header />,
         <div class="root">
           <div class="container">
-            <stencil-router scrollTopOffset={0}>
-              <stencil-route-switch>
-                <stencil-route url="/words" component="imr-view-word-list" />
-                <stencil-route url="/settings" component="pwas-page" />
-                <stencil-route component="imr-view-main" />
-              </stencil-route-switch>
+          
+            <stencil-router>
+            <stencil-route routeRender={(props) => {
+              try{
+                console.log(props)
+                return(
+                <stencil-route-switch>
+                  <stencil-route url="/words" component="imr-view-word-list" />
+                  <stencil-route url="/settings" component="pwas-page" />
+                  <stencil-route component="imr-view-main" />
+                </stencil-route-switch>);
+              }catch(e){
+                console.log(e);
+              }
+
+            }} />
             </stencil-router>
           </div>,
           <footer>

@@ -48,7 +48,6 @@ var AppHeader = /** @class */ (function () {
     };
     AppHeader.prototype.showNav = function (e) {
         var _this = this;
-        console.log("should show now open", this.isMobileMenuShown, e);
         if (this.isMobileMenuShown)
             return;
         this.isMobileMenuShown = true;
@@ -60,7 +59,6 @@ var AppHeader = /** @class */ (function () {
         }, 1);
     };
     AppHeader.prototype.hideNav = function () {
-        console.log("should show now close", this.isMobileMenuShown);
         if (!this.isMobileMenuShown)
             return;
         this.isMobileMenuShown = false;
@@ -139,7 +137,15 @@ var AppRoot = /** @class */ (function () {
     AppRoot.prototype.render = function () {
         return [
             h("imr-app-header", null),
-            h("div", { class: "root" }, h("div", { class: "container" }, h("stencil-router", { scrollTopOffset: 0 }, h("stencil-route-switch", null, h("stencil-route", { url: "/words", component: "imr-view-word-list" }), h("stencil-route", { url: "/settings", component: "pwas-page" }), h("stencil-route", { component: "imr-view-main" })))), ",", h("footer", null, h("div", { class: "container" }, h("div", { class: "footer__open-source" }, h("p", null, "Made by Manuel Puentes @2018")), h("div", { class: "footer__icons" }, h("a", { class: "svg-button", id: "stencil-twitter", href: "https://twitter.com/stenciljs", target: "_blank", rel: "noopener", title: "Follow me on " }, h("app-icon", { name: "twitter" })), h("a", { class: "svg-button", id: "ionic-forum", href: "https://stencil-worldwide.herokuapp.com", target: "_blank", rel: "noopener", title: "Join the stencil worldwide slack" }, h("app-icon", { name: "slack" }))))))
+            h("div", { class: "root" }, h("div", { class: "container" }, h("stencil-router", null, h("stencil-route", { routeRender: function (props) {
+                    try {
+                        console.log(props);
+                        return (h("stencil-route-switch", null, h("stencil-route", { url: "/words", component: "imr-view-word-list" }), h("stencil-route", { url: "/settings", component: "pwas-page" }), h("stencil-route", { component: "imr-view-main" })));
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                } }))), ",", h("footer", null, h("div", { class: "container" }, h("div", { class: "footer__open-source" }, h("p", null, "Made by Manuel Puentes @2018")), h("div", { class: "footer__icons" }, h("a", { class: "svg-button", id: "stencil-twitter", href: "https://twitter.com/stenciljs", target: "_blank", rel: "noopener", title: "Follow me on " }, h("app-icon", { name: "twitter" })), h("a", { class: "svg-button", id: "ionic-forum", href: "https://stencil-worldwide.herokuapp.com", target: "_blank", rel: "noopener", title: "Join the stencil worldwide slack" }, h("app-icon", { name: "slack" }))))))
         ];
     };
     Object.defineProperty(AppRoot, "is", {
