@@ -3796,6 +3796,7 @@ chrome.storage.sync.get(['imrkorean'], function(result){
     findAndReplaceDOMText((document.body),{
       preset: 'prose',
       find: regex,
+      portionMode: "first",
       replace: function(portion, match){
         //Step 2.1 - We create a span element and assign it a class
         var translatedSpan = document.createElement("span");
