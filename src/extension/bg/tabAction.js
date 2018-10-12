@@ -3768,25 +3768,30 @@ return Tooltip;
 	STOP HERE
 */
 
-// var wordList = 
-//       {
-// 				"dog":{value:"dog", translation:"개", insensitive:true, ignoreWhite: false},
-// 				"thank you":{value:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
-// 				"work":{value:"work", translation:"작업", insensitive:true, ignoreWhite: false},
-// 				"computer":{value:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
-// 				"bug":{value:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
-// 				"virus":{value:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
-// 				"file":{value:"file", translation:"파일", insensitive:true, ignoreWhite: false},
-// 				"yes":{value:"yes", translation:"네", insensitive:true, ignoreWhite: false},
-// 				"hours":{value:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
-// 				"download":{value:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
-//       }
-// chrome.storage.sync.set({'imrkorean':wordList}), function(words){
-//   console.log(`Korean words are set to`, wordList);
-// }
+chrome.storage.sync.get(['imrkorean'],function(result ){
+  if(!result){
+    var wordList = 
+          {
+            "dog":{value:"dog", translation:"개", insensitive:true, ignoreWhite: false},
+            "thank you":{value:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
+            "work":{value:"work", translation:"작업", insensitive:true, ignoreWhite: false},
+            "computer":{value:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
+            "bug":{value:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
+            "virus":{value:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
+            "file":{value:"file", translation:"파일", insensitive:true, ignoreWhite: false},
+            "yes":{value:"yes", translation:"네", insensitive:true, ignoreWhite: false},
+            "hours":{value:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
+            "download":{value:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
+          }
+    chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+      console.log(`Korean words are set to`, wordList);
+    }
+  }
+});
+
 chrome.storage.sync.get(['imrkorean'], function(result){
   console.log('Value is currently:', result['imrkorean']);
-  wordList = result['imrkorean'];
+  var wordList = result['imrkorean'];
   for (var wordkey in wordList) {
     let word = wordList[wordkey]
     //Step 1 - Create the regex
@@ -3798,6 +3803,10 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       find: regex,
       portionMode: "first",
       replace: function(portion, match){
+        if(portion.text.length < word.value.length){
+          console.log(`useless portion `,portion)
+          return "";
+        }
         //Step 2.1 - We create a span element and assign it a class
         var translatedSpan = document.createElement("span");
         translatedSpan.className = "immerse-translation imr-"+word.value;
@@ -3812,8 +3821,6 @@ chrome.storage.sync.get(['imrkorean'], function(result){
         let newContent = preChars? preChars+word.translation: word.translation;
         newContent = postChars? newContent+postChars: newContent;
         translatedSpan.textContent = newContent;
-        console.log(`replacing "${match[0]}" with "${translatedSpan.textContent}"`)
-        console.log(`preChars|${preChars}|postChars|${postChars}|`);
         return translatedSpan;
       }
     });
@@ -3824,16 +3831,8 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       new Tooltip(translation, {
         placement: "bottom",
         title: word.value,
-        template: '<div class="immerse-tooltip"><div class="tooltip-inner"></div></div>'
+        template: '<span class="immerse-tooltip"><div class="tooltip-inner"></div></span>'
       });
     }
   }
-  
 })
-
-
-
-
-// chrome.storage.sync.get(['imrkorean'], function(result){
-//   console.log('Value is currently:', result);
-// })
