@@ -12,6 +12,7 @@ const { h } = window.App;
  */
 class Input {
     render() {
+        console.log("RENDERING INPUT", this.word);
         return (h("div", null,
             h("div", { class: "translate-input" },
                 h("h4", null, this.description),
@@ -29,7 +30,8 @@ class Input {
         },
         "word": {
             "type": String,
-            "attr": "word"
+            "attr": "word",
+            "watchCallbacks": ["render"]
         }
     }; }
     static get style() { return ""; }
@@ -53,16 +55,14 @@ class MainPage {
         };
         this.addWord = () => {
             chrome.storage.sync.get(['imrkorean'], (result) => {
-                console.log(`found our word`);
                 let newItems = result['imrkorean'];
                 newItems[this.settings.value] = this.settings;
-                chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
-                    console.log("adding word this");
+                chrome.storage.sync.set({ 'imrkorean': newItems }), function (msg) {
+                    console.log("adding word to list: " + msg);
                 };
-                console.log("adding word", newItems);
-                var inputs = this.el.querySelectorAll("imr-input");
+                let inputs = this.el.querySelectorAll("input");
                 inputs.forEach(function (imrinput) {
-                    imrinput.word = "";
+                    imrinput.value = "";
                 });
             });
         };

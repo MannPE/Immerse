@@ -9,6 +9,7 @@
  */
 export class Input {
     render() {
+        console.log("RENDERING INPUT", this.word);
         return (h("div", null,
             h("div", { class: "translate-input" },
                 h("h4", null, this.description),
@@ -26,7 +27,8 @@ export class Input {
         },
         "word": {
             "type": String,
-            "attr": "word"
+            "attr": "word",
+            "watchCallbacks": ["render"]
         }
     }; }
     static get style() { return "/**style-placeholder:imr-input:**/"; }

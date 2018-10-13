@@ -3769,7 +3769,8 @@ return Tooltip;
 */
 
 chrome.storage.sync.get(['imrkorean'],function(result ){
-  if(!result){
+  console.log("Loaded words from imrkorean");
+  if(Object.keys(result).length === 0 && result.constructor === Object){
     var wordList = 
           {
             "dog":{value:"dog", translation:"개", insensitive:true, ignoreWhite: false},

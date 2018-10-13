@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Watch } from '@stencil/core';
 
 /**
  *
@@ -19,7 +19,10 @@ export class Input {
   @Prop() description: string;
   @Prop() example: string;
 
+
+  @Watch('word')
   render() {
+    console.log("RENDERING INPUT", this.word);
     return (
       <div>
         <div class="translate-input">

@@ -164,7 +164,10 @@
         {
           "name": "word",
           "type": "String",
-          "attr": "word"
+          "attr": "word",
+          "watch": [
+            "render"
+          ]
         }
       ]
     },

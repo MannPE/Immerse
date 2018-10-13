@@ -37,16 +37,14 @@ export class MainPage {
 
   addWord = () =>{
     chrome.storage.sync.get(['imrkorean'], (result) => {
-      console.log(`found our word`);  
       let newItems = result['imrkorean']
       newItems[this.settings.value] = this.settings
-      chrome.storage.sync.set({'imrkorean':newItems}), function(){
-        console.log("adding word this")
+      chrome.storage.sync.set({'imrkorean':newItems}), function(msg){
+        console.log("adding word to list: "+msg)
       }
-      console.log("adding word", newItems);
-      var inputs  = this.el.querySelectorAll("imr-input")
+      let inputs  = this.el.querySelectorAll("input")
       inputs.forEach(function(imrinput){
-        imrinput.word = "";
+        imrinput.value = "";
       });
     });
   }

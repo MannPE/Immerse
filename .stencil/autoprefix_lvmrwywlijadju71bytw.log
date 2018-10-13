@@ -1,9 +1,0 @@
-imr-view-word-list {
-  -ms-flex-line-pack: center;
-  align-content: center;
-  display: grid;
-  grid-auto-rows: auto;
-  grid-template-columns: repeat(auto-fill, 1fr);
-  grid-gap: 2em; }
-  imr-view-word-list .noun {
-    color: #373D3F; }

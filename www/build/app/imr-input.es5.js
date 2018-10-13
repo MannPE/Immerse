@@ -14,6 +14,7 @@ App.loadBundle('imr-input', ['exports'], function (exports) {
         function Input() {
         }
         Input.prototype.render = function () {
+            console.log("RENDERING INPUT", this.word);
             return (h("div", null, h("div", { class: "translate-input" }, h("h4", null, this.description), h("input", { type: "text", value: this.word, placeholder: this.example }))));
         };
         Object.defineProperty(Input, "is", {
@@ -34,7 +35,8 @@ App.loadBundle('imr-input', ['exports'], function (exports) {
                     },
                     "word": {
                         "type": String,
-                        "attr": "word"
+                        "attr": "word",
+                        "watchCallbacks": ["render"]
                     }
                 };
             },
@@ -67,16 +69,14 @@ App.loadBundle('imr-input', ['exports'], function (exports) {
             };
             this.addWord = function () {
                 chrome.storage.sync.get(['imrkorean'], function (result) {
-                    console.log("found our word");
                     var newItems = result['imrkorean'];
                     newItems[_this.settings.value] = _this.settings;
-                    chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
-                        console.log("adding word this");
+                    chrome.storage.sync.set({ 'imrkorean': newItems }), function (msg) {
+                        console.log("adding word to list: " + msg);
                     };
-                    console.log("adding word", newItems);
-                    var inputs = _this.el.querySelectorAll("imr-input");
+                    var inputs = _this.el.querySelectorAll("input");
                     inputs.forEach(function (imrinput) {
-                        imrinput.word = "";
+                        imrinput.value = "";
                     });
                 });
             };
