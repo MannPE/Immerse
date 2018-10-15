@@ -233,6 +233,21 @@
       }
     },
     {
+      "tag": "imr-view-settings",
+      "dependencies": [
+        "stencil-route-link"
+      ],
+      "componentClass": "viewSettings",
+      "componentPath": "components/view-settings/view-settings.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/view-settings/view-settings.scss"
+          ]
+        }
+      }
+    },
+    {
       "tag": "imr-view-word-list",
       "dependencies": [
         "imr-word-item"
@@ -375,22 +390,6 @@
         "$": {
           "stylePaths": [
             "components/notfound-page/notfound-page.scss"
-          ]
-        }
-      }
-    },
-    {
-      "tag": "pwas-page",
-      "dependencies": [
-        "app-icon",
-        "stencil-route-link"
-      ],
-      "componentClass": "pwasPage",
-      "componentPath": "components/pwas-page/pwas-page.js",
-      "styles": {
-        "$": {
-          "stylePaths": [
-            "components/pwas-page/pwas-page.scss"
           ]
         }
       }

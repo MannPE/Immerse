@@ -3,8 +3,8 @@
   "fsNamespace": "app",
   "loader": "../app.js",
   "global": "app.global.js",
-  "corePolyfilled": "app.core.pf.js",
   "core": "app.core.js",
+  "corePolyfilled": "app.core.pf.js",
   "components": {
     "app-burger": {
       "bundleIds": {
@@ -56,6 +56,11 @@
         "$": "imr-input"
       }
     },
+    "imr-view-settings": {
+      "bundleIds": {
+        "$": "imr-view-settings"
+      }
+    },
     "imr-view-word-list": {
       "bundleIds": {
         "$": "imr-view-word-list"
@@ -74,11 +79,6 @@
     "notfound-page": {
       "bundleIds": {
         "$": "notfound-page"
-      }
-    },
-    "pwas-page": {
-      "bundleIds": {
-        "$": "pwas-page"
       }
     },
     "resources-page": {

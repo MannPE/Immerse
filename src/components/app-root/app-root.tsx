@@ -48,7 +48,7 @@ export class AppRoot {
                 return(
                 <stencil-route-switch>
                   <stencil-route url="/words" component="imr-view-word-list" />
-                  <stencil-route url="/settings" component="pwas-page" />
+                  <stencil-route url="/settings" component="imr-view-settings" />
                   <stencil-route component="imr-view-main" />
                 </stencil-route-switch>);
               }catch(e){
