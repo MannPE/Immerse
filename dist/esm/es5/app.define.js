@@ -20,7 +20,7 @@ import {
   Router,
   ViewWordList,
   WordItem,
-  pwasPage
+  viewSettings
 } from './app.components.js';
 
 export function defineCustomElements(window, opts) {
@@ -44,6 +44,6 @@ export function defineCustomElements(window, opts) {
     Router,
     ViewWordList,
     WordItem,
-    pwasPage
+    viewSettings
   ], opts);
 }

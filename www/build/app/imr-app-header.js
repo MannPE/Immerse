@@ -103,7 +103,7 @@ class AppRoot {
                                     console.log(props);
                                     return (h("stencil-route-switch", null,
                                         h("stencil-route", { url: "/words", component: "imr-view-word-list" }),
-                                        h("stencil-route", { url: "/settings", component: "pwas-page" }),
+                                        h("stencil-route", { url: "/settings", component: "imr-view-settings" }),
                                         h("stencil-route", { component: "imr-view-main" })));
                                 }
                                 catch (e) {

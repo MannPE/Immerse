@@ -19,7 +19,8 @@
     "activeTab",
     "https://*/*",
     "http://*/*",
-    "storage"
+    "storage",
+    "fileSystem" 
   ],
   "background": {
     "page": "extension/bg/background.html",

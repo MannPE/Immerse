@@ -20,6 +20,8 @@ export var LanguageList = ["imr-language-list",function(){return(import("./imr-l
 
 export var MainPage = ["imr-view-main",function(){return(import("./imr-input.js")).then(function(m){return m.ImrViewMain})},1,[["el",7]]];
 
+export var viewSettings = ["imr-view-settings",function(){return(import("./imr-view-settings.js")).then(function(m){return m.ImrViewSettings})},1];
+
 export var ViewWordList = ["imr-view-word-list",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrViewWordList})},1,[["_el",7],["loadWords",6],["setWords",6],["words",5]]];
 
 export var WordItem = ["imr-word-item",function(){return(import("./imr-view-word-list.js")).then(function(m){return m.ImrWordItem})},1,[["_el",7],["ignoreWhiteSpace",1,0,"ignore-white-space",3],["insensitive",1,0,1,3],["singular",1,0,1,3],["translation",1,0,1,2],["type",1,0,1,2],["value",1,0,1,2]]];
@@ -27,8 +29,6 @@ export var WordItem = ["imr-word-item",function(){return(import("./imr-view-word
 export var LazyIframe = ["lazy-iframe",function(){return(import("./lazy-iframe.js")).then(function(m){return m.LazyIframe})},1,[["el",7],["frameBorder",1,0,"frame-border",2],["height",1,0,1,2],["name",1,0,1,2],["realSrc",5],["scrolling",1,0,1,2],["src",1,0,1,2],["width",1,0,1,2]]];
 
 export var NotFoundPage = ["notfound-page",function(){return(import("./notfound-page.js")).then(function(m){return m.NotfoundPage})},1];
-
-export var pwasPage = ["pwas-page",function(){return(import("./pwas-page.js")).then(function(m){return m.PwasPage})},1];
 
 export var ResourcesPage = ["resources-page",function(){return(import("./lazy-iframe.js")).then(function(m){return m.ResourcesPage})},1];
 

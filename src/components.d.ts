@@ -76,15 +76,15 @@ declare global {
 
     }
 
-    interface PwasPage {
-
-    }
-
     interface ResourcesPage {
 
     }
 
     interface ImrViewMain {
+
+    }
+
+    interface ImrViewSettings {
 
     }
 
@@ -184,14 +184,6 @@ declare global {
     };
     
 
-    interface HTMLPwasPageElement extends StencilComponents.PwasPage, HTMLStencilElement {}
-
-    var HTMLPwasPageElement: {
-      prototype: HTMLPwasPageElement;
-      new (): HTMLPwasPageElement;
-    };
-    
-
     interface HTMLResourcesPageElement extends StencilComponents.ResourcesPage, HTMLStencilElement {}
 
     var HTMLResourcesPageElement: {
@@ -205,6 +197,14 @@ declare global {
     var HTMLImrViewMainElement: {
       prototype: HTMLImrViewMainElement;
       new (): HTMLImrViewMainElement;
+    };
+    
+
+    interface HTMLImrViewSettingsElement extends StencilComponents.ImrViewSettings, HTMLStencilElement {}
+
+    var HTMLImrViewSettingsElement: {
+      prototype: HTMLImrViewSettingsElement;
+      new (): HTMLImrViewSettingsElement;
     };
     
 
@@ -237,9 +237,9 @@ declare global {
     'imr-language-list': JSXElements.ImrLanguageListAttributes;
     'lazy-iframe': JSXElements.LazyIframeAttributes;
     'notfound-page': JSXElements.NotfoundPageAttributes;
-    'pwas-page': JSXElements.PwasPageAttributes;
     'resources-page': JSXElements.ResourcesPageAttributes;
     'imr-view-main': JSXElements.ImrViewMainAttributes;
+    'imr-view-settings': JSXElements.ImrViewSettingsAttributes;
     'imr-view-word-list': JSXElements.ImrViewWordListAttributes;
     'imr-word-item': JSXElements.ImrWordItemAttributes;
     }
@@ -296,15 +296,15 @@ declare global {
 
     }
 
-    export interface PwasPageAttributes extends HTMLAttributes {
-
-    }
-
     export interface ResourcesPageAttributes extends HTMLAttributes {
 
     }
 
     export interface ImrViewMainAttributes extends HTMLAttributes {
+
+    }
+
+    export interface ImrViewSettingsAttributes extends HTMLAttributes {
 
     }
 
@@ -333,9 +333,9 @@ declare global {
     'imr-language-list': HTMLImrLanguageListElement
     'lazy-iframe': HTMLLazyIframeElement
     'notfound-page': HTMLNotfoundPageElement
-    'pwas-page': HTMLPwasPageElement
     'resources-page': HTMLResourcesPageElement
     'imr-view-main': HTMLImrViewMainElement
+    'imr-view-settings': HTMLImrViewSettingsElement
     'imr-view-word-list': HTMLImrViewWordListElement
     'imr-word-item': HTMLImrWordItemElement
   }
@@ -351,9 +351,9 @@ declare global {
     'imr-language-list': HTMLImrLanguageListElement;
     'lazy-iframe': HTMLLazyIframeElement;
     'notfound-page': HTMLNotfoundPageElement;
-    'pwas-page': HTMLPwasPageElement;
     'resources-page': HTMLResourcesPageElement;
     'imr-view-main': HTMLImrViewMainElement;
+    'imr-view-settings': HTMLImrViewSettingsElement;
     'imr-view-word-list': HTMLImrViewWordListElement;
     'imr-word-item': HTMLImrWordItemElement;
   }
