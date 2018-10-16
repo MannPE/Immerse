@@ -22,37 +22,6 @@ app-root{
   overflow: hidden;
 }
 
-.left-sidebar-in {
-  animation-name: slideIn;
-  animation-duration: 0.7s;
-  animation-timing-function: $easeOutExpo;
-  animation-fill-mode: forwards;
-}
-@keyframes slideIn {
-  from {
-    left: 0;
-  }
-
-  to {
-    left: calc(100vw - 56px);
-  }
-}
-
-.left-sidebar-out {
-  animation-name: slideOut;
-  animation-duration: 0.7s;
-  animation-timing-function: $easeOutExpo;
-  animation-fill-mode: forwards;
-}
-@keyframes slideOut {
-  from {
-    left: calc(100vw - 56px);
-  }
-
-  to {
-    left: 0;
-  }
-}
 
 .container {
   width: 100%;
@@ -67,33 +36,23 @@ app-root{
   position: relative;
   display: flex;
   flex-direction: column;
-  // min-height: 100.1vh;
-
-   padding: 6em 0 0;
+  padding: 6em 0 0;
 
 }
 
 footer {
   width: 100%;
-  background: $color-white-lilac;
+  border-top: 1px solid black;
   flex: 0 0 6em;
   margin-top: 100px;
   padding: 40px 0;
   display: flex;
+  z-index: 90;
 
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .svg-button {
-    margin-left: 16px;
-    transition: all .15s ease;
-  }
-
-  .svg-button:hover {
-    opacity:0.5;
   }
 }
 
@@ -112,4 +71,12 @@ footer {
     color: $color-cadet-blue;
     font-size: 10px;
   }
+}
+
+imr-app-header{
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index:80;
+  margin-bottom: 100px;
 }

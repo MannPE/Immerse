@@ -40,7 +40,6 @@ export class AppRoot {
         <imr-app-header />,
         <div class="root">
           <div class="container">
-          
             <stencil-router>
             <stencil-route routeRender={(props) => {
               try{
@@ -64,6 +63,9 @@ export class AppRoot {
                 <p>
                   Made by Manuel Puentes @2018
                 </p>
+                <a class="link--external" target="_blank" href="https://paypal.com">
+            Donate <app-icon name="targetblank"></app-icon>
+          </a>
               </div>
 
               <div class="footer__icons">

@@ -12,13 +12,12 @@ export class MainPage {
     document.title = `Immerse`;
   }
 
-  reload = function(){
-    document.getElementById('reload').onclick = function(){
+  reload = () =>{
       chrome.runtime.sendMessage({message: "reload"}, function(response) {
         console.log("SENT GREETING atm");
         console.log(response);
       });
-    }
+    
   }
   settings = {
     value: "",
@@ -53,7 +52,7 @@ export class MainPage {
 
     return (
       <div class="main-wrapper">
-        <button id="reload" onClick={this.reload}>RELOAD</button>
+        <button class="round" onClick={this.reload}><i class="fas fa-redo"></i></button>
         <imr-language-list></imr-language-list>
         <main>
           <h2>Immerse</h2>

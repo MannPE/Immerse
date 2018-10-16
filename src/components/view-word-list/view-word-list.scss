@@ -15,9 +15,12 @@ imr-view-word-list {
   }
   imr-word-item{
     padding-bottom: 5px;
-    border-bottom: 1px solid gray;
     display:inline-flex;
+    line-height: 1em;
+    white-space: nowrap;
+
     span{
+      overflow-x: auto;
       width:50%;
     }
     input{

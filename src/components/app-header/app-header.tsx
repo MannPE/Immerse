@@ -57,21 +57,15 @@ export class AppHeader {
     return (
       <div class="container">
         <div class="header-menu">
+        <stencil-route-link url="/"  exact={true} onClick={() => { this.hideNav() }}>
+            Immerse
+          </stencil-route-link>
           <stencil-route-link url="/words"  exact={true} onClick={() => { this.hideNav() }}>
-            My Words
+            Words
           </stencil-route-link>
           <stencil-route-link url="/settings" exact={true} onClick={() => { this.hideNav() }}>
             Settings
           </stencil-route-link>
-          <stencil-route-link url="/"  exact={true} onClick={() => { this.hideNav() }}>
-            Immerse
-          </stencil-route-link>
-          <a class="link--external" target="_blank" href="https://paypal.com">
-            Donate <app-icon name="targetblank"></app-icon>
-          </a>
-          <div class="header-close" onClick={() => { this.hideNav() }}>
-            <app-icon name="close"></app-icon>
-          </div>
         </div>
         
       </div>

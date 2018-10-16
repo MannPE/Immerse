@@ -3,4 +3,13 @@
 imr-word-item{
     font-size:1.5em;
     width: 100%;
+    a:hover{
+        cursor: pointer;
+    }
+    .far{
+        opacity: 0.4 ;
+        &:hover{
+            opacity:1;
+        }
+    }
 }

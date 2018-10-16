@@ -1,42 +1,39 @@
 @import '../../global/variables';
 
-translate-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: $color-white;
-  z-index: 99;
+// imr-app-header {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 500px;
+//   background-color: $color-white;
+//   z-index: 99;
   
-  .logo {
-    width: 96px;
-  }
 
-  .container {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
+//   .container {
+//     padding-top: 20px;
+//     padding-bottom: 20px;
+//     display: flex;
+//     justify-content: space-between;
+//   }
 
-  @media screen and (max-width: $breakpoint-md) {
-    .container {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
+// }
+
+imr-app-header{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: white;
+  width:100%;
+  border-bottom: 1px solid #a7e6ff6b;
+  box-shadow: 1px 2px 6px #5881916b;
 }
 
 .header-menu {
   a {
-    transition: border .3s, color .3s;
+    transition:color .5s;
     font-size: 14px;
-    padding-bottom: 1em;
     border-bottom: 3px solid transparent;
     vertical-align: top;
-    color: $color-manatee;
+    color: #b4b4b4;
     text-decoration: none;
     font-weight: 500;
     letter-spacing: -0.02em;
@@ -49,7 +46,8 @@ translate-header {
 
   a:not(.link--external):hover,
   a.link-active {
-    border-bottom-color: rgba($color-manatee, 0.2);
+    color: #252525;
+    border-bottom: 2px solid;
   }
 
   a.link-active,{
