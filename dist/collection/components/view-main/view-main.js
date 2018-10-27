@@ -1,12 +1,10 @@
 export class MainPage {
     constructor() {
-        this.reload = function () {
-            document.getElementById('reload').onclick = function () {
-                chrome.runtime.sendMessage({ message: "reload" }, function (response) {
-                    console.log("SENT GREETING atm");
-                    console.log(response);
-                });
-            };
+        this.reload = () => {
+            chrome.runtime.sendMessage({ message: "reload" }, function (response) {
+                console.log("SENT GREETING atm");
+                console.log(response);
+            });
         };
         this.settings = {
             value: "",
@@ -37,7 +35,8 @@ export class MainPage {
     }
     render() {
         return (h("div", { class: "main-wrapper" },
-            h("button", { id: "reload", onClick: this.reload }, "RELOAD"),
+            h("button", { class: "round", onClick: this.reload },
+                h("i", { class: "fas fa-redo" })),
             h("imr-language-list", null),
             h("main", null,
                 h("h2", null, "Immerse"),

@@ -10,9 +10,11 @@ imr-view-word-list {
     color: #829356; }
   imr-view-word-list imr-word-item {
     padding-bottom: 5px;
-    border-bottom: 1px solid gray;
-    display: inline-flex; }
+    display: inline-flex;
+    line-height: 1em;
+    white-space: nowrap; }
     imr-view-word-list imr-word-item span {
+      overflow-x: auto;
       width: 50%; }
     imr-view-word-list imr-word-item input {
       width: 30%; }

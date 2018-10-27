@@ -13,30 +13,6 @@ app-root {
 .no-scroll {
   overflow: hidden; }
 
-.left-sidebar-in {
-  animation-name: slideIn;
-  animation-duration: 0.7s;
-  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  animation-fill-mode: forwards; }
-
-@keyframes slideIn {
-  from {
-    left: 0; }
-  to {
-    left: calc(100vw - 56px); } }
-
-.left-sidebar-out {
-  animation-name: slideOut;
-  animation-duration: 0.7s;
-  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  animation-fill-mode: forwards; }
-
-@keyframes slideOut {
-  from {
-    left: calc(100vw - 56px); }
-  to {
-    left: 0; } }
-
 .container {
   width: 100%;
   max-width: 1080px;
@@ -53,20 +29,16 @@ app-root {
 
 footer {
   width: 100%;
-  background: #f8f8fc;
+  border-top: 1px solid black;
   flex: 0 0 6em;
   margin-top: 100px;
   padding: 40px 0;
-  display: flex; }
+  display: flex;
+  z-index: 90; }
   footer .container {
     display: flex;
     justify-content: space-between;
     align-items: center; }
-  footer .svg-button {
-    margin-left: 16px;
-    transition: all .15s ease; }
-  footer .svg-button:hover {
-    opacity: 0.5; }
 
 .footer__icons {
   display: flex; }
@@ -79,3 +51,10 @@ footer {
   margin-bottom: 0;
   color: #abb2bf;
   font-size: 10px; }
+
+imr-app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  margin-bottom: 100px; }

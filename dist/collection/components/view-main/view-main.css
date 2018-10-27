@@ -1,13 +1,22 @@
-imr-view-main main {
+imr-view-main .main-wrapper {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 3em; }
+  margin-top: 1em; }
 
 imr-view-main #logo {
   width: 4em;
   height: 4em; }
+
+imr-view-main .round {
+  margin-bottom: 2em;
+  left: 50%;
+  top: 0;
+  width: 30px;
+  border-radius: 50%;
+  align-content: center;
+  padding: 5px 5px 5px 5px; }
 
 imr-view-main #action-call {
   font-size: 3.2em;

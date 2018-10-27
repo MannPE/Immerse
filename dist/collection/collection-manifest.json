@@ -76,7 +76,6 @@
     {
       "tag": "imr-app-header",
       "dependencies": [
-        "app-icon",
         "stencil-route-link"
       ],
       "componentClass": "AppHeader",

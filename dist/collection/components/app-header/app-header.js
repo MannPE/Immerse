@@ -38,14 +38,9 @@ export class AppHeader {
     render() {
         return (h("div", { class: "container" },
             h("div", { class: "header-menu" },
-                h("stencil-route-link", { url: "/words", exact: true, onClick: () => { this.hideNav(); } }, "My Words"),
-                h("stencil-route-link", { url: "/settings", exact: true, onClick: () => { this.hideNav(); } }, "Settings"),
                 h("stencil-route-link", { url: "/", exact: true, onClick: () => { this.hideNav(); } }, "Immerse"),
-                h("a", { class: "link--external", target: "_blank", href: "https://paypal.com" },
-                    "Donate ",
-                    h("app-icon", { name: "targetblank" })),
-                h("div", { class: "header-close", onClick: () => { this.hideNav(); } },
-                    h("app-icon", { name: "close" })))));
+                h("stencil-route-link", { url: "/words", exact: true, onClick: () => { this.hideNav(); } }, "Words"),
+                h("stencil-route-link", { url: "/settings", exact: true, onClick: () => { this.hideNav(); } }, "Settings"))));
     }
     static get is() { return "imr-app-header"; }
     static get properties() { return {

@@ -45,7 +45,7 @@ class ViewWordList {
             "state": true
         }
     }; }
-    static get style() { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(1, 1fr);\n  grid-gap: 2em; }\n  imr-view-word-list .noun {\n    color: #107896; }\n  imr-view-word-list .verb {\n    color: #829356; }\n  imr-view-word-list imr-word-item {\n    padding-bottom: 5px;\n    border-bottom: 1px solid gray;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex; }\n    imr-view-word-list imr-word-item span {\n      width: 50%; }\n    imr-view-word-list imr-word-item input {\n      width: 30%; }\n    imr-view-word-list imr-word-item a {\n      width: 7%; }"; }
+    static get style() { return "imr-view-word-list {\n  -ms-flex-line-pack: center;\n  align-content: center;\n  display: grid;\n  grid-auto-rows: auto;\n  grid-template-columns: repeat(1, 1fr);\n  grid-gap: 2em; }\n  imr-view-word-list .noun {\n    color: #107896; }\n  imr-view-word-list .verb {\n    color: #829356; }\n  imr-view-word-list imr-word-item {\n    padding-bottom: 5px;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    line-height: 1em;\n    white-space: nowrap; }\n    imr-view-word-list imr-word-item span {\n      overflow-x: auto;\n      width: 50%; }\n    imr-view-word-list imr-word-item input {\n      width: 30%; }\n    imr-view-word-list imr-word-item a {\n      width: 7%; }"; }
 }
 
 /**
@@ -114,7 +114,7 @@ class WordItem {
             "attr": "value"
         }
     }; }
-    static get style() { return "imr-word-item {\n  font-size: 1.5em;\n  width: 100%; }"; }
+    static get style() { return "imr-word-item {\n  font-size: 1.5em;\n  width: 100%; }\n  imr-word-item a:hover {\n    cursor: pointer; }\n  imr-word-item .far {\n    opacity: 0.4; }\n    imr-word-item .far:hover {\n      opacity: 1; }"; }
 }
 
 export { ViewWordList as ImrViewWordList, WordItem as ImrWordItem };

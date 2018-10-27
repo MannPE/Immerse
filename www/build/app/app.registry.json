@@ -43,12 +43,12 @@
     },
     "imr-language-card": {
       "bundleIds": {
-        "$": "imr-language-card"
+        "$": "imr-input"
       }
     },
     "imr-language-list": {
       "bundleIds": {
-        "$": "imr-language-card"
+        "$": "imr-input"
       }
     },
     "imr-view-main": {

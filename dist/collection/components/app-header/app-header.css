@@ -1,31 +1,17 @@
-translate-header {
-  position: fixed;
-  top: 0;
-  left: 0;
+imr-app-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: white;
   width: 100%;
-  background-color: #fff;
-  z-index: 99; }
-  translate-header .logo {
-    width: 96px; }
-  translate-header .container {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    display: flex;
-    justify-content: space-between; }
-  @media screen and (max-width: 768px) {
-    translate-header .container {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      flex-direction: column;
-      align-items: center; } }
+  border-bottom: 1px solid #a7e6ff6b;
+  box-shadow: 1px 2px 6px #5881916b; }
 
 .header-menu a {
-  transition: border .3s, color .3s;
+  transition: color .5s;
   font-size: 14px;
-  padding-bottom: 1em;
   border-bottom: 3px solid transparent;
   vertical-align: top;
-  color: #8888A2;
+  color: #b4b4b4;
   text-decoration: none;
   font-weight: 500;
   letter-spacing: -0.02em; }
@@ -36,7 +22,8 @@ translate-header {
 
 .header-menu a:not(.link--external):hover,
 .header-menu a.link-active {
-  border-bottom-color: rgba(136, 136, 162, 0.2); }
+  color: #252525;
+  border-bottom: 2px solid; }
 
 .header-menu a.link-active {
   color: #505061; }
