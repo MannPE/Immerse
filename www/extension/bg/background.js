@@ -11,6 +11,14 @@
     }
   });
 
+  chrome.contextMenus.create({
+    title: "Add '%s' to immerse", 
+    contexts:["selection"], 
+    onclick: function(info, tab){
+      console.log("CLICKED CONTEXT MENU",info, tab);
+      chrome.tabs.create({ url: "https://translate.google.com/#auto/ko/"+info.selectionText });
+    }
+  });
 
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {

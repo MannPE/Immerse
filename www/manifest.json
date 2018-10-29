@@ -3,7 +3,7 @@
 
   "name": "Immerse",
   "description": "This extension is an advanced find/replace extension focused on language learning through seeing vocabulary in your day to day life.",
-  "version": "1.0.1",
+  "version": "1.0.2",
 
   "browser_action": {
     "default_popup": "index.html",
@@ -20,7 +20,8 @@
     "https://*/*",
     "http://*/*",
     "storage",
-    "fileSystem" 
+    "fileSystem",
+    "contextMenus"
   ],
   "background": {
     "page": "extension/bg/background.html",
