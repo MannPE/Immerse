@@ -23,7 +23,7 @@ class ViewWordList {
             for (var key in this.words) {
                 let word = this.words[key];
                 console.log(word);
-                wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.insensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
+                wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.caseSensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
             }
             return wordItems;
         }
@@ -62,9 +62,15 @@ class WordItem {
     removeItem() {
         console.log("REMOVING ^");
         chrome.storage.sync.get(['imrkorean'], (result) => {
-            console.log(`found our word`);
             let newItems = result['imrkorean'];
-            delete newItems[this.value];
+            let index = 0;
+            for (; index < newItems.length; index++) {
+                const element = newItems[index];
+                if (element.value == this.value)
+                    break;
+            }
+            console.log("removing item in position:", index);
+            delete newItems[index];
             console.log("gonna sync now");
             chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
                 console.log("deleting this");

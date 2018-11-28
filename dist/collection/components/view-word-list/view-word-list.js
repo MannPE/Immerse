@@ -20,7 +20,7 @@ export class ViewWordList {
             for (var key in this.words) {
                 let word = this.words[key];
                 console.log(word);
-                wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.insensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
+                wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.caseSensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
             }
             return wordItems;
         }

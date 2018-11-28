@@ -6,7 +6,7 @@ export declare class MainPage {
     settings: {
         value: string;
         translation: string;
-        insensitive: boolean;
+        caseSensitive: boolean;
         ignoreWhiteSpace: boolean;
     };
     valueBind(event: any): void;

@@ -3773,31 +3773,23 @@ chrome.storage.sync.get(['imrkorean'],function(result ){
   if(Object.keys(result).length === 0 && result.constructor === Object){
     var wordList = 
           {
-            "dog":{value:"dog", translation:"개", insensitive:true, ignoreWhite: false},
-            "thank you":{value:"thank you", translation:"감사합니다 ", insensitive:true, ignoreWhite: false},
-            "work":{value:"work", translation:"작업", insensitive:true, ignoreWhite: false},
-            "computer":{value:"computer", translation:"컴퓨터", insensitive:true, ignoreWhite: true},
-            "bug":{value:"bug", translation:"버그", insensitive:true, ignoreWhite: false},
-            "virus":{value:"virus", translation:"바이러스", insensitive:true, ignoreWhite: false},
-            "file":{value:"file", translation:"파일", insensitive:true, ignoreWhite: false},
-            "yes":{value:"yes", translation:"네", insensitive:true, ignoreWhite: false},
-            "hours":{value:"hours", translation:"시간", insensitive:true, ignoreWhite: false},
-            "download":{value:"download", translation:"다운로드", insensitive:true, ignoreWhite: true}
+            "thank you":{value:"thank you", translation:"감사합니다 ", caseSensitive:false, ignoreWhiteSpace: false},
+            "computer":{value:"computer", translation:"컴퓨터", caseSensitive:false, ignoreWhiteSpace: true},
+            "file":{value:"file", translation:"파일", caseSensitive:false, ignoreWhiteSpace: false},
+            "yes":{value:"yes", translation:"네", caseSensitive:false, ignoreWhiteSpace: false}
           }
     chrome.storage.sync.set({'imrkorean':wordList}), function(words){
-      console.log(`Korean words are set to`, wordList);
+      console.log(`Korean words have been set to`, wordList);
     }
   }
 });
 
 chrome.storage.sync.get(['imrkorean'], function(result){
-  console.log('Value is currently:', result['imrkorean']);
   var wordList = result['imrkorean'];
   for (var wordkey in wordList) {
     let word = wordList[wordkey]
     //Step 1 - Create the regex
-    let regex = word.insensitive? new RegExp("(^|\\W|\\d)"+word.value+"($|\\W|\\d)",'gi'): new RegExp(word.value,'g');
-    console.log("testing for", regex);
+    let regex = word.caseSensitive? new RegExp("(^|\\W|\\d)"+word.value+"($|\\W|\\d)",'gi'): new RegExp(word.value,'g');
     //Step2 - find the regex-matching words and replace
     findAndReplaceDOMText((document.body),{
       preset: 'prose',
@@ -3805,7 +3797,6 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       portionMode: "first",
       replace: function(portion, match){
         if(portion.text.length < word.value.length){
-          console.log(`useless portion `,portion)
           return "";
         }
         //Step 2.1 - We create a span element and assign it a class
@@ -3827,7 +3818,6 @@ chrome.storage.sync.get(['imrkorean'], function(result){
     });
     //Step 3 - Add tooltip to all of the word translations
     var translations = document.querySelectorAll('.imr-'+word.value);
-    console.log(`Found ${translations.length} translations for ${word.value}/${word.translation}`)
     for (const translation of translations) {
       new Tooltip(translation, {
         placement: "bottom",

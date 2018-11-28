@@ -3,16 +3,17 @@ export class MainPage {
         this.reload = () => {
             chrome.runtime.sendMessage({ message: "reload" }, function (response) {
                 console.log("SENT GREETING atm");
-                console.log(response);
             });
         };
         this.settings = {
             value: "",
             translation: "",
-            insensitive: true,
+            caseSensitive: false,
             ignoreWhiteSpace: false
         };
         this.addWord = () => {
+            if (this.settings.value.length == 0)
+                return;
             chrome.storage.sync.get(['imrkorean'], (result) => {
                 let newItems = result['imrkorean'];
                 newItems[this.settings.value] = this.settings;

@@ -15,14 +15,13 @@ export class MainPage {
   reload = () =>{
       chrome.runtime.sendMessage({message: "reload"}, function(response) {
         console.log("SENT GREETING atm");
-        console.log(response);
       });
     
   }
   settings = {
     value: "",
     translation:"",
-    insensitive: true,
+    caseSensitive: false,
     ignoreWhiteSpace: false
   };
 
@@ -35,6 +34,8 @@ export class MainPage {
   }
 
   addWord = () =>{
+    if(this.settings.value.length == 0)
+      return
     chrome.storage.sync.get(['imrkorean'], (result) => {
       let newItems = result['imrkorean']
       newItems[this.settings.value] = this.settings
@@ -53,11 +54,11 @@ export class MainPage {
     return (
       <div class="main-wrapper">
         <button class="round" onClick={this.reload}><i class="fas fa-redo"></i></button>
-        <imr-language-list></imr-language-list>
+        <imr-language-list />
         <main>
           <h2>Immerse</h2>
-          <imr-input description="Old word" example="cat" onChange={(event:UIEvent) => this.valueBind(event)}></imr-input>
-          <imr-input description="New word" example="Katze" onChange={(event:UIEvent) => this.translationBind(event)}></imr-input>
+          <imr-input description="Old word" example="cat" onChange={(event:UIEvent) => this.valueBind(event)} />
+          <imr-input description="New word" example="Katze" onChange={(event:UIEvent) => this.translationBind(event)} />
           <button id="add-button" onClick={this.addWord}>Add</button>
         </main>
       </div>

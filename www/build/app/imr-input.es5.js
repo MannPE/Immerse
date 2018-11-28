@@ -56,16 +56,17 @@ App.loadBundle('imr-input', ['exports'], function (exports) {
             this.reload = function () {
                 chrome.runtime.sendMessage({ message: "reload" }, function (response) {
                     console.log("SENT GREETING atm");
-                    console.log(response);
                 });
             };
             this.settings = {
                 value: "",
                 translation: "",
-                insensitive: true,
+                caseSensitive: false,
                 ignoreWhiteSpace: false
             };
             this.addWord = function () {
+                if (_this.settings.value.length == 0)
+                    return;
                 chrome.storage.sync.get(['imrkorean'], function (result) {
                     var newItems = result['imrkorean'];
                     newItems[_this.settings.value] = _this.settings;

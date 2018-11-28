@@ -34,10 +34,18 @@ export class viewSettings {
     document.title = `PWAs`;
   }
 
-  openFile= () =>{
+  openFile = () =>{
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       console.log("started to open file")
       chrome.tabs.executeScript(tabs[0].id, {file: "extension/bg/importFile.js"});
+    });
+  }
+
+  exportFile = () => {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      console.log("saving file..")
+      chrome.tabs.executeScript(tabs[0].id, {file: "extension/bg/exportFile.js"});
+      console.log("Saving finished")
     });
   }
 
@@ -47,9 +55,13 @@ export class viewSettings {
         <div class="measure-lg">
           <h4>Import words</h4>
           <p>
-            <button onClick={this.openFile}> Choose File </button>
+            <button onClick={this.openFile}> IMPORT </button>
           </p>
-
+          
+          <h4>Export wordlist</h4>
+          <p>
+            <button onClick={this.exportFile}> EXPORT </button>
+          </p>
           <h4>Default settings</h4>
           <p>
             The Ionic PWA Toolkit uses the Stencil Router.

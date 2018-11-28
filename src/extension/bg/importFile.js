@@ -10,7 +10,7 @@ fileChooser.addEventListener('change', function (evt) {
         reader.onload = function(e) {
             var contents = e.target.result;
         /* Handle your document contents here */
-            console.log("These are the contents:",contents);
+            console.log("These are the contents:\n",contents);
             var arr = contents.split('\n'); 
             var jsonObj = [];
             var headers = arr[0].split(',');
@@ -23,6 +23,10 @@ fileChooser.addEventListener('change', function (evt) {
                 jsonObj.push(obj);
             }
             console.log(jsonObj);
+            var wordList = jsonObj
+            chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+                console.log(`Korean words have been set to`, wordList);
+            }
         }
         reader.readAsText(f);
   }

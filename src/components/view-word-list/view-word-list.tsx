@@ -41,7 +41,7 @@ export class ViewWordList {
             <imr-word-item 
               value = {word.value}
               translation = {word.translation}
-              insensitive = {word.insensitive}
+              insensitive = {word.caseSensitive}
               ignoreWhiteSpace = {word.ignoreWhiteSpace}
             />);
         }
