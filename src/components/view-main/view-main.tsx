@@ -59,7 +59,7 @@ export class MainPage {
           <h2>Immerse</h2>
           <imr-input description="Old word" example="cat" onChange={(event:UIEvent) => this.valueBind(event)} />
           <imr-input description="New word" example="Katze" onChange={(event:UIEvent) => this.translationBind(event)} />
-          <button id="add-button" onClick={this.addWord}>Add</button>
+          <button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>
         </main>
       </div>
     );

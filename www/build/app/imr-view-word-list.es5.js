@@ -16,16 +16,17 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
             console.log(this.words);
         };
         ViewWordList.prototype.setWords = function (any) {
-            this.words = any;
+            var filtered = any.filter(function (el) {
+                return el != null;
+            });
+            this.words = filtered;
             console.log("setting words", any, this.words);
         };
         ViewWordList.prototype.render = function () {
-            console.log("rendered", this.words);
             if (this.words) {
                 var wordItems = [];
                 for (var key in this.words) {
                     var word = this.words[key];
-                    console.log(word);
                     wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.caseSensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
                 }
                 return wordItems;
@@ -89,9 +90,9 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
                     if (element.value == _this.value)
                         break;
                 }
-                console.log("removing item in position:", index);
+                console.log("removing item in position:", index, newItems[index]);
                 delete newItems[index];
-                console.log("gonna sync now");
+                console.log("gonna sync now, with new items", newItems);
                 chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
                     console.log("deleting this");
                 };

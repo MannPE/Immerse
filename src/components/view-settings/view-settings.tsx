@@ -70,37 +70,7 @@ export class viewSettings {
             </stencil-route-link>
           </p>
 
-
-          <h4>Service Worker</h4>
-          <p>
-            When you run <code>npm run build</code> we automatically generate a Service Worker for you using <a href="https://workboxjs.org/">Workbox</a> that handles pre-caching your assets.
-
-            <stencil-route-link url="/docs/service-workers" class="block">
-              Read more about Service Workers
-            </stencil-route-link>
-          </p>
-
-          <h4>Web Manifest</h4>
-          <p>
-            By default we include a Web Manifest that has all the neccessary entries to get the Add to Homescreen prompt. You can see that
-            web manifest <a href="https://github.com/ionic-team/ionic-pwa-toolkit/blob/master/src/manifest.json">here</a>.
-          </p>
         </div>
-
-        <h3 class="push">PWAs built with Stencil</h3>
-        <div class="demo-card-list">
-          {this.demos.map(demo => {
-            return (
-              <demo-card
-                name={demo.title}
-                description={demo.description}
-                imgPath={demo.imgPath}
-                demoUrl={demo.demoUrl}
-                sourceUrl={demo.sourceUrl}></demo-card>
-            );
-          })}
-        </div>
-
       </div>
     );
   }

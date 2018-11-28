@@ -13,16 +13,17 @@ class ViewWordList {
         console.log(this.words);
     }
     setWords(any) {
-        this.words = any;
+        var filtered = any.filter(function (el) {
+            return el != null;
+        });
+        this.words = filtered;
         console.log("setting words", any, this.words);
     }
     render() {
-        console.log("rendered", this.words);
         if (this.words) {
             let wordItems = [];
             for (var key in this.words) {
                 let word = this.words[key];
-                console.log(word);
                 wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.caseSensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
             }
             return wordItems;
@@ -69,9 +70,9 @@ class WordItem {
                 if (element.value == this.value)
                     break;
             }
-            console.log("removing item in position:", index);
+            console.log("removing item in position:", index, newItems[index]);
             delete newItems[index];
-            console.log("gonna sync now");
+            console.log("gonna sync now, with new items", newItems);
             chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
                 console.log("deleting this");
             };

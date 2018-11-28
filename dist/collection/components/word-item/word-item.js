@@ -19,9 +19,9 @@ export class WordItem {
                 if (element.value == this.value)
                     break;
             }
-            console.log("removing item in position:", index);
+            console.log("removing item in position:", index, newItems[index]);
             delete newItems[index];
-            console.log("gonna sync now");
+            console.log("gonna sync now, with new items", newItems);
             chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
                 console.log("deleting this");
             };

@@ -272,34 +272,29 @@ pre {
     text-align: center;
     margin-bottom: 60px; } }
 
-.btn {
-  -webkit-transition: all .15s ease;
-  transition: all .15s ease;
-  text-decoration: none;
-  border: none;
+button {
   outline: none;
+  margin-top: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  min-height: 38px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: bold;
+  padding: .2em 2em;
+  white-space: nowrap;
   text-transform: uppercase;
-  padding: 16px 20px;
-  border-radius: 2px;
-  letter-spacing: 0.04em;
-  -webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  cursor: pointer; }
-  .btn:hover {
-    -webkit-transform: translateY(1px);
-    transform: translateY(1px);
-    -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08); }
-
-.btn--primary {
-  background: #5851ff;
-  color: #fff; }
-
-.btn-secondary {
-  color: #5851ff;
-  background: #fff; }
+  cursor: pointer;
+  -webkit-transform: all .2 ease;
+  transform: all .2 ease; }
+  button.imr-success {
+    background: #1E8AE7;
+    color: #ffffff; }
+    button.imr-success:focus {
+      background: #1A79C0;
+      -webkit-box-shadow: 0 0 6px 2px rgba(30, 138, 231, 0.6);
+      box-shadow: 0 0 6px 2px rgba(30, 138, 231, 0.6); }
+    button.imr-success:disabled, button.imr-success[disabled] {
+      background: #EBF2FA; }
 
 .text-link {
   -webkit-transition: border 0.3s;

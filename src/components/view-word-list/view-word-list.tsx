@@ -26,17 +26,18 @@ export class ViewWordList {
 
   @Method()
   setWords(any){
-    this.words = any;
+    var filtered = any.filter(function (el) {
+      return el != null;
+    });
+    this.words = filtered;
     console.log("setting words", any, this.words)
   }
 
   render() {
-    console.log("rendered",this.words);
     if(this.words){
       let wordItems = [];
         for(var key in this.words){
           let word=this.words[key];
-          console.log(word);
           wordItems.push(
             <imr-word-item 
               value = {word.value}

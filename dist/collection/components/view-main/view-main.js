@@ -43,7 +43,7 @@ export class MainPage {
                 h("h2", null, "Immerse"),
                 h("imr-input", { description: "Old word", example: "cat", onChange: (event) => this.valueBind(event) }),
                 h("imr-input", { description: "New word", example: "Katze", onChange: (event) => this.translationBind(event) }),
-                h("button", { id: "add-button", onClick: this.addWord }, "Add"))));
+                h("button", { id: "add-button", class: "imr-success", onClick: this.addWord }, "Add"))));
     }
     static get is() { return "imr-view-main"; }
     static get properties() { return {

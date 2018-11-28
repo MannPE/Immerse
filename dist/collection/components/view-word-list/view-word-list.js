@@ -10,16 +10,17 @@ export class ViewWordList {
         console.log(this.words);
     }
     setWords(any) {
-        this.words = any;
+        var filtered = any.filter(function (el) {
+            return el != null;
+        });
+        this.words = filtered;
         console.log("setting words", any, this.words);
     }
     render() {
-        console.log("rendered", this.words);
         if (this.words) {
             let wordItems = [];
             for (var key in this.words) {
                 let word = this.words[key];
-                console.log(word);
                 wordItems.push(h("imr-word-item", { value: word.value, translation: word.translation, insensitive: word.caseSensitive, ignoreWhiteSpace: word.ignoreWhiteSpace }));
             }
             return wordItems;

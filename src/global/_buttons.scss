@@ -1,29 +1,33 @@
-.btn {
-  transition: all .15s ease;
-  text-decoration: none;
-  border: none;
+$buttonPrimaryBackground: #1E8AE7;
+$buttonPrimaryColor: #ffffff;
+$buttonPrimaryBackground_Focused: #1A79C0;
+$buttonPrimaryBackground_Disabled: #EBF2FA;
+
+button {
   outline: none;
+  margin-top:5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  min-height: 38px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: bold;
+  padding: .2em 2em;
+  white-space: nowrap;
   text-transform: uppercase;
-  padding: 16px 20px;
-  border-radius: 2px;
-  letter-spacing: 0.04em;
-  box-shadow: $button-shadow;
   cursor: pointer;
+  transform: all .2 ease;
+  &.imr-success {
+    background: $buttonPrimaryBackground;
+    color: $buttonPrimaryColor;
 
-  &:hover {
-    transform: translateY(1px);
-    box-shadow: $button-shadow-hover;
+    &:focus {
+        background: $buttonPrimaryBackground_Focused;
+        box-shadow: 0 0 6px 2px rgba(30,138,231,0.6);
+    }
+
+    &:disabled,
+    &[disabled] {
+        background: $buttonPrimaryBackground_Disabled;
+    }
   }
-}
-
-.btn--primary {
-  background: $color-dodger-blue;
-  color: $color-white;
-}
-
-.btn-secondary {
-  color: $color-dodger-blue;
-  background: $color-white;
 }

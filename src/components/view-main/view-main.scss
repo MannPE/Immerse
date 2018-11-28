@@ -1,4 +1,6 @@
 @import '../../global/variables';
+@import '../../global/buttons';
+
 
 imr-view-main {
   .main-wrapper {
@@ -32,20 +34,7 @@ imr-view-main {
     margin-top: 20px;
   }
 
-  button {
-    margin: 8px;
-    border: none;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 16px 20px;
-    border-radius: 2px;
-    box-shadow: $button-shadow;
-    outline: none;
-    letter-spacing: 0.04em;
-    transition: all .15s ease;
-    cursor: pointer;
-  }
+
 
   button:hover {
     box-shadow: $button-shadow-hover;
