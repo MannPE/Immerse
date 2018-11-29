@@ -91,10 +91,9 @@ App.loadBundle('imr-view-word-list', ['exports'], function (exports) {
                         break;
                 }
                 console.log("removing item in position:", index, newItems[index]);
-                delete newItems[index];
+                newItems.splice(index, 1);
                 console.log("gonna sync now, with new items", newItems);
                 chrome.storage.sync.set({ 'imrkorean': newItems }), function () {
-                    console.log("deleting this");
                 };
                 _this._el.parentElement.setWords(newItems);
             });

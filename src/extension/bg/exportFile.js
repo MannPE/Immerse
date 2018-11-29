@@ -6,6 +6,7 @@ chrome.storage.sync.get(['imrkorean'],function(result ){
 
   function arrayToCsvRows(values) {
     let finalRows = [["","value", "translation", "caseSensitive", "ignoreWhiteSpace"]];
+    console.log("values being saved:", values)
     values.forEach(imrWord => {
       finalRows.push([imrWord.value, imrWord.translation, imrWord.caseSensitive, imrWord.ignoreWhiteSpace]);
     });
@@ -18,6 +19,8 @@ chrome.storage.sync.get(['imrkorean'],function(result ){
        let row = rowArray.join(",");
        csvContent += row + "\r\n";
     }); 
+    csvContent = csvContent.slice(0, -2); // "12345.0"
+
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);

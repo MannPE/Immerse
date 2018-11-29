@@ -37,10 +37,9 @@ export class WordItem {
           break;
       }
       console.log("removing item in position:",index, newItems[index]);
-      delete newItems[index];  
+      newItems.splice(index, 1);
       console.log("gonna sync now, with new items", newItems);
       chrome.storage.sync.set({'imrkorean':newItems}), function(){
-        console.log("deleting this")
       }
       this._el.parentElement.setWords(newItems);
     });
