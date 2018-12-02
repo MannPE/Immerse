@@ -3784,8 +3784,29 @@ chrome.storage.sync.get(['imrkorean'],function(result ){
   }
 });
 
+var lastTimer = performance.now();
 chrome.storage.sync.get(['imrkorean'], function(result){
   var wordList = result['imrkorean'];
+  replaceAllTheStuff(wordList);
+  let dom_observer = new MutationObserver(function(mutation) {
+    let newTimer = performance.now();
+    if(newTimer - lastTimer > 2000){
+      console.log('SOME MUTATION HAPPENED and 2s selapsed', newTimer, lastTimer);
+      replaceAllTheStuff(wordList);
+      lastTimer = newTimer;
+    }
+  });
+  var container =  document.body;
+  console.log("new container",container);
+  var config = { attributes: true, childList: true, characterData: true, subtree:true };
+  dom_observer.observe(document.body, config);
+  
+})
+
+
+
+
+function replaceAllTheStuff(wordList){
   for (var wordkey in wordList) {
     let word = wordList[wordkey]
     //Step 1 - Create the regex
@@ -3826,4 +3847,4 @@ chrome.storage.sync.get(['imrkorean'], function(result){
       });
     }
   }
-})
+}
