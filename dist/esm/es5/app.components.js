@@ -14,9 +14,9 @@ export var AppRoot = ["imr-app-root",function(){return(import("./imr-app-header.
 
 export var Input = ["imr-input",function(){return(import("./imr-input.js")).then(function(m){return m.ImrInput})},1,[["description",1,0,1,2],["example",1,0,1,2],["word",1,0,1,2]]];
 
-export var LanguageCard = ["imr-language-card",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
+export var LanguageCard = ["imr-language-card",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageCard})},1,[["alt",1,0,1,2],["imgPath",1,0,"img-path",2],["name",1,0,1,2]]];
 
-export var LanguageList = ["imr-language-list",function(){return(import("./imr-language-card.js")).then(function(m){return m.ImrLanguageList})},1];
+export var LanguageList = ["imr-language-list",function(){return(import("./imr-input.js")).then(function(m){return m.ImrLanguageList})},1];
 
 export var MainPage = ["imr-view-main",function(){return(import("./imr-input.js")).then(function(m){return m.ImrViewMain})},1,[["el",7]]];
 

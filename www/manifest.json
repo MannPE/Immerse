@@ -15,7 +15,6 @@
     "128": "assets/img/icon.png"
   },
   "permissions": [
-    "tabs",
     "activeTab",
     "https://*/*",
     "http://*/*",

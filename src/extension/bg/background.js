@@ -25,11 +25,7 @@
       console.log(sender.tab ?
                   "from a content script:" + sender.tab.url :
                   "from the extension",request);
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, function (tabs) {
-        for (const tab of tabs) {
-          runFile('extension/bg/tabAction.js',tab.id);
-        }
-      });
+          runFile('extension/bg/tabAction.js',null);
     });
 
 
