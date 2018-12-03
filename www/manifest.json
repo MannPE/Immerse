@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Immerse",
-  "description": "This extension is an advanced find/replace extension focused on language learning through seeing vocabulary in your day to day life.",
-  "version": "1.0.2",
+  "description": "An advanced find/replace focused on language learning through seeing vocabulary in your day to day life.",
+  "version": "1.0.3",
 
   "browser_action": {
     "default_popup": "index.html",

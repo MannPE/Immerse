@@ -3792,6 +3792,7 @@ chrome.storage.sync.get(['imrkorean'], function(result){
     let newTimer = performance.now();
     if(newTimer - lastTimer > 2000){
       console.log('SOME MUTATION HAPPENED and 2s selapsed', newTimer, lastTimer);
+      removeAllTooltips();
       replaceAllTheStuff(wordList);
       lastTimer = newTimer;
     }
@@ -3847,4 +3848,12 @@ function replaceAllTheStuff(wordList){
       });
     }
   }
+}
+
+function removeAllTooltips(){
+  var paras = document.getElementsByClassName('immerse-tooltip');
+
+  while(paras[0]) {
+      paras[0].parentNode.removeChild(paras[0]);
+  }​
 }
