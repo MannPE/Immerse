@@ -3802,7 +3802,7 @@ chrome.storage.sync.get(['imrkorean'], function(result){
   var config = { attributes: true, childList: true, characterData: true, subtree:true };
   dom_observer.observe(document.body, config);
   
-})
+});
 
 
 
@@ -3853,7 +3853,6 @@ function replaceAllTheStuff(wordList){
 function removeAllTooltips(){
   var paras = document.getElementsByClassName('immerse-tooltip');
 
-  while(paras[0]) {
-      paras[0].parentNode.removeChild(paras[0]);
-  }​
+  while(paras[0])
+      paras[0].parentNode.removeChild(paras[0])
 }
