@@ -9,9 +9,7 @@ imr-view-main {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-top: 1em;
     min-height: 420px;
-
   }
 
 
@@ -49,6 +47,25 @@ imr-view-main {
 
     &.future-proof::before {
       background-position: 0 -96px;
+    }
+  }
+}
+
+
+.toolbar{
+  //display: flex;
+  width:100%;
+  justify-content: right;
+  .toolbar-icon{
+    width: 25px;
+    height: 25px;
+    float:right;
+    cursor: pointer;
+    &.inactive{
+      color: gray;
+    }
+    &.danger{
+      color: red;
     }
   }
 }

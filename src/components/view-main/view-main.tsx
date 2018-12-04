@@ -1,4 +1,6 @@
-import { Component, Element } from '@stencil/core';
+import { Component, Element, State } from '@stencil/core';
+import { Ban } from './icons'
+
 @Component({
   tag: 'imr-view-main',
   styleUrl: 'view-main.scss'
@@ -7,6 +9,7 @@ export class MainPage {
 
 
   @Element() el: Element;
+  @State() pageBlocked: boolean = false;
 
   constructor() {
     document.title = `Immerse`;
@@ -76,13 +79,23 @@ export class MainPage {
     if(!finished) //the item will go at the end of the array
       array.push(item);
   }
-  render() {
 
-    return (
+  getActiveUrl(){
+    chrome.tabs.getCurrent((res) => {
+      console.log("current tab is:", res)
+    })
+  }
+
+  render() {
+    return [
+      <div class="toolbar">
+     <i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")} > <Ban /> </i>
+      </div>,
       <div class="main-wrapper">
-          <h2> Immerse </h2>
+          <img width="150" src="assets/img/flags/kr.svg" />
+          <h1> Immerse </h1>
           <imr-input description="Word" example="yes" onChange={(event:UIEvent) => this.valueBind(event)} />
-          <imr-input description="Replaced value" example="네" onChange={(event:UIEvent) => this.translationBind(event)} />
+          <imr-input description="Translation" example="네" onChange={(event:UIEvent) => this.translationBind(event)} />
           <div class="main-settings">
             <div class="checkbox-setting">
               <input type="checkbox" /> <span>Case Sensitive </span>
@@ -93,6 +106,6 @@ export class MainPage {
           </div>
           <button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>
       </div>
-    );
+    ];
   }
 }

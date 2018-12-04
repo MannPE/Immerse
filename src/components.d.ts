@@ -27,20 +27,12 @@ declare global {
 
   namespace StencilComponents {
 
-    interface AppBurger {
-      'toggleLeftSidebar': () => void;
-    }
-
     interface ImrAppHeader {
 
     }
 
     interface AppIcon {
       'name': string;
-    }
-
-    interface AppMarked {
-      'doc': string;
     }
 
     interface ImrAppRoot {
@@ -60,23 +52,6 @@ declare global {
     }
 
     interface ImrLanguageList {
-
-    }
-
-    interface LazyIframe {
-      'frameBorder': string;
-      'height': string;
-      'name': string;
-      'scrolling': string;
-      'src': string;
-      'width': string;
-    }
-
-    interface NotfoundPage {
-
-    }
-
-    interface ResourcesPage {
 
     }
 
@@ -104,14 +79,6 @@ declare global {
   }
 
 
-    interface HTMLAppBurgerElement extends StencilComponents.AppBurger, HTMLStencilElement {}
-
-    var HTMLAppBurgerElement: {
-      prototype: HTMLAppBurgerElement;
-      new (): HTMLAppBurgerElement;
-    };
-    
-
     interface HTMLImrAppHeaderElement extends StencilComponents.ImrAppHeader, HTMLStencilElement {}
 
     var HTMLImrAppHeaderElement: {
@@ -125,14 +92,6 @@ declare global {
     var HTMLAppIconElement: {
       prototype: HTMLAppIconElement;
       new (): HTMLAppIconElement;
-    };
-    
-
-    interface HTMLAppMarkedElement extends StencilComponents.AppMarked, HTMLStencilElement {}
-
-    var HTMLAppMarkedElement: {
-      prototype: HTMLAppMarkedElement;
-      new (): HTMLAppMarkedElement;
     };
     
 
@@ -165,30 +124,6 @@ declare global {
     var HTMLImrLanguageListElement: {
       prototype: HTMLImrLanguageListElement;
       new (): HTMLImrLanguageListElement;
-    };
-    
-
-    interface HTMLLazyIframeElement extends StencilComponents.LazyIframe, HTMLStencilElement {}
-
-    var HTMLLazyIframeElement: {
-      prototype: HTMLLazyIframeElement;
-      new (): HTMLLazyIframeElement;
-    };
-    
-
-    interface HTMLNotfoundPageElement extends StencilComponents.NotfoundPage, HTMLStencilElement {}
-
-    var HTMLNotfoundPageElement: {
-      prototype: HTMLNotfoundPageElement;
-      new (): HTMLNotfoundPageElement;
-    };
-    
-
-    interface HTMLResourcesPageElement extends StencilComponents.ResourcesPage, HTMLStencilElement {}
-
-    var HTMLResourcesPageElement: {
-      prototype: HTMLResourcesPageElement;
-      new (): HTMLResourcesPageElement;
     };
     
 
@@ -227,17 +162,12 @@ declare global {
   namespace JSX {
     interface Element {}
     export interface IntrinsicElements {
-    'app-burger': JSXElements.AppBurgerAttributes;
     'imr-app-header': JSXElements.ImrAppHeaderAttributes;
     'app-icon': JSXElements.AppIconAttributes;
-    'app-marked': JSXElements.AppMarkedAttributes;
     'imr-app-root': JSXElements.ImrAppRootAttributes;
     'imr-input': JSXElements.ImrInputAttributes;
     'imr-language-card': JSXElements.ImrLanguageCardAttributes;
     'imr-language-list': JSXElements.ImrLanguageListAttributes;
-    'lazy-iframe': JSXElements.LazyIframeAttributes;
-    'notfound-page': JSXElements.NotfoundPageAttributes;
-    'resources-page': JSXElements.ResourcesPageAttributes;
     'imr-view-main': JSXElements.ImrViewMainAttributes;
     'imr-view-settings': JSXElements.ImrViewSettingsAttributes;
     'imr-view-word-list': JSXElements.ImrViewWordListAttributes;
@@ -247,20 +177,12 @@ declare global {
 
   namespace JSXElements {
 
-    export interface AppBurgerAttributes extends HTMLAttributes {
-      'toggleLeftSidebar'?: () => void;
-    }
-
     export interface ImrAppHeaderAttributes extends HTMLAttributes {
 
     }
 
     export interface AppIconAttributes extends HTMLAttributes {
       'name'?: string;
-    }
-
-    export interface AppMarkedAttributes extends HTMLAttributes {
-      'doc'?: string;
     }
 
     export interface ImrAppRootAttributes extends HTMLAttributes {
@@ -280,23 +202,6 @@ declare global {
     }
 
     export interface ImrLanguageListAttributes extends HTMLAttributes {
-
-    }
-
-    export interface LazyIframeAttributes extends HTMLAttributes {
-      'frameBorder'?: string;
-      'height'?: string;
-      'name'?: string;
-      'scrolling'?: string;
-      'src'?: string;
-      'width'?: string;
-    }
-
-    export interface NotfoundPageAttributes extends HTMLAttributes {
-
-    }
-
-    export interface ResourcesPageAttributes extends HTMLAttributes {
 
     }
 
@@ -323,17 +228,12 @@ declare global {
   }
 
   interface HTMLElementTagNameMap {
-    'app-burger': HTMLAppBurgerElement
     'imr-app-header': HTMLImrAppHeaderElement
     'app-icon': HTMLAppIconElement
-    'app-marked': HTMLAppMarkedElement
     'imr-app-root': HTMLImrAppRootElement
     'imr-input': HTMLImrInputElement
     'imr-language-card': HTMLImrLanguageCardElement
     'imr-language-list': HTMLImrLanguageListElement
-    'lazy-iframe': HTMLLazyIframeElement
-    'notfound-page': HTMLNotfoundPageElement
-    'resources-page': HTMLResourcesPageElement
     'imr-view-main': HTMLImrViewMainElement
     'imr-view-settings': HTMLImrViewSettingsElement
     'imr-view-word-list': HTMLImrViewWordListElement
@@ -341,17 +241,12 @@ declare global {
   }
 
   interface ElementTagNameMap {
-    'app-burger': HTMLAppBurgerElement;
     'imr-app-header': HTMLImrAppHeaderElement;
     'app-icon': HTMLAppIconElement;
-    'app-marked': HTMLAppMarkedElement;
     'imr-app-root': HTMLImrAppRootElement;
     'imr-input': HTMLImrInputElement;
     'imr-language-card': HTMLImrLanguageCardElement;
     'imr-language-list': HTMLImrLanguageListElement;
-    'lazy-iframe': HTMLLazyIframeElement;
-    'notfound-page': HTMLNotfoundPageElement;
-    'resources-page': HTMLResourcesPageElement;
     'imr-view-main': HTMLImrViewMainElement;
     'imr-view-settings': HTMLImrViewSettingsElement;
     'imr-view-word-list': HTMLImrViewWordListElement;
