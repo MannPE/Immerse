@@ -31,7 +31,7 @@
 
   function runFile(fileName, tabId){
     console.log("tab was fully loaded, tab");
-    chrome.tabs.executeScript(tabId, {
+    chrome.tabs.executeScript({
       file: fileName
     }, function(response){
       if(response){
