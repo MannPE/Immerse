@@ -3789,7 +3789,7 @@ chrome.storage.local.get(['imrkorean'], function(result){
   let dom_observer = new MutationObserver(function(mutation) {
     let newTimer = performance.now();
     if(newTimer - lastTimer > 2000){
-      console.log('SOME MUTATION HAPPENED and 2s selapsed', newTimer, lastTimer);
+      console.log('Immerse reloaded words since content changed', newTimer, lastTimer);
       removeAllTooltips();
       replaceAllTheStuff(wordList);
       lastTimer = newTimer;

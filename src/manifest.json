@@ -3,7 +3,7 @@
 
   "name": "Immerse",
   "description": "An advanced find/replace focused on language learning through seeing vocabulary in your day to day life.",
-  "version": "1.0.3",
+  "version": "1.0.5",
 
   "browser_action": {
     "default_popup": "index.html",
@@ -19,7 +19,8 @@
     "https://*/*",
     "http://*/*",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "tabs"
   ],
   "background": {
     "page": "extension/bg/background.html",

@@ -26,7 +26,6 @@ fileChooser.addEventListener('change', function (evt) {
             var wordList = jsonObj;
             orderArrayAlphabetically(wordList);
             chrome.storage.local.set({'imrkorean':wordList}), function(words){
-
                 console.log(`Korean words have been set to`, wordList);
             }
         }
