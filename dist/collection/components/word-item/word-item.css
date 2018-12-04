@@ -1,9 +1,0 @@
-imr-word-item {
-  font-size: 1.5em;
-  width: 100%; }
-  imr-word-item a:hover {
-    cursor: pointer; }
-  imr-word-item .far {
-    opacity: 0.4; }
-    imr-word-item .far:hover {
-      opacity: 1; }
