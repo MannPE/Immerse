@@ -13,9 +13,8 @@ export class ViewWordList {
 
   componentWillLoad(){
     console.log("Will load");
-    chrome.storage.sync.get(['imrkorean'], (result) => {
+    chrome.storage.local.get(['imrkorean'], (result) => {
       this.setWords(result['imrkorean']);
-      console.log("words loaded into wordlist",this.words);
     });
   }
 
@@ -30,7 +29,7 @@ export class ViewWordList {
       return el != null;
     });
     this.words = filtered;
-    console.log("setting words", any, this.words)
+    console.log("Found the following words: ",  this.words)
   }
 
   render() {

@@ -23,8 +23,10 @@ fileChooser.addEventListener('change', function (evt) {
                 jsonObj.push(obj);
             }
             console.log(jsonObj);
-            var wordList = jsonObj
-            chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+            var wordList = jsonObj;
+            orderArrayAlphabetically(wordList);
+            chrome.storage.local.set({'imrkorean':wordList}), function(words){
+
                 console.log(`Korean words have been set to`, wordList);
             }
         }
@@ -34,3 +36,14 @@ fileChooser.addEventListener('change', function (evt) {
 
 document.body.appendChild(fileChooser);
 fileChooser.click();
+
+
+
+
+function orderArrayAlphabetically(objArray){
+    objArray.sort(function(a, b) {
+      var textA = a.value.toUpperCase();
+      var textB = b.value.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+}

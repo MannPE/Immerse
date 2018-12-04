@@ -22,7 +22,6 @@ export class Input {
 
   @Watch('word')
   render() {
-    console.log("RENDERING INPUT", this.word);
     return (
       <div>
         <div class="translate-input">

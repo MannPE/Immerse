@@ -1,5 +1,5 @@
 console.log("saving file");
-chrome.storage.sync.get(['imrkorean'],function(result ){
+chrome.storage.local.get(['imrkorean'],function(result ){
     exportToCsv(arrayToCsvRows(Object.values(result['imrkorean'])));
   });
 

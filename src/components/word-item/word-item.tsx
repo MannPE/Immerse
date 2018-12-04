@@ -28,7 +28,7 @@ export class WordItem {
 
   removeItem(){
     console.log("REMOVING ^");
-    chrome.storage.sync.get(['imrkorean'], (result) => {
+    chrome.storage.local.get(['imrkorean'], (result) => {
       let newItems = result['imrkorean']
       let index=0;
       for (; index < newItems.length; index++) {
@@ -39,7 +39,7 @@ export class WordItem {
       console.log("removing item in position:",index, newItems[index]);
       newItems.splice(index, 1);
       console.log("gonna sync now, with new items", newItems);
-      chrome.storage.sync.set({'imrkorean':newItems}), function(){
+      chrome.storage.local.set({'imrkorean':newItems}), function(){
       }
       this._el.parentElement.setWords(newItems);
     });

@@ -3768,24 +3768,22 @@ return Tooltip;
 	STOP HERE
 */
 
-chrome.storage.sync.get(['imrkorean'],function(result ){
+chrome.storage.local.get(['imrkorean'],function(result ){
   console.log("Loaded words from imrkorean");
   if(Object.keys(result).length === 0 && result.constructor === Object){
     var wordList = 
           {
             "thank you":{value:"thank you", translation:"감사합니다 ", caseSensitive:false, ignoreWhiteSpace: false},
-            "computer":{value:"computer", translation:"컴퓨터", caseSensitive:false, ignoreWhiteSpace: true},
-            "file":{value:"file", translation:"파일", caseSensitive:false, ignoreWhiteSpace: false},
             "yes":{value:"yes", translation:"네", caseSensitive:false, ignoreWhiteSpace: false}
           }
-    chrome.storage.sync.set({'imrkorean':wordList}), function(words){
+    chrome.storage.local.set({'imrkorean':wordList}), function(words){
       console.log(`Korean words have been set to`, wordList);
     }
   }
 });
 
 var lastTimer = performance.now();
-chrome.storage.sync.get(['imrkorean'], function(result){
+chrome.storage.local.get(['imrkorean'], function(result){
   var wordList = result['imrkorean'];
   replaceAllTheStuff(wordList);
   let dom_observer = new MutationObserver(function(mutation) {

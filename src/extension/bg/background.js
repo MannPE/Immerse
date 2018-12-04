@@ -6,7 +6,7 @@
 
   chrome.tabs.onUpdated.addListener(function (tabId , info) {
     if (info.status === 'complete') {
-      console.log("stuff is complete");
+      console.log("Tab has been updated..");
       runFile('extension/bg/tabAction.js',tabId);
     }
   });
@@ -28,9 +28,8 @@
           runFile('extension/bg/tabAction.js',null);
     });
 
-
   function runFile(fileName, tabId){
-    console.log("tab was fully loaded, tab");
+    console.log("Executing immerse on current tab");
     chrome.tabs.executeScript(tabId, {
       file: fileName
     }, function(response){

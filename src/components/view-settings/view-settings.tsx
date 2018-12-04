@@ -6,30 +6,6 @@ import { Component } from '@stencil/core';
 })
 export class viewSettings {
 
-  demos = [
-    {
-      title: 'Stenciljs.com',
-      description: 'Yep, this site is built as a PWA!',
-      imgPath: '/assets/img/demos/demo-stenciljs',
-      demoUrl: 'https://stenciljs.com/',
-      sourceUrl: 'https://github.com/ionic-team/stencil-site',
-    },
-    {
-      title: 'IonicHN',
-      description: 'Hacker News PWA built with @stencil/core and @ionic/core',
-      imgPath: '/assets/img/demos/demo-ionichn',
-      demoUrl: 'https://corehacker-10883.firebaseapp.com/',
-      sourceUrl: 'https://github.com/ionic-team/ionic-stencil-hn-app'
-    },
-    {
-      title: 'Stencil Fiber demo',
-      description: 'This showcases the runtime performance of stencil using our async rendering',
-      imgPath: '/assets/img/demos/demo-fiber',
-      demoUrl: 'https://stencil-fiber-demo.firebaseapp.com/',
-      sourceUrl: 'https://github.com/ionic-team/stencil-fiber-demo'
-    },
-  ];
-
   constructor() {
     document.title = `PWAs`;
   }
@@ -62,12 +38,24 @@ export class viewSettings {
           <p>
             <button onClick={this.exportFile}> EXPORT </button>
           </p>
-          <h4>Default settings</h4>
+          <h4>About</h4>
           <p>
-            The Ionic PWA Toolkit uses the Stencil Router.
-            <stencil-route-link url="docs/routing" class="block">
-              Read more about the Stencil Router
-            </stencil-route-link>
+            <h4> ~Permissions</h4>
+            <ul>
+              <li> activeTab : Runs the script to replace the words on the currently active tab and then stays in the background listening to changes </li>
+              <li> all navigation data: This app needs to be able to run on pretty much every webpage. It requests access to all http and https websites</li>
+              <li> storage: Utilizes your browser local storage to store the wordlist, translation and settings. Has a 5MB limit.</li>
+              <li> contextMenus: Adds a menu item "Add 'word' to immerse" that redirects you to a google translation which you can then copy into the extension</li>
+            </ul>
+          </p>
+          <p>
+            <h4> ~Licenses/Tools </h4>
+            This application was created thanks to the following libraries and resources:
+            <ul>
+              <li> <a href="https://fontawesome.com/license" target="_blank" rel="noopener" > Font-awesome </a> </li>
+              <li> <a href="https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md" target="_blank" rel="noopener"> Popper JS </a> </li>
+              <li> <a href="https://github.com/ionic-team/stencil/blob/master/LICENSE" target="_blank" rel="noopener" > Stencil JS </a> </li>
+            </ul>
           </p>
 
         </div>

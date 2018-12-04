@@ -19,7 +19,6 @@
     "https://*/*",
     "http://*/*",
     "storage",
-    "fileSystem",
     "contextMenus"
   ],
   "background": {
