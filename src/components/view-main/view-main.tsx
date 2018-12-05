@@ -1,6 +1,6 @@
-import { Component, Element, State } from '@stencil/core';
+import { Component, Element, State, Watch, Prop } from '@stencil/core';
 import { Ban } from './icons'
-import { extractHostname, extractRootDomain } from './utils'
+import { extractHostname } from './utils'
 
 @Component({
   tag: 'imr-view-main',
@@ -12,7 +12,7 @@ export class MainPage {
   @Element() el: Element;
   @State() pageBlocked: boolean = false;
   blockedDomains: any= [];
-  currentDomain: string = "";
+  @Prop({mutable:true})currentDomain: string = "";
 
   settings = {
     value: "",
@@ -76,6 +76,7 @@ export class MainPage {
     });
   }
 
+  @Watch("currentDomain")
   render() {
     return (
       <div class="main-wrapper">

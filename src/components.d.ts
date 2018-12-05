@@ -6,8 +6,8 @@
 
 import '@stencil/core';
 
-import '@stencil/state-tunnel';
 import '@stencil/router';
+import '@stencil/state-tunnel';
 
 
 
@@ -56,7 +56,7 @@ declare global {
     }
 
     interface ImrViewMain {
-
+      'currentDomain': string;
     }
 
     interface ImrViewSettings {
@@ -206,7 +206,7 @@ declare global {
     }
 
     export interface ImrViewMainAttributes extends HTMLAttributes {
-
+      'currentDomain'?: string;
     }
 
     export interface ImrViewSettingsAttributes extends HTMLAttributes {
