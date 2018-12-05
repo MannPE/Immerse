@@ -36,8 +36,6 @@ export class MainPage {
         }
       });
     });
-
-    
   }
 
   addWord = () =>{
