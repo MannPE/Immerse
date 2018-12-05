@@ -77,13 +77,13 @@ export class MainPage {
   }
 
   render() {
-    return [
-      <div class="toolbar">
-     <i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")}
-        title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
-        onClick={this.toggleBlockedDomain}> <Ban /> </i>
-      </div>,
+    return (
       <div class="main-wrapper">
+          <div class="toolbar">
+            <i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")}
+              title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
+              onClick={this.toggleBlockedDomain}> <Ban /> </i>
+          </div>
           <img width="150" src="assets/img/flags/kr.svg" />
           <h1> Immerse </h1>
           <imr-input description="Word" example="yes" onChange={(event:UIEvent) => this.valueBind(event)} />
@@ -98,7 +98,7 @@ export class MainPage {
           </div>
           <button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>
       </div>
-    ];
+    );
   }
 
   valueBind(event){

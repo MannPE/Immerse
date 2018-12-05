@@ -12,6 +12,7 @@
         chrome.storage.sync.get(['imrdomains'], (result) => {
           let blockedDomains = result['imrdomains'];
           if(!blockedDomains[currentDomain]){
+            console.log("Immerse will be run in", tabs[0].url)
             runFile('extension/bg/tabAction.js',tabId);
           }else{
             console.log("Immerse will not run in",currentDomain);
@@ -37,7 +38,7 @@
 
   //Check if a wordlist already exists, if not then set it to thank you and yes words to be substituted
   chrome.storage.local.get(['imrkorean'],function(result ){
-    console.log("Loaded words from imrkorean");
+    console.log("Loaded words from imrkorean:", result);
     if(Object.keys(result).length === 0 && result.constructor === Object){
       var wordList = 
             {
@@ -60,17 +61,16 @@
     }
   });
 
-  //run all the good stuff when receiving a message.
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      console.log(sender.tab ?
-                  "from a content script:" + sender.tab.url :
-                  "from the extension",request);
-          runFile('extension/bg/tabAction.js',null);
-    });
+  // //run all the good stuff when receiving a message.
+  // chrome.runtime.onMessage.addListener(
+  //   function(request, sender, sendResponse) {
+  //     console.log(sender.tab ?
+  //                 "from a content script:" + sender.tab.url :
+  //                 "from the extension",request);
+  //         runFile('extension/bg/tabAction.js',null);
+  //   });
 
   function runFile(fileName, tabId){
-    console.log("Executing immerse on current tab");
     try{
       chrome.tabs.executeScript(tabId, {
         file: fileName
