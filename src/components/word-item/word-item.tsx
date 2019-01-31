@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Element } from '@stencil/core';
 
 /**
  * @export
@@ -19,7 +19,7 @@ import { Component, Prop } from '@stencil/core';
 export class WordItem {
   @Prop() value: string;
   @Prop() translation: string;
-  @Prop() type: string;
+  @Prop() type: string;s
   @Prop() singular: boolean;
   @Prop() insensitive: boolean;
   @Prop() ignoreWhiteSpace: boolean;
@@ -39,9 +39,9 @@ export class WordItem {
       console.log("removing item in position:",index, newItems[index]);
       newItems.splice(index, 1);
       console.log("gonna sync now, with new items", newItems);
-      chrome.storage.local.set({'imrkorean':newItems}), function(){
-      }
-      this._el.parentElement.setWords(newItems);
+      chrome.storage.local.set({'imrkorean':newItems}, function(){
+      });
+      (this._el.parentElement as any).setWords(newItems);
     });
   }
 

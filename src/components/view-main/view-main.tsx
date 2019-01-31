@@ -38,7 +38,7 @@ export class MainPage {
     });
   }
 
-  addWord = () =>{
+  addWord = () => {
     if(this.settings.value.length == 0)
       return
     console.log("Adding the following word:", this.settings);
@@ -50,7 +50,7 @@ export class MainPage {
       chrome.storage.local.set({'imrkorean':newItems}), function(msg){
         console.log("adding word to list: "+msg)
       }
-      let inputs  = this.el.querySelectorAll("input")
+      let inputs = Array.from(this.el.querySelectorAll("input"));
       inputs.forEach(function(imrinput){
         imrinput.value = "";
       });

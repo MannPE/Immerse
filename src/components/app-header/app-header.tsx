@@ -1,4 +1,4 @@
-import { Component, Element, Listen, State } from '@stencil/core';
+import { Component, Element } from '@stencil/core';
 
 @Component({
   tag: 'imr-app-header',
