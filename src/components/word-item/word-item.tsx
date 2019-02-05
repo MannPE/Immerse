@@ -1,4 +1,4 @@
-import { Component, Prop, Element } from '@stencil/core';
+import { Component, Prop } from '@stencil/core';
 
 /**
  * @export
@@ -23,38 +23,18 @@ export class WordItem {
   @Prop() singular: boolean;
   @Prop() insensitive: boolean;
   @Prop() ignoreWhiteSpace: boolean;
-  @Element() _el: HTMLElement;
-
-
-  removeItem(){
-    console.log("REMOVING ^");
-    chrome.storage.local.get(['imrkorean'], (result) => {
-      let newItems = result['imrkorean']
-      let index=0;
-      for (; index < newItems.length; index++) {
-        const element = newItems[index];
-        if(element.value == this.value)
-          break;
-      }
-      console.log("removing item in position:",index, newItems[index]);
-      newItems.splice(index, 1);
-      console.log("gonna sync now, with new items", newItems);
-      chrome.storage.local.set({'imrkorean':newItems}, function(){
-      });
-      (this._el.parentElement as any).setWords(newItems);
-    });
-  }
+  @Prop() onDelete: Function;
 
   render() {
     var trashstyle = {color:"red"}
     var checkstyle = {color:"green"}
     return [
-          <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
-            {this.value}
-          </span>,
-          <input type="text" value={this.translation}/>,
-          <a onClick={()=>this.removeItem()}><i class="far fa-trash-alt" style={trashstyle}></i></a>,
-          <a><i class="far fa-check-circle" style={checkstyle}></i></a>
+      <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
+        {this.value}
+      </span>,
+      <input type="text" value={this.translation}/>,
+      <a onClick={() => this.onDelete() }><i class="far fa-trash-alt" style={trashstyle}></i></a>,
+      <a><i class="far fa-check-circle" style={checkstyle}></i></a>
     ];
   }
 }

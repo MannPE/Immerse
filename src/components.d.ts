@@ -10,6 +10,9 @@ import '@stencil/router';
 import '@stencil/state-tunnel';
 
 
+import {
+  ImmerseWord,
+} from './storage-manager/types';
 
 
 declare global {
@@ -64,13 +67,13 @@ declare global {
     }
 
     interface ImrViewWordList {
-      'loadWords': () => void;
-      'setWords': (any: any) => void;
+      'setWords': (any: ImmerseWord[]) => void;
     }
 
     interface ImrWordItem {
       'ignoreWhiteSpace': boolean;
       'insensitive': boolean;
+      'onDelete': Function;
       'singular': boolean;
       'translation': string;
       'type': string;
@@ -220,6 +223,7 @@ declare global {
     export interface ImrWordItemAttributes extends HTMLAttributes {
       'ignoreWhiteSpace'?: boolean;
       'insensitive'?: boolean;
+      'onDelete'?: Function;
       'singular'?: boolean;
       'translation'?: string;
       'type'?: string;

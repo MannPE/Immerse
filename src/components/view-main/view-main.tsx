@@ -1,6 +1,8 @@
 import { Component, Element, State, Watch, Prop } from '@stencil/core';
 import { Ban } from './icons'
 import { extractHostname } from './utils'
+import { ImmerseWord } from '../../storage-manager/types';
+import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
 
 @Component({
   tag: 'imr-view-main',
@@ -12,13 +14,13 @@ export class MainPage {
   @Element() el: Element;
   @State() pageBlocked: boolean = false;
   blockedDomains: any= [];
-  @Prop({mutable:true})currentDomain: string = "";
+  @Prop({mutable:true}) currentDomain: string = "";
 
-  settings = {
-    value: "",
-    translation:"",
+  settings: ImmerseWord = {
     caseSensitive: false,
-    ignoreWhiteSpace: false
+    ignoreWhiteSpace: false,
+    translation:"",
+    value: ""
   };
 
   componentWillLoad(){
@@ -42,18 +44,10 @@ export class MainPage {
     if(this.settings.value.length == 0)
       return
     console.log("Adding the following word:", this.settings);
-    chrome.storage.local.get(['imrkorean'], (result) => {
-      console.log("Results saved:", result);
-      let newItems = result['imrkorean']
-      this.pushAlphabetically(newItems, this.settings);
-      console.log("New wordList:", newItems);
-      chrome.storage.local.set({'imrkorean':newItems}), function(msg){
-        console.log("adding word to list: "+msg)
-      }
-      let inputs = Array.from(this.el.querySelectorAll("input"));
-      inputs.forEach(function(imrinput){
-        imrinput.value = "";
-      });
+    addWordToLanguage('imrkorean', this.settings);
+    let inputs = Array.from(this.el.querySelectorAll("input"));
+    inputs.forEach((imrinput) => {
+      imrinput.value = "";
     });
   }
 

@@ -61,11 +61,8 @@ export class AppRoot {
             <div class="container">
               <div class="footer__open-source">
                 <p>
-                  Made by Manuel Puentes @2018
+                  Made by Manuel Puentes
                 </p>
-                <a class="link--external" target="_blank" href="https://paypal.com">
-            Donate <app-icon name="targetblank"></app-icon>
-          </a>
               </div>
 
               <div class="footer__icons">
