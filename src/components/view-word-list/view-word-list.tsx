@@ -12,8 +12,6 @@ export class ViewWordList {
   @State() words: ImmerseWord[];
   @Element() _el: HTMLElement;
   
- 
-
   componentWillLoad() {
     getLanguageWords('imrkorean', (wordResults) => {
       console.log("Component will load set words: ",wordResults);
