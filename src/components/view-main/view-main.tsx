@@ -70,6 +70,10 @@ export class MainPage {
     });
   }
 
+  handleCheckboxChange = (ev: Event) => {
+    this.settings.caseSensitive = (ev.srcElement as any).checked;
+  } 
+
   @Watch("currentDomain")
   render() {
     return (
@@ -85,10 +89,7 @@ export class MainPage {
           <imr-input description="Translation" example="네" onChange={(event:UIEvent) => this.translationBind(event)} />
           <div class="main-settings">
             <div class="checkbox-setting">
-              <input type="checkbox" /> <span>Case Sensitive </span>
-            </div>
-            <div class="checkbox-setting">
-              <input type="checkbox" /> <span>Search inside words </span>
+              <input type="checkbox" onChange={this.handleCheckboxChange}/> <span>Case Sensitive </span>
             </div>
           </div>
           <button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>

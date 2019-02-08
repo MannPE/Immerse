@@ -1,15 +1,42 @@
 @import '../../global/variables';
 
-imr-word-item{
+imr-word-item {
     font-size:1.5em;
     width: 100%;
-    a:hover{
+    a:hover {
         cursor: pointer;
     }
-    .far{
+    .fas, .far {
         opacity: 0.4 ;
-        &:hover{
+        &:hover {
             opacity:1;
         }
+    }
+    .fa-chevron-right {
+        color: #0a1528;
+    }
+    :first-child {
+        padding-right: 3px;
+    }
+    .main-row {
+        padding-bottom: 5px;
+        display:inline-flex;
+        line-height: 1em;
+        white-space: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        span{
+          width:50%;
+        }
+        input{
+          width:30%;
+        }
+        a{
+          width:6%;
+        }
+    }
+    .details-row {
+        width: 100%;
+        line-height: 1em;
     }
 }

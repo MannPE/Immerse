@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
 
 /**
  * @export
@@ -19,22 +19,32 @@ import { Component, Prop } from '@stencil/core';
 export class WordItem {
   @Prop() value: string;
   @Prop() translation: string;
-  @Prop() type: string;s
+  @Prop() type: string;
   @Prop() singular: boolean;
-  @Prop() insensitive: boolean;
+  @Prop() caseSensitive: boolean;
   @Prop() ignoreWhiteSpace: boolean;
   @Prop() onDelete: Function;
+  @State() expanded: boolean;
 
   render() {
     var trashstyle = {color:"red"}
     var checkstyle = {color:"green"}
     return [
-      <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
-        {this.value}
-      </span>,
-      <input type="text" value={this.translation}/>,
-      <a onClick={() => this.onDelete() }><i class="far fa-trash-alt" style={trashstyle}></i></a>,
-      <a><i class="far fa-check-circle" style={checkstyle}></i></a>
+      <div class="main-row">
+        <a onClick={() => this.expanded = !this.expanded  }><i class={this.expanded?"fas fa-chevron-down" : "fas fa-chevron-right"}></i></a>
+        <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
+          {this.value}
+        </span>
+        <input type="text" value={this.translation}/>
+        <a onClick={() => this.onDelete() }><i class="far fa-trash-alt" style={trashstyle}></i></a>
+        <a><i class="far fa-check-circle" style={checkstyle}></i></a>
+      </div>,
+      this.expanded ? 
+      <div class="details-row">
+        <div class="checkbox-setting">
+          <input type="checkbox" checked={this.caseSensitive}/> <span>Case Sensitive </span>
+        </div>
+      </div>: null
     ];
   }
 }

@@ -37,7 +37,7 @@ export class ViewWordList {
             <imr-word-item 
               value = {word.value}
               translation = {word.translation}
-              insensitive = {word.caseSensitive}
+              caseSensitive = {word.caseSensitive}
               ignoreWhiteSpace = {word.ignoreWhiteSpace}
               onDelete = { () => removeItem('imrkorean', word.value, (newWordList) => { this.setWords(newWordList) }) } 
             />);

@@ -3792,11 +3792,13 @@ chrome.storage.local.get(['imrkorean'], function(result){
 
 
 function replaceAllTheStuff(wordList){
+  console.log("wordlist:",wordList)
   for (var wordkey in wordList) {
-    console.log("REPLACING WORD:",word);
     let word = wordList[wordkey];
+    console.log("REPLACING WORD:",word.value);
     //Step 1 - Create the regex
-    const flags = `g${word.caseSensitive ? 'i' : ''}`
+    console.log(`word ${word.value} sensitive is:`,word.caseSensitive);
+    const flags = `g${word.caseSensitive ? '' : 'i'}`
     let regex = new RegExp("(^|\\W|\\d)"+word.value+"($|\\W|\\d)",flags);
     //Step2 - find the regex-matching words and replace
     findAndReplaceDOMText((document.body),{

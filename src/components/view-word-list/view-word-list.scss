@@ -7,27 +7,4 @@ imr-view-word-list {
   grid-template-columns: repeat(1, 1fr);
   grid-gap: 2em;
 
-  .noun{
-    color: #107896;
-  }
-  .verb{
-    color: #829356;
-  }
-  imr-word-item{
-    padding-bottom: 5px;
-    display:inline-flex;
-    line-height: 1em;
-    white-space: nowrap;
-
-    span{
-      overflow-x: auto;
-      width:50%;
-    }
-    input{
-      width:30%;
-    }
-    a{
-      width:7%;
-    }
-  }
 }
