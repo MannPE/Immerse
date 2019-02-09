@@ -12,16 +12,16 @@ export class viewSettings {
 
   openFile = () =>{
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      console.log("started to open file")
+      // console.log("started to open file")
       chrome.tabs.executeScript(tabs[0].id, {file: "extension/bg/importFile.js"});
     });
   }
 
   exportFile = () => {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      console.log("saving file..")
+      // console.log("saving file..")
       chrome.tabs.executeScript(tabs[0].id, {file: "extension/bg/exportFile.js"});
-      console.log("Saving finished")
+      // console.log("Saving finished")
     });
   }
 

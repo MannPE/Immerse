@@ -20,23 +20,32 @@ imr-word-item {
     }
     .main-row {
         padding-bottom: 5px;
-        display:inline-flex;
+        display: inline-flex;
         line-height: 1em;
         white-space: nowrap;
         overflow-x: auto;
         width: 100%;
         span{
-          width:50%;
+          width: 50%;
         }
         input{
-          width:30%;
+          width: 30%;
         }
         a{
-          width:6%;
+          width: 6%;
         }
     }
     .details-row {
         width: 100%;
         line-height: 1em;
+        font-size: 0.8em;
+        display: inline-flex;
+        line-height: 1em;
+        >div {
+            width: 50%;
+        }
+        [type="text"] {
+            width: 60%;
+        }
     }
 }

@@ -14,7 +14,7 @@ export class ViewWordList {
   
   componentWillLoad() {
     getLanguageWords('imrkorean', (wordResults) => {
-      console.log("Component will load set words: ",wordResults);
+      // console.log("Component will load set words: ",wordResults);
       this.setWords(wordResults);
     });
   }
@@ -25,7 +25,7 @@ export class ViewWordList {
       return el != null;
     });
     this.words = filtered;
-    console.log("Found the following words: ",  this.words);
+    // console.log("Found the following words: ",  this.words);
   }
 
   render(): JSX.Element {
@@ -40,6 +40,7 @@ export class ViewWordList {
               caseSensitive = {word.caseSensitive}
               ignoreWhiteSpace = {word.ignoreWhiteSpace}
               onDelete = { () => removeItem('imrkorean', word.value, (newWordList) => { this.setWords(newWordList) }) } 
+              altText = {word.altText}
             />);
         }
         return wordItems;

@@ -63,7 +63,6 @@ export class MainPage {
         delete this.blockedDomains[this.currentDomain];
         this.pageBlocked = false;
       }
-      console.log("new blocked domains:",this.blockedDomains);
       chrome.storage.sync.set({'imrdomains':this.blockedDomains}), function(res){
         console.log(res);
       }
@@ -114,17 +113,17 @@ export class MainPage {
       const current = array[i];
       const currentValue = current.value.toUpperCase();
       if(currentValue < itemValue){
-        console.log(`${current.value} is < ${item.value}`)
+        // console.log(`${current.value} is < ${item.value}`)
         continue;
       }
       else if(currentValue == itemValue){
-        console.log(`${current.value} replacing with ${item.translation}}`)
+        // console.log(`${current.value} replacing with ${item.translation}}`)
         array[i] = item;
         finished = true;
         break;
       }
       else{
-        console.log(`Inserting before ${current.value}`);
+        // console.log(`Inserting before ${current.value}`);
         array.splice(i, 0 , item)
         finished = true;
         break;

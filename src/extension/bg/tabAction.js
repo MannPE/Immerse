@@ -3831,7 +3831,7 @@ function replaceAllTheStuff(wordList){
     for (const translation of translations) {
       new Tooltip(translation, {
         placement: "bottom",
-        title: word.value,
+        title: word.altText ? word.altText : word.value,
         template: '<span class="immerse-tooltip"><div class="tooltip-inner"></div></span>'
       });
     }

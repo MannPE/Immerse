@@ -6,8 +6,8 @@
 
 import '@stencil/core';
 
-import '@stencil/state-tunnel';
 import '@stencil/router';
+import '@stencil/state-tunnel';
 
 
 import {
@@ -71,6 +71,7 @@ declare global {
     }
 
     interface ImrWordItem {
+      'altText': string;
       'caseSensitive': boolean;
       'ignoreWhiteSpace': boolean;
       'onDelete': Function;
@@ -221,6 +222,7 @@ declare global {
     }
 
     export interface ImrWordItemAttributes extends HTMLAttributes {
+      'altText'?: string;
       'caseSensitive'?: boolean;
       'ignoreWhiteSpace'?: boolean;
       'onDelete'?: Function;
