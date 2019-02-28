@@ -22,6 +22,7 @@
   "permissions": [
     "https://*/*",
     "http://*/*",
+    "google.com",
     "tabs"
   ]
 }

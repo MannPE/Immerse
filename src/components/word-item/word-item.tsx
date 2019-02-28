@@ -1,6 +1,7 @@
 import { Component, Prop, State } from '@stencil/core';
 import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
 import { ImmerseWord } from '../../storage-manager/types';
+import { Language } from '../../languages/languages';
 
 /**
  * @export
@@ -43,7 +44,7 @@ export class WordItem {
 
   handleEditClicked(): void {
     // console.log("saving:",this._immerseWordObject);
-    addWordToLanguage('imrkorean',this._immerseWordObject);
+    addWordToLanguage(Language.KOREAN,this._immerseWordObject);
   }
 
   handleTranslationChanged = (event) => {

@@ -1,6 +1,7 @@
 import { Component, Element , State,  Method} from '@stencil/core';
 import { getLanguageWords, removeItem } from '../../storage-manager/immerse-word-manager';
 import { ImmerseWord } from '../../storage-manager/types';
+import { Language } from '../../languages/languages';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class ViewWordList {
   @Element() _el: HTMLElement;
   
   componentWillLoad() {
-    getLanguageWords('imrkorean', (wordResults) => {
+    getLanguageWords(Language.KOREAN, (wordResults) => {
       // console.log("Component will load set words: ",wordResults);
       this.setWords(wordResults);
     });
@@ -39,13 +40,13 @@ export class ViewWordList {
               translation = {word.translation}
               caseSensitive = {word.caseSensitive}
               ignoreWhiteSpace = {word.ignoreWhiteSpace}
-              onDelete = { () => removeItem('imrkorean', word.value, (newWordList) => { this.setWords(newWordList) }) } 
+              onDelete = { () => removeItem(Language.KOREAN, word.value, (newWordList) => { this.setWords(newWordList) }) } 
               altText = {word.altText}
             />);
         }
         return wordItems;
     }
     else
-        return <div>NO WORDS</div>
+      return <div>NO WORDS</div>
   }
 }

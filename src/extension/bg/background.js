@@ -10,8 +10,13 @@
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         let currentDomain = extractHostname(tabs[0].url).toString();
         chrome.storage.sync.get(['imrdomains'], (result) => {
-          let blockedDomains = result['imrdomains'];
-          if(!blockedDomains[currentDomain]){
+          let blockedDomains = result['imrdomains'] || {};
+          if(!blockedDomains) {
+            chrome.sync.set({'imrdomains': {}}, function() {
+              console.log("Immerse created blocked domain list");
+            });
+          }
+          if(!blockedDomains[currentDomain]) {
             console.log("Immerse will be run in", tabs[0].url)
             runFile('extension/bg/tabAction.js',tabId);
           }else{
@@ -37,18 +42,21 @@
   });
 
   //Check if a wordlist already exists, if not then set it to thank you and yes words to be substituted
-  chrome.storage.local.get(['imrkorean'],function(result ){
-    console.log("Loaded words from imrkorean:", result);
-    if(Object.keys(result).length === 0 && result.constructor === Object){
-      var wordList = 
-            {
-              "thank you":{value:"thank you", translation:"감사합니다 ", caseSensitive:false, ignoreWhiteSpace: false},
-              "yes":{value:"yes", translation:"네", caseSensitive:false, ignoreWhiteSpace: false}
-            }
-      chrome.storage.local.set({'imrkorean':wordList}), function(words){
-        console.log(`Korean words have been set to`, wordList);
+  chrome.storage.local.get(['imr-active-language'],function(result ){
+    console.log("THE LANGUAGE WE LOAD WORDS FROM IS:",result);
+    chrome.storage.local.get(['imrkorean'],function(result ){
+      console.log("Loaded words from imrkorean:", result);
+      if(Object.keys(result).length === 0 && result.constructor === Object){
+        var wordList = 
+              {
+                "thank you":{value:"thank you", translation:"감사합니다 ", caseSensitive:false, ignoreWhiteSpace: false},
+                "yes":{value:"yes", translation:"네", caseSensitive:false, ignoreWhiteSpace: false}
+              }
+        chrome.storage.local.set({'imrkorean':wordList}), function(words){
+          console.log(`Korean words have been set to`, wordList);
+        }
       }
-    }
+    });
   });
 
   //Add items to the context menu

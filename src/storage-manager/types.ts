@@ -5,5 +5,3 @@ export interface ImmerseWord {
     ignoreWhiteSpace: boolean;
     altText?: string;
 }
-
-export type LanguageString = "imrkorean" | "imrjapanese" | "imrthai";

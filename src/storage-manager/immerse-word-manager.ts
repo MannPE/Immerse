@@ -1,14 +1,14 @@
-import { ImmerseWord, LanguageString } from "./types";
+import { ImmerseWord } from "./types";
+import {Language } from "../languages/languages";
 
-
-export async function getLanguageWords(language: LanguageString, callback: (words: ImmerseWord[]) => void): Promise<void> {
+export async function getLanguageWords(language: Language, callback: (words: ImmerseWord[]) => void): Promise<void> {
     chrome.storage.local.get([`${language}`], (result) => {
         console.log("got items in getLangWords:",result);
         callback(result[language]);
     });
 }
 
-export async function addWordToLanguage(language: LanguageString, wordToAdd: ImmerseWord): Promise<void> {
+export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWord): Promise<void> {
     getLanguageWords(language, (allWords) => {
         pushAlphabetically(allWords, wordToAdd);
         chrome.storage.local.set({ [`${language}`]: allWords }, function() {
@@ -17,10 +17,10 @@ export async function addWordToLanguage(language: LanguageString, wordToAdd: Imm
     })
 }
 
-export async function removeItem(language: LanguageString, wordValue: string, callback: (words: ImmerseWord[]) => void) {
+export async function removeItem(language: Language, wordValue: string, callback: (words: ImmerseWord[]) => void) {
     console.log("Removing from word manager");
     chrome.storage.local.get([`${language}`], (result) => {
-      let newItems: ImmerseWord[] = result['imrkorean']
+      let newItems: ImmerseWord[] = result[Language.KOREAN]
       let index=0;
       for (; index < newItems.length; index++) {
         const element = newItems[index];

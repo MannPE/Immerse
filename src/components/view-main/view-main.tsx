@@ -3,6 +3,7 @@ import { Ban } from './icons'
 import { extractHostname } from './utils'
 import { ImmerseWord } from '../../storage-manager/types';
 import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
+import { LangManager } from '../../languages/lang-manager';
 
 @Component({
   tag: 'imr-view-main',
@@ -22,6 +23,7 @@ export class MainPage {
     translation:"",
     value: ""
   };
+  langManager = LangManager.instance;
 
   componentWillLoad(){
     this.getCurrentDomainAndBlockedStatus();
@@ -31,8 +33,7 @@ export class MainPage {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       this.currentDomain = extractHostname(tabs[0].url).toString();
       chrome.storage.sync.get(['imrdomains'], (result) => {
-        this.blockedDomains = result['imrdomains'];
-        console.log("Got current domain and block status:", result, this.currentDomain, this.blockedDomains[this.currentDomain]);
+        this.blockedDomains = result['imrdomains'] || {};
         if(this.blockedDomains[this.currentDomain]){
           this.pageBlocked = true;
         }
@@ -44,7 +45,7 @@ export class MainPage {
     if(this.settings.value.length == 0)
       return
     console.log("Adding the following word:", this.settings);
-    addWordToLanguage('imrkorean', this.settings);
+    addWordToLanguage(this.langManager.getActiveLanguage(), this.settings);
     let inputs = Array.from(this.el.querySelectorAll("input"));
     inputs.forEach((imrinput) => {
       imrinput.value = "";
