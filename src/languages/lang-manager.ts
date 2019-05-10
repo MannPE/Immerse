@@ -17,7 +17,6 @@ export class LangManager {
     
     changeActiveLanguage(lang: Language): void {
         chrome.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang }, function() {
-            console.log(`Language changed to ${lang}`);
         });
     }
 

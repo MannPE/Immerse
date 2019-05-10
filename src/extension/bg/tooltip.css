@@ -1,4 +1,8 @@
-.immerse-tooltip{
+.immerse-tooltip-wrapper {
+    background-color: #1b1f23;
+}
+
+.immerse-tooltip {
     background-color: #1b1f23;
     font-size: 14px;
     border: 1px solid #fff;
@@ -7,11 +11,12 @@
     align-content: center;
     z-index: 999;
     position: absolute;
+    border-bottom:1px dotted #666;
 }
-.tooltip-inner{
+.tooltip-inner {
     padding: 0px 20px 0px 20px;
     color: #fff;
 }
-.immerse-translation{
+.immerse-translation {
     color:inherit;
 }

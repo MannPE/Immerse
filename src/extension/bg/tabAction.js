@@ -3771,13 +3771,15 @@ return Tooltip;
 var lastTimer = performance.now();
 chrome.storage.local.get(['imrkorean'], function(result){
   var wordList = result['imrkorean'];
-  replaceAllTheStuff(wordList);
+  replaceTextInDocument(wordList);
   let dom_observer = new MutationObserver(function(mutation) {
     let newTimer = performance.now();
-    if(newTimer - lastTimer > 2000){
-      console.log('Immerse reloaded words since content changed', newTimer, lastTimer);
+    if(newTimer - lastTimer > 5000){
+      /**Check if mutation is typing */
+      mutation.some(record => record.type == "characterData") 
+      console.log('Immerse reloaded words since content changed', newTimer, lastTimer, mutation);
       removeAllTooltips();
-      replaceAllTheStuff(wordList);
+      replaceTextInDocument(wordList);
       lastTimer = newTimer;
     }
   });
@@ -3785,19 +3787,12 @@ chrome.storage.local.get(['imrkorean'], function(result){
   console.log("new container",container);
   var config = { attributes: true, childList: true, characterData: true, subtree:true };
   dom_observer.observe(document.body, config);
-  
 });
 
-
-
-
-function replaceAllTheStuff(wordList){
-  console.log("wordlist:",wordList)
+function replaceTextInDocument(wordList) {
   for (var wordkey in wordList) {
     let word = wordList[wordkey];
-    console.log("REPLACING WORD:",word.value);
     //Step 1 - Create the regex
-    console.log(`word ${word.value} sensitive is:`,word.caseSensitive);
     const flags = `g${word.caseSensitive ? '' : 'i'}`
     let regex = new RegExp("(^|\\W|\\d)"+word.value+"($|\\W|\\d)",flags);
     //Step2 - find the regex-matching words and replace
@@ -3839,8 +3834,25 @@ function replaceAllTheStuff(wordList){
 }
 
 function removeAllTooltips(){
-  var paras = document.getElementsByClassName('immerse-tooltip');
+  var existingTooltips = document.getElementsByClassName('immerse-tooltip');
 
-  while(paras[0])
-      paras[0].parentNode.removeChild(paras[0])
+  while(existingTooltips[0])
+      existingTooltips[0].parentNode.removeChild(existingTooltips[0])
+}
+
+function getAdvTooltipTemplate(language, word) {
+  var div = document.createElement('div');
+  let newTT = 
+     `<div class="immerse-tooltip-wrapper">
+      <div class="immerse-tooltip-header">
+        <span class="immerse-header-value">${word.value}</span>
+      </div>
+      <div class="immerse-header-body"> 
+        <span class="immerse-body-translation">${word.translation}</span>
+        <span class="immerse-body-alt">${word.altText}</span>
+      </div>
+     </div>`;
+  div.innerHTML = newTT.trim();
+  document.getElementsByTagName('body')[0].appendChild(div);
+  return div;
 }
