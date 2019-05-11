@@ -32,7 +32,7 @@ export async function removeItem(language: Language, wordValue: string, callback
   }
 
 
-function pushAlphabetically(array: ImmerseWord[], item: ImmerseWord): void{
+  function pushAlphabetically(array: ImmerseWord[], item: ImmerseWord): void{
     const itemValue = item.value.toUpperCase();
     if(array.length < 1)
       array.push(item);

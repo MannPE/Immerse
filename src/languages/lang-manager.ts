@@ -24,9 +24,9 @@ export class LangManager {
         return this._activeLanguage;
     }
 
-    private getSavedLanguage() {
+    private getSavedLanguage(): void {
         chrome.storage.local.get([LOCAL_STORAGE_LANGUAGE], (result) => {
-            let res = result[LOCAL_STORAGE_LANGUAGE];
+            let res: Language = result[LOCAL_STORAGE_LANGUAGE];
             if(!res) {
                 this.changeActiveLanguage(this._activeLanguage);
             }
