@@ -1,31 +1,24 @@
 @import '../../global/variables';
 
-imr-language-list{
-    imr-language-card {
-        padding-bottom: 1em;
-        cursor: pointer;
+.language-selection-option {
+  padding-bottom: 1em;
+  cursor: pointer;
+  img {
+    width: 100%;
+    &:hover {
+        border:1px solid #dadada;
+        border-radius:4px;
+        outline: none;
+        box-shadow: 0 0 2em #9ecaed;
+    }
+  }
+}
 
-        h4 {
-          margin-bottom: 0;
-        }
-        p {
-          margin-top: .5em;
-          margin-bottom: 0;
-          line-height: 1.5;
-        }
-        img{
-            width: 100%;
-            &:hover{
-                border:1px solid #dadada;
-                border-radius:4px;
-                outline: none;
-                box-shadow: 0 0 2em #9ecaed;
-            }
-        }
-    }   
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-    justify-content: center;
-    
+.language-selection-carrousel {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(6,  40px);
+  grid-template-rows: minmax(150px, 1fr);
+  justify-content: center;
+  padding: 0 20px;
 }

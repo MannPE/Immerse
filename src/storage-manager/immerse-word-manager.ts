@@ -1,5 +1,6 @@
 import { ImmerseWord } from "./types";
-import {Language } from "../languages/languages";
+import { Language } from "../languages/languages";
+import { ToastManager } from "../components/toast/toastManager";
 
 export async function getLanguageWords(language: Language, callback: (words: ImmerseWord[]) => void): Promise<void> {
     chrome.storage.local.get([`${language}`], (result) => {
@@ -11,6 +12,7 @@ export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWo
     getLanguageWords(language, (allWords) => {
         pushAlphabetically(allWords, wordToAdd);
         chrome.storage.local.set({ [`${language}`]: allWords }, function() {
+          ToastManager.instance.enqueue({message: `Saved word "${wordToAdd.value}" : "${wordToAdd.translation}"`, duration: 2000 });
         });
     })
 }
@@ -26,6 +28,7 @@ export async function removeItem(language: Language, wordValue: string, callback
       }
       newItems.splice(index, 1);
       chrome.storage.local.set({ [`${language}`]:newItems }, function(){
+        ToastManager.instance.enqueue({message: `Removed word "${wordValue}" from ${language.toString()}`, duration: 2000 });
       });
       callback(newItems);
     });

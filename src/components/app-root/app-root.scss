@@ -19,6 +19,13 @@ app-root{
   overflow: hidden;
 }
 
+imr-toast {
+  transform: translateX(-50%);
+  position:fixed;
+  top: 500px;
+  left: 50%;
+  z-index:80;
+}
 
 .container {
   width: 100%;

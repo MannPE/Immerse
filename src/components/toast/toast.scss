@@ -1,0 +1,16 @@
+.immerse-toast {
+    min-width: 200px;
+    max-width: 270px;
+    background-color: #2b2b2b;
+    display: flex;
+    align-content: center;
+    vertical-align: middle;
+    justify-content: center; 
+    border-radius: 3px;
+
+    .toast-message {
+        color: aliceblue;
+        font-size: 14px;
+        padding: 5px;
+    }
+}

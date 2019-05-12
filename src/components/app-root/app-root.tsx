@@ -38,6 +38,7 @@ export class AppRoot {
   render() {
     return [
         <imr-app-header />,
+        <imr-toast />,
         <div class="root">
           <div class="container">
             <stencil-router>

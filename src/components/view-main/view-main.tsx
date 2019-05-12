@@ -4,6 +4,7 @@ import { extractHostname } from './utils'
 import { ImmerseWord } from '../../storage-manager/types';
 import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
 import { LangManager } from '../../languages/lang-manager';
+import { ToastManager } from '../toast/toastManager';
 
 @Component({
   tag: 'imr-view-main',
@@ -41,7 +42,7 @@ export class MainPage {
     });
   }
 
-  addWord = () => {
+  addWord = (): void => {
     if(this.settings.value.length == 0)
       return
     console.log("Adding the following word:", this.settings);
@@ -56,17 +57,20 @@ export class MainPage {
   toggleBlockedDomain = () => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       console.log("Blocking domain: ", extractHostname(tabs[0].url),"adding to list:", this.blockedDomains)
-      if(!this.pageBlocked){
+      let toastMessage = "";
+      if(!this.pageBlocked) { //page isn't blocked
         this.blockedDomains[this.currentDomain] = true;
         this.pageBlocked = true;
+        toastMessage = `Immerse wil not load on ${this.currentDomain}.`;
       }
-      else{
+      else {
         delete this.blockedDomains[this.currentDomain];
         this.pageBlocked = false;
+        toastMessage = `Unblocked ${this.currentDomain} from immerse.`;
       }
-      chrome.storage.sync.set({'imrdomains':this.blockedDomains}), function(res){
-        console.log(res);
-      }
+      chrome.storage.sync.set({'imrdomains':this.blockedDomains}, () => {
+        ToastManager.instance.enqueue({message: toastMessage, duration: 3000})
+      });
     });
   }
 
@@ -83,7 +87,8 @@ export class MainPage {
               title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
               onClick={this.toggleBlockedDomain}> <Ban /> </i>
           </div>
-          <img width="150" src="assets/img/flags/kr.svg" />
+          {/* <img width="150" src="assets/img/flags/kr.svg" /> */}
+          <imr-language-list />
           <h1> Immerse </h1>
           <imr-input description="Word" example="yes" onChange={(event:UIEvent) => this.valueBind(event)} />
           <imr-input description="Translation" example="네" onChange={(event:UIEvent) => this.translationBind(event)} />
@@ -103,35 +108,6 @@ export class MainPage {
 
   translationBind(event){
     this.settings.translation = event.target.value;
-  }
-
-  pushAlphabetically(array, item){
-    const itemValue = item.value.toUpperCase();
-    if(array.length < 1)
-      array.push(item);
-    let finished: boolean = false;
-    for (let i = 0; i < array.length; i++) {
-      const current = array[i];
-      const currentValue = current.value.toUpperCase();
-      if(currentValue < itemValue){
-        // console.log(`${current.value} is < ${item.value}`)
-        continue;
-      }
-      else if(currentValue == itemValue){
-        // console.log(`${current.value} replacing with ${item.translation}}`)
-        array[i] = item;
-        finished = true;
-        break;
-      }
-      else{
-        // console.log(`Inserting before ${current.value}`);
-        array.splice(i, 0 , item)
-        finished = true;
-        break;
-      }
-    }
-    if(!finished) //the item will go at the end of the array
-      array.push(item);
   }
 
 }

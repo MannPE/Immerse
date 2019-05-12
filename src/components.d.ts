@@ -40,19 +40,11 @@ export namespace Components {
     'word'?: string;
   }
 
-  interface ImrLanguageCard {
-    'alt': string;
-    'imgPath': string;
-    'name': string;
-  }
-  interface ImrLanguageCardAttributes extends StencilHTMLAttributes {
-    'alt'?: string;
-    'imgPath'?: string;
-    'name'?: string;
-  }
-
   interface ImrLanguageList {}
   interface ImrLanguageListAttributes extends StencilHTMLAttributes {}
+
+  interface ImrToast {}
+  interface ImrToastAttributes extends StencilHTMLAttributes {}
 
   interface ImrViewMain {
     'currentDomain': string;
@@ -97,8 +89,8 @@ declare global {
     'AppIcon': Components.AppIcon;
     'ImrAppRoot': Components.ImrAppRoot;
     'ImrInput': Components.ImrInput;
-    'ImrLanguageCard': Components.ImrLanguageCard;
     'ImrLanguageList': Components.ImrLanguageList;
+    'ImrToast': Components.ImrToast;
     'ImrViewMain': Components.ImrViewMain;
     'ImrViewSettings': Components.ImrViewSettings;
     'ImrViewWordList': Components.ImrViewWordList;
@@ -110,8 +102,8 @@ declare global {
     'app-icon': Components.AppIconAttributes;
     'imr-app-root': Components.ImrAppRootAttributes;
     'imr-input': Components.ImrInputAttributes;
-    'imr-language-card': Components.ImrLanguageCardAttributes;
     'imr-language-list': Components.ImrLanguageListAttributes;
+    'imr-toast': Components.ImrToastAttributes;
     'imr-view-main': Components.ImrViewMainAttributes;
     'imr-view-settings': Components.ImrViewSettingsAttributes;
     'imr-view-word-list': Components.ImrViewWordListAttributes;
@@ -143,16 +135,16 @@ declare global {
     new (): HTMLImrInputElement;
   };
 
-  interface HTMLImrLanguageCardElement extends Components.ImrLanguageCard, HTMLStencilElement {}
-  var HTMLImrLanguageCardElement: {
-    prototype: HTMLImrLanguageCardElement;
-    new (): HTMLImrLanguageCardElement;
-  };
-
   interface HTMLImrLanguageListElement extends Components.ImrLanguageList, HTMLStencilElement {}
   var HTMLImrLanguageListElement: {
     prototype: HTMLImrLanguageListElement;
     new (): HTMLImrLanguageListElement;
+  };
+
+  interface HTMLImrToastElement extends Components.ImrToast, HTMLStencilElement {}
+  var HTMLImrToastElement: {
+    prototype: HTMLImrToastElement;
+    new (): HTMLImrToastElement;
   };
 
   interface HTMLImrViewMainElement extends Components.ImrViewMain, HTMLStencilElement {}
@@ -184,8 +176,8 @@ declare global {
     'app-icon': HTMLAppIconElement
     'imr-app-root': HTMLImrAppRootElement
     'imr-input': HTMLImrInputElement
-    'imr-language-card': HTMLImrLanguageCardElement
     'imr-language-list': HTMLImrLanguageListElement
+    'imr-toast': HTMLImrToastElement
     'imr-view-main': HTMLImrViewMainElement
     'imr-view-settings': HTMLImrViewSettingsElement
     'imr-view-word-list': HTMLImrViewWordListElement
@@ -197,8 +189,8 @@ declare global {
     'app-icon': HTMLAppIconElement;
     'imr-app-root': HTMLImrAppRootElement;
     'imr-input': HTMLImrInputElement;
-    'imr-language-card': HTMLImrLanguageCardElement;
     'imr-language-list': HTMLImrLanguageListElement;
+    'imr-toast': HTMLImrToastElement;
     'imr-view-main': HTMLImrViewMainElement;
     'imr-view-settings': HTMLImrViewSettingsElement;
     'imr-view-word-list': HTMLImrViewWordListElement;

@@ -16,7 +16,8 @@ import { Component } from '@stencil/core';
 
 @Component({
   tag: 'imr-language-list',
-  styleUrl: 'language-list.scss'
+  styleUrl: 'language-list.scss',
+  shadow: true
 })
 
 export class LanguageList {
@@ -24,12 +25,12 @@ export class LanguageList {
     {
       name: 'KR',
       imgPath: '/assets/img/flags/korean.png',
-      alt: 'Hangeul_KR',
+      alt: 'Korean_KR',
     },
     {
       name: 'DE',
       imgPath: '/assets/img/flags/german.png',
-      alt: 'Deutsch_DE',
+      alt: 'German_DE',
     },
     {
       name: 'FR',
@@ -46,13 +47,13 @@ export class LanguageList {
   
   render(){
     return (
-      this.languages.map(demo => 
-        <imr-language-card
-          name={demo.name}
-          imgPath={demo.imgPath}
-          alt={demo.alt}
-        />
-      )
+      <div class="language-selection-carrousel">
+      {this.languages.map(demo => 
+        <div class="language-selection-option">
+          <img src={`${demo.imgPath}`} srcSet={`${demo.imgPath} 1x, ${demo.imgPath}@2x 2x`} alt={demo.alt}/>
+        </div>
+      )}
+      </div>
     );
   }
 }
