@@ -50,10 +50,37 @@
     height: calc(100% - 3em);
     background: #ffffff;;
     display: flex;
+    color: rgb(31, 5, 5);
+    flex-flow: column;
+}
+
+.immerse-body-main {
+    width: 100%;
+    font-size: 2.5em;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em;
-    color: rgb(31, 5, 5);
+    text-align: center;
+}
+
+.immerse-body-auxiliaries {
+    display: flex;
+    width: 100%;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.immerse-body-auxiliaries-kun {
+    width: 50%;
+    font-size: 1.25em;
+    text-align: center;
+    color: rgb(22, 163, 64);
+}
+
+.immerse-body-auxiliaries-on {
+    width: 50%;
+    font-size: 1.25em;
+    text-align: center;
+    color: rgb(201, 138, 23);
 }
 
 .immerse-hidden {

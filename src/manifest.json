@@ -45,5 +45,8 @@
         "extension/inject/inject.js"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    "bg/*.json"
   ]
 }

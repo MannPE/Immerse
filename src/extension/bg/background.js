@@ -3,6 +3,20 @@
     runFile('extension/bg/tabAction.js',tab.id);
   });
 
+    //load japanese dictionary if not already loaded
+    chrome.storage.local.get(['imr-reference-jp'],function(result ){
+      console.log("REFERENCE WORDS FOR JP ARE:",result);
+      if(!!result)
+      fetch(chrome.extension.getURL('assets/references/kanji_data.json'))
+      .then((resp) => resp.json())
+      .then(function (jsonData) {
+          console.log(jsonData);
+          chrome.storage.local.set({ 'imr-reference-jp': jsonData }, () => {
+            console.log('tried loading kanji_data.json');
+          });
+      });
+    });
+  
 
   //If the url isnt blocked then run the tabAction on that tab.
   chrome.tabs.onUpdated.addListener(function (tabId , info) {

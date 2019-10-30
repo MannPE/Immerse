@@ -639,7 +639,8 @@
 */
 
 var lastTimer = performance.now();
-chrome.storage.local.get(['imrkorean'], function(result){
+var referenceWords = null;
+chrome.storage.local.get(['imrkorean'], function(result) {
   var wordList = result['imrkorean'];
   replaceTextInDocument(wordList);
   let dom_observer = new MutationObserver(function(mutation) {
@@ -664,11 +665,24 @@ chrome.storage.local.get(['imrkorean'], function(result){
   dom_observer.observe(document.body, config);
 });
 
+chrome.storage.local.get(['imr-reference-jp'],function(result) { 
+	referenceWords = result['imr-reference-jp'];
+});
+
+
 if(document.getElementsByClassName("immerse-tooltip-element").length == 0) {
   document.body.insertAdjacentHTML('beforeend', 
     `<div class="immerse-tooltip-element immerse-hidden">
       <div class="immerse-tooltip-element-header"> Sample word </div>
-      <div class="immerse-tooltip-element-body"> Sample translation </div>
+	  <div class="immerse-tooltip-element-body">
+		  <div class="immerse-body-main">
+		  	Sample translation 
+		  </div>
+		  <div class="immerse-body-auxiliaries">
+		 	<span class="immerse-body-auxiliaries-kun"></span> 
+		 	<span class="immerse-body-auxiliaries-on"></span> 
+		  </div>
+	  </div>
     </div>`
   );
 }
@@ -737,7 +751,13 @@ function showTooltip(reference, word, mouseEvent) {
   // imrPopup.style.left = `${imrCoords.left}px`;
   imrPopup.style.left = `${mouseEvent.pageX + 10}px`;
   imrPopup.getElementsByClassName("immerse-tooltip-element-header")[0].innerHTML = `${word.value}`;
-  imrPopup.getElementsByClassName("immerse-tooltip-element-body")[0].innerHTML = `${word.translation}`;
+  console.log('for this tooltip:', referenceWords, word.translation, referenceWords[word.translation]);
+  imrPopup.getElementsByClassName("immerse-body-main")[0].innerHTML = `${word.translation}`;
+  let referenceWord = referenceWords[word.translation];
+  if(referenceWord) {
+	imrPopup.getElementsByClassName("immerse-body-auxiliaries-kun")[0].innerHTML = `${referenceWord['kunyomi_ja']}`;
+	imrPopup.getElementsByClassName("immerse-body-auxiliaries-on")[0].innerHTML = `${referenceWord['onyomi_ja']}`;
+  }
 }
 
 function hideTooltip() {
