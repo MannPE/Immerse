@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 
 
 /**
@@ -50,7 +50,7 @@ export class LanguageList {
       <div class="language-selection-carrousel">
       {this.languages.map(demo => 
         <div class="language-selection-option">
-          <img src={`${demo.imgPath}`} srcSet={`${demo.imgPath} 1x, ${demo.imgPath}@2x 2x`} alt={demo.alt}/>
+          <img src={`${demo.imgPath}`} alt={demo.alt}/>
         </div>
       )}
       </div>

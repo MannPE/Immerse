@@ -13,22 +13,22 @@
     "doc": "typedoc --options typedoc.json"
   },
   "dependencies": {
-    "@stencil/sass": "0.0.5",
-    "jsdoc": "^3.5.5",
-    "typedoc": "^0.11.1"
+    "jsdoc": "^3.6.3",
+    "typedoc": "^0.15.0"
   },
   "devDependencies": {
-    "@stencil/core": "^0.18.0",
-    "@stencil/dev-server": "0.0.19-0",
-    "@stencil/router": "^0.2.4",
-    "@stencil/state-tunnel": "0.0.6",
+    "@stencil/core": "^1.0.0",
+    "@stencil/dev-server": "latest",
+    "@stencil/router": "^1.0.0",
+    "@stencil/sass": "^1.0.0",
+    "@stencil/state-tunnel": "^1.0.0",
     "@stencil/utils": "latest",
     "@types/chrome": "0.0.74",
-    "gh-pages": "^1.0.0",
-    "gulp": "^4.0.0",
+    "gh-pages": "^1.2.0",
+    "gulp": "^4.0.2",
     "gulp-markdown": "^1.2.0",
-    "highlight.js": "^9.12.0",
-    "workbox-build": "3.4.1"
+    "highlight.js": "^9.15.10",
+    "workbox-build": "4.3.1"
   },
   "author": "Ionic Team",
   "license": "MIT",

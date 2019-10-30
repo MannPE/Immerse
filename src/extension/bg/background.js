@@ -19,6 +19,7 @@
           if(!blockedDomains[currentDomain]) {
             console.log("Immerse will be run in", tabs[0].url)
             runFile('extension/bg/tabAction.js',tabId);
+            runFile('extension/bg/tabAction.js',tabId);
           }else{
             console.log("Immerse will not run in",currentDomain);
           }

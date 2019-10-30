@@ -1,4 +1,4 @@
-import { Component, Element, State, Watch, Prop } from '@stencil/core';
+import { Component, Element, State, Watch, Prop, h } from '@stencil/core';
 import { Ban } from './icons'
 import { extractHostname } from './utils'
 import { ImmerseWord } from '../../storage-manager/types';
@@ -85,7 +85,7 @@ export class MainPage {
           <div class="toolbar">
             <i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")}
               title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
-              onClick={this.toggleBlockedDomain}> <Ban /> </i>
+              onClick={this.toggleBlockedDomain}> <Ban/> </i>
           </div>
           {/* <img width="150" src="assets/img/flags/kr.svg" /> */}
           <imr-language-list />

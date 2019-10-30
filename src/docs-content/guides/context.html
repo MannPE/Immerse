@@ -23,11 +23,11 @@ export <span class="hljs-class"><span class="hljs-keyword">class</span> <span cl
   };
 })();
 </code></pre><p>Then create a global script that will be used to reference all the context items:</p>
-<pre><code><span class="hljs-comment">// src/global/index.ts</span>
+<pre><code>// src/<span class="hljs-keyword">global</span>/<span class="hljs-keyword">index</span>.ts
 
 <span class="hljs-keyword">import</span> myObj <span class="hljs-keyword">from</span> <span class="hljs-string">'./myObj'</span>;
 
-<span class="hljs-keyword">declare</span> <span class="hljs-keyword">var</span> Context: <span class="hljs-built_in">any</span>;
+<span class="hljs-keyword">declare</span> var Context: <span class="hljs-keyword">any</span>;
 
 Context.globalVar = <span class="hljs-string">''</span>;
 Context.myObj = myObj;

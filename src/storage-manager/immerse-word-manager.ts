@@ -4,7 +4,7 @@ import { ToastManager } from "../components/toast/toastManager";
 
 export async function getLanguageWords(language: Language, callback: (words: ImmerseWord[]) => void): Promise<void> {
     chrome.storage.local.get([`${language}`], (result) => {
-        callback(result[language]);
+        callback(Object.values(result[language]));
     });
 }
 
@@ -37,26 +37,28 @@ export async function removeItem(language: Language, wordValue: string, callback
 
   function pushAlphabetically(array: ImmerseWord[], item: ImmerseWord): void{
     const itemValue = item.value.toUpperCase();
-    if(array.length < 1)
-      array.push(item);
-    let finished: boolean = false;
-    for (let i = 0; i < array.length; i++) {
-      const current = array[i];
-      const currentValue = current.value.toUpperCase();
-      if(currentValue < itemValue){
-        continue;
+    if(array.length < 1) //empty or null array
+      array = [item];
+    else {
+      let finished: boolean = false;
+      for (let i = 0; i < array.length; i++) {
+        const current = array[i];
+        const currentValue = current.value.toUpperCase();
+        if(currentValue < itemValue){
+          continue;
+        }
+        else if(currentValue == itemValue){
+          array[i] = item;
+          finished = true;
+          break;
+        }
+        else{
+          array.splice(i, 0 , item)
+          finished = true;
+          break;
+        }
       }
-      else if(currentValue == itemValue){
-        array[i] = item;
-        finished = true;
-        break;
-      }
-      else{
-        array.splice(i, 0 , item)
-        finished = true;
-        break;
-      }
+      if(!finished) //the item will go at the end of the array
+        array.push(item);
     }
-    if(!finished) //the item will go at the end of the array
-      array.push(item);
   }
