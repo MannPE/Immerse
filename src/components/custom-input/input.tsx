@@ -13,12 +13,12 @@ import { Component, Prop, Watch, h } from '@stencil/core';
   tag: 'imr-input',
   styleUrl: 'input.scss'
 })
-export class Input {
+export class CustomInput {
 
+  input: HTMLInputElement;
   @Prop() word: string;
   @Prop() description: string;
   @Prop() example: string;
-
 
   @Watch('word')
   render() {
@@ -26,7 +26,7 @@ export class Input {
       <div>
         <div class="translate-input">
           <h4>{this.description}</h4>
-          <input type="text" value={this.word} placeholder={this.example}/>
+          <input ref={(el) => this.input = el} type="text" value={this.word} placeholder={this.example}/>
         </div>
       </div> 
     );

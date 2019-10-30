@@ -647,7 +647,8 @@ chrome.storage.local.get(['imrkorean'], function(result){
     if(newTimer - lastTimer > 5000){
       /**Check if mutation is typing */
       let typing = mutation.some(record => record.type == "characterData");
-      let immersePopup = mutation.some(record => record.target.className && record.target.classList.contains("immerse-tooltip-element"));
+      let immersePopup = mutation.some(record => record.target && 
+        (record.target.classList.contains("immerse-tooltip-element-header") || record.target.classList.contains("immerse-tooltip-element-body")));
       console.log('Detected changed Content', newTimer, lastTimer, mutation);
       if(typing || immersePopup) 
         return;
@@ -734,7 +735,7 @@ function showTooltip(reference, word, mouseEvent) {
   // imrPopup.style.top = `${imrCoords.top+imrCoords.height-offsetCoords.y+30}px`;
   imrPopup.style.top = `${mouseEvent.pageY}px`;
   // imrPopup.style.left = `${imrCoords.left}px`;
-  imrPopup.style.left = `${mouseEvent.pageX + 5}px`;
+  imrPopup.style.left = `${mouseEvent.pageX + 10}px`;
   imrPopup.getElementsByClassName("immerse-tooltip-element-header")[0].innerHTML = `${word.value}`;
   imrPopup.getElementsByClassName("immerse-tooltip-element-body")[0].innerHTML = `${word.translation}`;
 }

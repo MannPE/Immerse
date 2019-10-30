@@ -15,8 +15,10 @@ export class MainPage {
 
   @Element() el: Element;
   @State() pageBlocked: boolean = false;
-  blockedDomains: any= [];
   @Prop({mutable:true}) currentDomain: string = "";
+
+  blockedDomains: any = [];
+  firstInput: HTMLInputElement;
 
   settings: ImmerseWord = {
     caseSensitive: false,
@@ -28,6 +30,11 @@ export class MainPage {
 
   componentWillLoad(){
     this.getCurrentDomainAndBlockedStatus();
+  }
+
+  componentDidLoad() {
+    this.firstInput = this.el.querySelector('#imr-main-word').querySelector('input');
+    console.log('Component loaded and firstInput =', this.firstInput);
   }
 
   getCurrentDomainAndBlockedStatus = () => {
@@ -51,6 +58,7 @@ export class MainPage {
     inputs.forEach((imrinput) => {
       imrinput.value = "";
     });
+    this.firstInput.focus();
   }
 
 
@@ -90,8 +98,12 @@ export class MainPage {
           {/* <img width="150" src="assets/img/flags/kr.svg" /> */}
           <imr-language-list />
           <h1> Immerse </h1>
-          <imr-input description="Word" example="yes" onChange={(event:UIEvent) => this.valueBind(event)} />
-          <imr-input description="Translation" example="네" onChange={(event:UIEvent) => this.translationBind(event)} />
+          <imr-input id="imr-main-word" description="Word" example="yes" onInput={(event:UIEvent) => this.valueBind(event)} />
+          <imr-input id="imr-main-translation" description="Translation" example="네" onInput={(event:UIEvent) => this.translationBind(event)} 
+            onKeyPress={(e: KeyboardEvent) => {
+              if(e.keyCode == 13)
+                this.addWord();
+            }}/>
           <div class="main-settings">
             <div class="checkbox-setting">
               <input type="checkbox" onChange={this.handleCheckboxChange}/> <span>Case Sensitive </span>
