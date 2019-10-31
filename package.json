@@ -13,6 +13,7 @@
     "doc": "typedoc --options typedoc.json"
   },
   "dependencies": {
+    "jmdict-parser": "^2.1.6",
     "jsdoc": "^3.6.3",
     "typedoc": "^0.15.0"
   },

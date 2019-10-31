@@ -17,7 +17,7 @@ export class AppRoot {
 
   @State() isLeftSidebarIn: boolean;
 
-  @Listen('window:resize')
+  @Listen('resize', { target: 'window' })
   handleResize() {
     requestAnimationFrame(() => {
       if (window.innerWidth > 768 && this.isLeftSidebarIn) {
@@ -57,7 +57,7 @@ export class AppRoot {
 
             }} />
             </stencil-router>
-          </div>,
+          </div>
           <footer>
             <div class="container">
               <div class="footer__open-source">
