@@ -1,4 +1,4 @@
-@import '../../global/variables';
+@import "../../global/variables";
 
 app-icon {
   .icon-checkmark {
@@ -14,7 +14,8 @@ app-icon {
   }
 
   .icon-slack,
-  .icon-twitter, .icon-trash {
+  .icon-twitter,
+  .icon-trash {
     fill: $color-woodsmoke;
     width: 16px;
     height: 16px;

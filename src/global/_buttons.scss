@@ -3,6 +3,10 @@ $buttonPrimaryColor: #ffffff;
 $buttonPrimaryBackground_Focused: #1A79C0;
 $buttonPrimaryBackground_Disabled: #EBF2FA;
 
+$buttonSettingBackground: rgb(207, 207, 207);
+$buttonSettingColor: rgb(0, 0, 0);
+$buttonSettingBackground_Focused: rgb(173, 172, 172);
+
 button {
   outline: none;
   margin-top:5px;
@@ -23,6 +27,20 @@ button {
     &:focus {
         background: $buttonPrimaryBackground_Focused;
         box-shadow: 0 0 6px 2px rgba(30,138,231,0.6);
+    }
+
+    &:disabled,
+    &[disabled] {
+        background: $buttonPrimaryBackground_Disabled;
+    }
+  }
+  &.imr-setting {
+    background: $buttonSettingBackground;
+    color: $buttonSettingColor;
+
+    &:focus {
+        background: $buttonSettingBackground_Focused;
+        box-shadow: 0 0 6px 2px rgba(61, 62, 63, 0.6);
     }
 
     &:disabled,

@@ -1,4 +1,4 @@
-@import '../../global/variables';
+@import "../../global/variables";
 
 * {
   box-sizing: border-box;
@@ -13,7 +13,7 @@ stencil-route-link:hover {
   cursor: pointer;
 }
 
-app-root{
+app-root {
   min-height: 100%;
   display: block;
   overflow: hidden;
@@ -21,10 +21,10 @@ app-root{
 
 imr-toast {
   transform: translateX(-50%);
-  position:fixed;
+  position: fixed;
   top: 500px;
   left: 50%;
-  z-index:80;
+  z-index: 80;
 }
 
 .container {
@@ -40,7 +40,6 @@ imr-toast {
   display: flex;
   flex-direction: column;
   padding: 6em 0 0;
-
 }
 
 footer {
@@ -75,10 +74,10 @@ footer {
   }
 }
 
-imr-app-header{
-  position:fixed;
+imr-app-header {
+  position: fixed;
   top: 0;
   left: 0;
-  z-index:80;
+  z-index: 80;
   margin-bottom: 100px;
 }

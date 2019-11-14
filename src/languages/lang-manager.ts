@@ -1,6 +1,6 @@
 import { Language } from "./languages";
 
-const DEFAULT_LANGUAGE: Language = Language.KOREAN;
+const DEFAULT_LANGUAGE: Language = Language.JAPANESE;
 const LOCAL_STORAGE_LANGUAGE: string = "imr-active-language"; 
 
 export class LangManager {

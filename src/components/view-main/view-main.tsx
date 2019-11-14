@@ -1,4 +1,4 @@
-import { Component, Element, State, Watch, Prop, h } from '@stencil/core';
+import { Component, Element, State, Watch, Prop, h, Host } from '@stencil/core';
 import { Ban } from './icons'
 import { extractHostname } from './utils'
 import { ImmerseWord } from '../../storage-manager/types';
@@ -89,28 +89,34 @@ export class MainPage {
   @Watch("currentDomain")
   render() {
     return (
-      <div class="main-wrapper">
-          <div class="toolbar">
-            <i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")}
-              title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
-              onClick={this.toggleBlockedDomain}> <Ban/> </i>
-          </div>
-          {/* <img width="150" src="assets/img/flags/kr.svg" /> */}
-          <imr-language-list />
-          <h1> Immerse </h1>
-          <imr-input id="imr-main-word" description="Word" example="yes" onInput={(event:UIEvent) => this.valueBind(event)} />
-          <imr-input id="imr-main-translation" description="Translation" example="네" onInput={(event:UIEvent) => this.translationBind(event)} 
-            onKeyPress={(e: KeyboardEvent) => {
-              if(e.keyCode == 13)
-                this.addWord();
-            }}/>
-          <div class="main-settings">
-            <div class="checkbox-setting">
-              <input type="checkbox" onChange={this.handleCheckboxChange}/> <span>Case Sensitive </span>
-            </div>
-          </div>
-          <button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>
-      </div>
+	<Host>
+		<div class="toolbar">
+
+		<i class={"toolbar-icon "+ (this.pageBlocked ? "danger" : "inactive")}
+		  title={this.pageBlocked ? `Allow immerse on ${this.currentDomain}` : `Block immerse in ${this.currentDomain}` }
+		  onClick={this.toggleBlockedDomain}> <Ban/> </i>
+		  			<i >
+			<imr-language-list />
+			</i>
+		</div>
+		<div class="main-wrapper">
+
+			{/* <img width="150" src="assets/img/flags/kr.svg" /> */}
+			<h1> Immerse </h1>
+			<imr-input id="imr-main-word" description="Word" example="yes" onInput={(event:UIEvent) => this.valueBind(event)} />
+			<imr-input id="imr-main-translation" description="Translation" example="네" onInput={(event:UIEvent) => this.translationBind(event)} 
+				onKeyPress={(e: KeyboardEvent) => {
+				if(e.keyCode == 13)
+					this.addWord();
+				}}/>
+			<div class="main-settings">
+				<div class="checkbox-setting">
+				<input type="checkbox" onChange={this.handleCheckboxChange}/> <span>Case Sensitive </span>
+				</div>
+			</div>
+			<button id="add-button" class="imr-success" onClick={this.addWord}>Add</button>
+		</div>
+	</Host>
     );
   }
 

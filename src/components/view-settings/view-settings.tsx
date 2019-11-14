@@ -31,12 +31,12 @@ export class viewSettings {
         <div class="measure-lg">
           <h4>Import words</h4>
           <p>
-            <button onClick={this.openFile}> IMPORT </button>
+            <button onClick={this.openFile} class="imr-setting"> IMPORT </button>
           </p>
           
           <h4>Export wordlist</h4>
           <p>
-            <button onClick={this.exportFile}> EXPORT </button>
+            <button onClick={this.exportFile} class="imr-setting"> EXPORT </button>
           </p>
           <h4>About</h4>
           <p>
