@@ -7,45 +7,45 @@
  * and replaces each match (or node-separated portions of the match)
  * in the specified element.
  */
-;(function(root, factory) {
+(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
     // Node/CommonJS
-    module.exports = factory()
+    module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(factory)
+    define(factory);
   } else {
     // Browser globals
-    root.findAndReplaceDOMText = factory()
+    root.findAndReplaceDOMText = factory();
   }
 })(this, function factory() {
-  var PORTION_MODE_RETAIN = 'retain'
-  var PORTION_MODE_FIRST = 'first'
+  var PORTION_MODE_RETAIN = 'retain';
+  var PORTION_MODE_FIRST = 'first';
 
-  var doc = document
-  var hasOwn = {}.hasOwnProperty
+  var doc = document;
+  var hasOwn = {}.hasOwnProperty;
 
   function escapeRegExp(s) {
-    return String(s).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1')
+    return String(s).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
   }
 
   function exposed() {
     // Try deprecated arg signature first:
-    return deprecated.apply(null, arguments) || findAndReplaceDOMText.apply(null, arguments)
+    return deprecated.apply(null, arguments) || findAndReplaceDOMText.apply(null, arguments);
   }
 
   function deprecated(regex, node, replacement, captureGroup, elFilter) {
     if (node && !node.nodeType && arguments.length <= 2) {
-      return false
+      return false;
     }
-    var isReplacementFunction = typeof replacement == 'function'
+    var isReplacementFunction = typeof replacement == 'function';
 
     if (isReplacementFunction) {
       replacement = (function(original) {
         return function(portion, match) {
-          return original(portion.text, match.startIndex)
-        }
-      })(replacement)
+          return original(portion.text, match.startIndex);
+        };
+      })(replacement);
     }
 
     // Awkward support for deprecated argument signature (<0.4.0)
@@ -58,28 +58,28 @@
       prepMatch: function(m, mi) {
         // Support captureGroup (a deprecated feature)
 
-        if (!m[0]) throw 'findAndReplaceDOMText cannot handle zero-length matches'
+        if (!m[0]) throw 'findAndReplaceDOMText cannot handle zero-length matches';
 
         if (captureGroup > 0) {
-          var cg = m[captureGroup]
-          m.index += m[0].indexOf(cg)
-          m[0] = cg
+          var cg = m[captureGroup];
+          m.index += m[0].indexOf(cg);
+          m[0] = cg;
         }
 
-        m.endIndex = m.index + m[0].length
-        m.startIndex = m.index
-        m.index = mi
+        m.endIndex = m.index + m[0].length;
+        m.startIndex = m.index;
+        m.index = mi;
 
-        return m
+        return m;
       },
       filterElements: elFilter,
-    })
+    });
 
     exposed.revert = function() {
-      return instance.revert()
-    }
+      return instance.revert();
+    };
 
-    return true
+    return true;
   }
 
   /**
@@ -97,7 +97,7 @@
    *	returning false = avoid element)
    */
   function findAndReplaceDOMText(node, options) {
-    return new Finder(node, options)
+    return new Finder(node, options);
   }
 
   exposed.NON_PROSE_ELEMENTS = {
@@ -120,7 +120,7 @@
     option: 1,
     optgroup: 1,
     button: 1,
-  }
+  };
 
   exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
     // Elements that will not contain prose or block elements where we don't
@@ -194,52 +194,52 @@
     col: 1,
     tfoot: 1,
     colgroup: 1,
-  }
+  };
 
   exposed.NON_INLINE_PROSE = function(el) {
-    return hasOwn.call(exposed.NON_CONTIGUOUS_PROSE_ELEMENTS, el.nodeName.toLowerCase())
-  }
+    return hasOwn.call(exposed.NON_CONTIGUOUS_PROSE_ELEMENTS, el.nodeName.toLowerCase());
+  };
 
   // Presets accessed via `options.preset` when calling findAndReplaceDOMText():
   exposed.PRESETS = {
     prose: {
       forceContext: exposed.NON_INLINE_PROSE,
       filterElements: function(el) {
-        return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase())
+        return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());
       },
     },
-  }
+  };
 
-  exposed.Finder = Finder
+  exposed.Finder = Finder;
 
   /**
    * Finder -- encapsulates logic to find and replace.
    */
   function Finder(node, options) {
-    var preset = options.preset && exposed.PRESETS[options.preset]
+    var preset = options.preset && exposed.PRESETS[options.preset];
 
-    options.portionMode = options.portionMode || PORTION_MODE_RETAIN
+    options.portionMode = options.portionMode || PORTION_MODE_RETAIN;
 
     if (preset) {
       for (var i in preset) {
         if (hasOwn.call(preset, i) && !hasOwn.call(options, i)) {
-          options[i] = preset[i]
+          options[i] = preset[i];
         }
       }
     }
 
-    this.node = node
-    this.options = options
+    this.node = node;
+    this.options = options;
 
     // Enable match-preparation method to be passed as option:
-    this.prepMatch = options.prepMatch || this.prepMatch
+    this.prepMatch = options.prepMatch || this.prepMatch;
 
-    this.reverts = []
+    this.reverts = [];
 
-    this.matches = this.search()
+    this.matches = this.search();
 
     if (this.matches.length) {
-      this.processMatches()
+      this.processMatches();
     }
   }
 
@@ -248,43 +248,43 @@
      * Searches for all matches that comply with the instance's 'match' option
      */
     search: function() {
-      var match
-      var matchIndex = 0
-      var offset = 0
-      var regex = this.options.find
-      var textAggregation = this.getAggregateText()
-      var matches = []
-      var self = this
+      var match;
+      var matchIndex = 0;
+      var offset = 0;
+      var regex = this.options.find;
+      var textAggregation = this.getAggregateText();
+      var matches = [];
+      var self = this;
 
-      regex = typeof regex === 'string' ? RegExp(escapeRegExp(regex), 'g') : regex
+      regex = typeof regex === 'string' ? RegExp(escapeRegExp(regex), 'g') : regex;
 
-      matchAggregation(textAggregation)
+      matchAggregation(textAggregation);
 
       function matchAggregation(textAggregation) {
         for (var i = 0, l = textAggregation.length; i < l; ++i) {
-          var text = textAggregation[i]
+          var text = textAggregation[i];
 
           if (typeof text !== 'string') {
             // Deal with nested contexts: (recursive)
-            matchAggregation(text)
-            continue
+            matchAggregation(text);
+            continue;
           }
 
           if (regex.global) {
             while ((match = regex.exec(text))) {
-              matches.push(self.prepMatch(match, matchIndex++, offset))
+              matches.push(self.prepMatch(match, matchIndex++, offset));
             }
           } else {
             if ((match = text.match(regex))) {
-              matches.push(self.prepMatch(match, 0, offset))
+              matches.push(self.prepMatch(match, 0, offset));
             }
           }
 
-          offset += text.length
+          offset += text.length;
         }
       }
 
-      return matches
+      return matches;
     },
 
     /**
@@ -292,24 +292,24 @@
      */
     prepMatch: function(match, matchIndex, characterOffset) {
       if (!match[0]) {
-        throw new Error('findAndReplaceDOMText cannot handle zero-length matches')
+        throw new Error('findAndReplaceDOMText cannot handle zero-length matches');
       }
 
-      match.endIndex = characterOffset + match.index + match[0].length
-      match.startIndex = characterOffset + match.index
-      match.index = matchIndex
+      match.endIndex = characterOffset + match.index + match[0].length;
+      match.startIndex = characterOffset + match.index;
+      match.index = matchIndex;
 
-      return match
+      return match;
     },
 
     /**
      * Gets aggregate text within subject node
      */
     getAggregateText: function() {
-      var elementFilter = this.options.filterElements
-      var forceContext = this.options.forceContext
+      var elementFilter = this.options.filterElements;
+      var forceContext = this.options.forceContext;
 
-      return getText(this.node)
+      return getText(this.node);
 
       /**
        * Gets aggregate text of a node without resorting
@@ -317,47 +317,47 @@
        */
       function getText(node) {
         if (node.nodeType === Node.TEXT_NODE) {
-          return [node.data]
+          return [node.data];
         }
 
         if (elementFilter && !elementFilter(node)) {
-          return []
+          return [];
         }
 
-        var txt = ['']
-        var i = 0
+        var txt = [''];
+        var i = 0;
 
         if ((node = node.firstChild))
           do {
             if (node.nodeType === Node.TEXT_NODE) {
-              txt[i] += node.data
-              continue
+              txt[i] += node.data;
+              continue;
             }
 
-            var innerText = getText(node)
+            var innerText = getText(node);
 
             if (
               forceContext &&
               node.nodeType === Node.ELEMENT_NODE &&
               (forceContext === true || forceContext(node))
             ) {
-              txt[++i] = innerText
-              txt[++i] = ''
+              txt[++i] = innerText;
+              txt[++i] = '';
             } else {
               if (typeof innerText[0] === 'string') {
                 // Bridge nested text-node data so that they're
                 // not considered their own contexts:
                 // I.e. ['some', ['thing']] -> ['something']
-                txt[i] += innerText.shift()
+                txt[i] += innerText.shift();
               }
               if (innerText.length) {
-                txt[++i] = innerText
-                txt[++i] = ''
+                txt[++i] = innerText;
+                txt[++i] = '';
               }
             }
-          } while ((node = node.nextSibling))
+          } while ((node = node.nextSibling));
 
-        return txt
+        return txt;
       }
     },
 
@@ -366,9 +366,9 @@
      * calling replaceFn when a match is found.
      */
     processMatches: function() {
-      var matches = this.matches
-      var node = this.node
-      var elementFilter = this.options.filterElements
+      var matches = this.matches;
+      var node = this.node;
+      var elementFilter = this.options.filterElements;
 
       var startPortion,
         endPortion,
@@ -379,7 +379,7 @@
         matchIndex = 0,
         portionIndex = 0,
         doAvoidNode,
-        nodeStack = [node]
+        nodeStack = [node];
 
       out: while (true) {
         if (curNode.nodeType === Node.TEXT_NODE) {
@@ -398,7 +398,7 @@
               indexInNode: match.startIndex - atIndex,
               endIndexInNode: match.endIndex - atIndex,
               isEnd: true,
-            }
+            };
           } else if (startPortion) {
             // Intersecting node
             innerPortions.push({
@@ -407,7 +407,7 @@
               text: curNode.data,
               indexInMatch: atIndex - match.startIndex,
               indexInNode: 0, // always zero for inner-portions
-            })
+            });
           }
 
           if (!startPortion && curNode.length + atIndex > match.startIndex) {
@@ -419,54 +419,54 @@
               indexInNode: match.startIndex - atIndex,
               endIndexInNode: match.endIndex - atIndex,
               text: curNode.data.substring(match.startIndex - atIndex, match.endIndex - atIndex),
-            }
+            };
           }
 
-          atIndex += curNode.data.length
+          atIndex += curNode.data.length;
         }
 
         doAvoidNode =
-          curNode.nodeType === Node.ELEMENT_NODE && elementFilter && !elementFilter(curNode)
+          curNode.nodeType === Node.ELEMENT_NODE && elementFilter && !elementFilter(curNode);
 
         if (startPortion && endPortion) {
-          curNode = this.replaceMatch(match, startPortion, innerPortions, endPortion)
+          curNode = this.replaceMatch(match, startPortion, innerPortions, endPortion);
 
           // processMatches has to return the node that replaced the endNode
           // and then we step back so we can continue from the end of the
           // match:
 
-          atIndex -= endPortion.node.data.length - endPortion.endIndexInNode
+          atIndex -= endPortion.node.data.length - endPortion.endIndexInNode;
 
-          startPortion = null
-          endPortion = null
-          innerPortions = []
-          match = matches.shift()
-          portionIndex = 0
-          matchIndex++
+          startPortion = null;
+          endPortion = null;
+          innerPortions = [];
+          match = matches.shift();
+          portionIndex = 0;
+          matchIndex++;
 
           if (!match) {
-            break // no more matches
+            break; // no more matches
           }
         } else if (!doAvoidNode && (curNode.firstChild || curNode.nextSibling)) {
           // Move down or forward:
           if (curNode.firstChild) {
-            nodeStack.push(curNode)
-            curNode = curNode.firstChild
+            nodeStack.push(curNode);
+            curNode = curNode.firstChild;
           } else {
-            curNode = curNode.nextSibling
+            curNode = curNode.nextSibling;
           }
-          continue
+          continue;
         }
 
         // Move forward or up:
         while (true) {
           if (curNode.nextSibling) {
-            curNode = curNode.nextSibling
-            break
+            curNode = curNode.nextSibling;
+            break;
           }
-          curNode = nodeStack.pop()
+          curNode = nodeStack.pop();
           if (curNode === node) {
-            break out
+            break out;
           }
         }
       }
@@ -479,218 +479,308 @@
       // Reversion occurs backwards so as to avoid nodes subsequently
       // replaced during the matching phase (a forward process):
       for (var l = this.reverts.length; l--; ) {
-        this.reverts[l]()
+        this.reverts[l]();
       }
-      this.reverts = []
+      this.reverts = [];
     },
 
     prepareReplacementString: function(string, portion, match) {
-      var portionMode = this.options.portionMode
+      var portionMode = this.options.portionMode;
       if (portionMode === PORTION_MODE_FIRST && portion.indexInMatch > 0) {
-        return ''
+        return '';
       }
       string = string.replace(/\$(\d+|&|`|')/g, function($0, t) {
-        var replacement
+        var replacement;
         switch (t) {
           case '&':
-            replacement = match[0]
-            break
+            replacement = match[0];
+            break;
           case '`':
-            replacement = match.input.substring(0, match.startIndex)
-            break
+            replacement = match.input.substring(0, match.startIndex);
+            break;
           case "'":
-            replacement = match.input.substring(match.endIndex)
-            break
+            replacement = match.input.substring(match.endIndex);
+            break;
           default:
-            replacement = match[+t] || ''
+            replacement = match[+t] || '';
         }
-        return replacement
-      })
+        return replacement;
+      });
 
       if (portionMode === PORTION_MODE_FIRST) {
-        return string
+        return string;
       }
 
       if (portion.isEnd) {
-        return string.substring(portion.indexInMatch)
+        return string.substring(portion.indexInMatch);
       }
 
-      return string.substring(portion.indexInMatch, portion.indexInMatch + portion.text.length)
+      return string.substring(portion.indexInMatch, portion.indexInMatch + portion.text.length);
     },
 
     getPortionReplacementNode: function(portion, match) {
-      var replacement = this.options.replace || '$&'
-      var wrapper = this.options.wrap
-      var wrapperClass = this.options.wrapClass
+      var replacement = this.options.replace || '$&';
+      var wrapper = this.options.wrap;
+      var wrapperClass = this.options.wrapClass;
 
       if (wrapper && wrapper.nodeType) {
         // Wrapper has been provided as a stencil-node for us to clone:
-        var clone = doc.createElement('div')
-        clone.innerHTML = wrapper.outerHTML || new XMLSerializer().serializeToString(wrapper)
-        wrapper = clone.firstChild
+        var clone = doc.createElement('div');
+        clone.innerHTML = wrapper.outerHTML || new XMLSerializer().serializeToString(wrapper);
+        wrapper = clone.firstChild;
       }
 
       if (typeof replacement == 'function') {
-        replacement = replacement(portion, match)
+        replacement = replacement(portion, match);
         if (replacement && replacement.nodeType) {
-          return replacement
+          return replacement;
         }
-        return doc.createTextNode(String(replacement))
+        return doc.createTextNode(String(replacement));
       }
 
-      var el = typeof wrapper == 'string' ? doc.createElement(wrapper) : wrapper
+      var el = typeof wrapper == 'string' ? doc.createElement(wrapper) : wrapper;
 
       if (el && wrapperClass) {
-        el.className = wrapperClass
+        el.className = wrapperClass;
       }
 
-      replacement = doc.createTextNode(this.prepareReplacementString(replacement, portion, match))
+      replacement = doc.createTextNode(this.prepareReplacementString(replacement, portion, match));
 
       if (!replacement.data) {
-        return replacement
+        return replacement;
       }
 
       if (!el) {
-        return replacement
+        return replacement;
       }
 
-      el.appendChild(replacement)
+      el.appendChild(replacement);
 
-      return el
+      return el;
     },
 
     replaceMatch: function(match, startPortion, innerPortions, endPortion) {
-      var matchStartNode = startPortion.node
-      var matchEndNode = endPortion.node
+      var matchStartNode = startPortion.node;
+      var matchEndNode = endPortion.node;
 
-      var precedingTextNode
-      var followingTextNode
+      var precedingTextNode;
+      var followingTextNode;
 
       if (matchStartNode === matchEndNode) {
-        var node = matchStartNode
+        var node = matchStartNode;
 
         if (startPortion.indexInNode > 0) {
           // Add `before` text node (before the match)
-          precedingTextNode = doc.createTextNode(node.data.substring(0, startPortion.indexInNode))
-          node.parentNode.insertBefore(precedingTextNode, node)
+          precedingTextNode = doc.createTextNode(node.data.substring(0, startPortion.indexInNode));
+          node.parentNode.insertBefore(precedingTextNode, node);
         }
 
         // Create the replacement node:
-        var newNode = this.getPortionReplacementNode(endPortion, match)
+        var newNode = this.getPortionReplacementNode(endPortion, match);
 
-        node.parentNode.insertBefore(newNode, node)
+        node.parentNode.insertBefore(newNode, node);
 
         if (endPortion.endIndexInNode < node.length) {
           // ?????
           // Add `after` text node (after the match)
-          followingTextNode = doc.createTextNode(node.data.substring(endPortion.endIndexInNode))
-          node.parentNode.insertBefore(followingTextNode, node)
+          followingTextNode = doc.createTextNode(node.data.substring(endPortion.endIndexInNode));
+          node.parentNode.insertBefore(followingTextNode, node);
         }
 
-        node.parentNode.removeChild(node)
+        node.parentNode.removeChild(node);
 
         this.reverts.push(function() {
           if (precedingTextNode === newNode.previousSibling) {
-            precedingTextNode.parentNode.removeChild(precedingTextNode)
+            precedingTextNode.parentNode.removeChild(precedingTextNode);
           }
           if (followingTextNode === newNode.nextSibling) {
-            followingTextNode.parentNode.removeChild(followingTextNode)
+            followingTextNode.parentNode.removeChild(followingTextNode);
           }
-          newNode.parentNode.replaceChild(node, newNode)
-        })
+          newNode.parentNode.replaceChild(node, newNode);
+        });
 
-        return newNode
+        return newNode;
       } else {
         // Replace matchStartNode -> [innerMatchNodes...] -> matchEndNode (in that order)
 
         precedingTextNode = doc.createTextNode(
           matchStartNode.data.substring(0, startPortion.indexInNode)
-        )
+        );
 
         followingTextNode = doc.createTextNode(
           matchEndNode.data.substring(endPortion.endIndexInNode)
-        )
+        );
 
-        var firstNode = this.getPortionReplacementNode(startPortion, match)
+        var firstNode = this.getPortionReplacementNode(startPortion, match);
 
-        var innerNodes = []
+        var innerNodes = [];
 
         for (var i = 0, l = innerPortions.length; i < l; ++i) {
-          var portion = innerPortions[i]
-          var innerNode = this.getPortionReplacementNode(portion, match)
-          portion.node.parentNode.replaceChild(innerNode, portion.node)
+          var portion = innerPortions[i];
+          var innerNode = this.getPortionReplacementNode(portion, match);
+          portion.node.parentNode.replaceChild(innerNode, portion.node);
           this.reverts.push(
             (function(portion, innerNode) {
               return function() {
-                innerNode.parentNode.replaceChild(portion.node, innerNode)
-              }
+                innerNode.parentNode.replaceChild(portion.node, innerNode);
+              };
             })(portion, innerNode)
-          )
-          innerNodes.push(innerNode)
+          );
+          innerNodes.push(innerNode);
         }
 
-        var lastNode = this.getPortionReplacementNode(endPortion, match)
+        var lastNode = this.getPortionReplacementNode(endPortion, match);
 
-        matchStartNode.parentNode.insertBefore(precedingTextNode, matchStartNode)
-        matchStartNode.parentNode.insertBefore(firstNode, matchStartNode)
-        matchStartNode.parentNode.removeChild(matchStartNode)
+        matchStartNode.parentNode.insertBefore(precedingTextNode, matchStartNode);
+        matchStartNode.parentNode.insertBefore(firstNode, matchStartNode);
+        matchStartNode.parentNode.removeChild(matchStartNode);
 
-        matchEndNode.parentNode.insertBefore(lastNode, matchEndNode)
-        matchEndNode.parentNode.insertBefore(followingTextNode, matchEndNode)
-        matchEndNode.parentNode.removeChild(matchEndNode)
+        matchEndNode.parentNode.insertBefore(lastNode, matchEndNode);
+        matchEndNode.parentNode.insertBefore(followingTextNode, matchEndNode);
+        matchEndNode.parentNode.removeChild(matchEndNode);
 
         this.reverts.push(function() {
-          precedingTextNode.parentNode.removeChild(precedingTextNode)
-          firstNode.parentNode.replaceChild(matchStartNode, firstNode)
-          followingTextNode.parentNode.removeChild(followingTextNode)
-          lastNode.parentNode.replaceChild(matchEndNode, lastNode)
-        })
+          precedingTextNode.parentNode.removeChild(precedingTextNode);
+          firstNode.parentNode.replaceChild(matchStartNode, firstNode);
+          followingTextNode.parentNode.removeChild(followingTextNode);
+          lastNode.parentNode.replaceChild(matchEndNode, lastNode);
+        });
 
-        return lastNode
+        return lastNode;
       }
     },
-  }
-  return exposed
-})
+  };
+  return exposed;
+});
 /*
-	STOP HERE
+	IMMERSE STARTS HERE
 */
+var referenceWords = null;
 
-let lastTimer = performance.now()
-let referenceWords = null
+function hideTooltip() {
+  const imrPopup = document.getElementsByClassName('immerse-tooltip-element')[0];
+  imrPopup.classList.add('immerse-hidden');
+}
+
+function showTooltip(reference, word, mouseEvent) {
+  const imrPopup = document.getElementsByClassName('immerse-tooltip-element')[0];
+  imrPopup.classList.remove('immerse-hidden');
+  // let imrCoords = reference.getBoundingClientRect();
+  // let offsetCoords = reference.offsetParent.getBoundingClientRect();
+  // console.log("IMMERSE COORDS", imrCoords, offsetCoords);
+  // imrPopup.style.top = `${imrCoords.top+imrCoords.height-offsetCoords.y+30}px`;
+  imrPopup.style.top = `${mouseEvent.pageY}px`;
+  // imrPopup.style.left = `${imrCoords.left}px`;
+  imrPopup.style.left = `${mouseEvent.pageX + 10}px`;
+  imrPopup.getElementsByClassName('immerse-header-text')[0].innerHTML = `${word.value}`;
+  // eslint-disable-next-line no-console
+  console.log(
+    'for this tooltip:',
+    referenceWords,
+    word.translation,
+    referenceWords[word.translation]
+  );
+  imrPopup.getElementsByClassName('immerse-body-main')[0].innerHTML = `${word.translation}`;
+  const referenceWord = referenceWords[word.translation];
+  imrPopup.getElementsByClassName('immerse-body-auxiliaries-kun')[0].innerHTML = `${
+    referenceWord ? referenceWord.kunyomi_ja : ''
+  }`;
+  imrPopup.getElementsByClassName('immerse-body-auxiliaries-on')[0].innerHTML = `${
+    referenceWord ? referenceWord.onyomi_ja : ''
+  }`;
+}
+
+function removeAllTooltips() {
+  const existingTooltips = document.getElementsByClassName('immerse-translation');
+  Array.from(existingTooltips).forEach(tooltip => {
+    tooltip.removeEventListener('mouseover', showTooltip);
+    tooltip.removeEventListener('mouseout', hideTooltip);
+  });
+}
+
+function replaceTextInDocument(wordList) {
+  console.log('WordList:', wordList);
+  wordList.forEach(word => {
+    // Step 1 - Create the regex
+    const flags = `g${word.caseSensitive ? '' : 'i'}`;
+    const regex = new RegExp(`(^|\\W|\\d)${word.value}($|\\W|\\d)`, flags);
+    // Step2 - find the regex-matching words and replace
+    // eslint-disable-next-line no-undef
+    findAndReplaceDOMText(document.body, {
+      preset: 'prose',
+      find: regex,
+      portionMode: 'first',
+      replace: (portion, match) => {
+        let preChars;
+        let postChars;
+        if (portion.text.length < word.value.length) {
+          return '';
+        }
+        // Step 2.1 - We create a span element and assign it a class
+        const translatedSpan = document.createElement('span');
+        translatedSpan.className = `immerse-translation imr-${word.value}`;
+        // Step 2.2 - Find characters that were part of the match but aren't part of the word
+        if (match) {
+          const start = match[0].toLowerCase().indexOf(word.value.toLowerCase());
+          preChars = match[0].substring(0, start);
+          postChars = match[0].substring(start + word.value.length);
+        }
+        // Step 2.3 - Create reult string with translated word with the additional characters.
+        let newContent = preChars ? preChars + word.translation : word.translation;
+        newContent = postChars ? newContent + postChars : newContent;
+        translatedSpan.textContent = newContent;
+        return translatedSpan;
+      },
+    });
+    // Step 3 - Add tooltip to all of the word translations
+    const translations = document.querySelectorAll(`.imr-${word.value}`);
+    Array.from(translations).forEach(translation => {
+      translation.addEventListener('mouseover', mouseEvent => {
+        showTooltip(translation, word, mouseEvent);
+      });
+      translation.addEventListener('mouseout', () => {
+        hideTooltip();
+      });
+    });
+  });
+}
+
+// eslint-disable-next-line no-var
+var lastTimer = performance.now();
+
 chrome.storage.local.get(['imrkorean'], result => {
-  const wordList = result['imrkorean']
-  replaceTextInDocument(wordList)
-  let dom_observer = new MutationObserver(function(mutation) {
-    let newTimer = performance.now()
+  const wordList = result.imrkorean;
+  replaceTextInDocument(wordList);
+  const domObserver = new MutationObserver(mutation => {
+    const newTimer = performance.now();
     if (newTimer - lastTimer > 5000) {
-      /**Check if mutation is typing */
-      let typing = mutation.some(record => record.type == 'characterData')
-      let immersePopup = mutation.some(
+      // Check if mutation is typing
+      const typing = mutation.some(record => record.type === 'characterData');
+      const immersePopup = mutation.some(
         record =>
           record.target &&
           (record.target.classList.contains('immerse-header-text') ||
             record.target.classList.contains('immerse-body-main'))
-      )
-      console.log('Detected changed Content', newTimer, lastTimer, mutation)
-      if (typing || immersePopup) return
-      console.log('Immerse reloaded words since content changed', newTimer, lastTimer, mutation)
-      removeAllTooltips()
-      replaceTextInDocument(wordList)
-      lastTimer = newTimer
+      );
+      console.log('Detected changed Content', newTimer, lastTimer, mutation);
+      if (typing || immersePopup) return;
+      console.log('Immerse reloaded words since content changed', newTimer, lastTimer, mutation);
+      removeAllTooltips();
+      replaceTextInDocument(wordList);
+      lastTimer = newTimer;
     }
-  })
-  var container = document.body
-  console.log('new container', container)
-  var config = { attributes: true, childList: true, characterData: true, subtree: true }
-  dom_observer.observe(document.body, config)
-})
+  });
+  // const container = document.body;
+  // console.log('new container', container);
+  const config = { attributes: true, childList: true, characterData: true, subtree: true };
+  domObserver.observe(document.body, config);
+});
 
 chrome.storage.local.get(['imr-reference-jp'], result => {
-  referenceWords = result['imr-reference-jp']
-})
+  referenceWords = result['imr-reference-jp'];
+});
 
-if (document.getElementsByClassName('immerse-tooltip-element').length == 0) {
+if (document.getElementsByClassName('immerse-tooltip-element').length === 0) {
   document.body.insertAdjacentHTML(
     'beforeend',
     `<div class="immerse-tooltip-element immerse-hidden">
@@ -707,90 +797,5 @@ if (document.getElementsByClassName('immerse-tooltip-element').length == 0) {
 			</div>
 	  	</div>
     </div>`
-  )
-}
-
-function replaceTextInDocument(wordList) {
-  for (var wordkey in wordList) {
-    let word = wordList[wordkey]
-    //Step 1 - Create the regex
-    const flags = `g${word.caseSensitive ? '' : 'i'}`
-    let regex = new RegExp('(^|\\W|\\d)' + word.value + '($|\\W|\\d)', flags)
-    //Step2 - find the regex-matching words and replace
-    findAndReplaceDOMText(document.body, {
-      preset: 'prose',
-      find: regex,
-      portionMode: 'first',
-      replace: function(portion, match) {
-        if (portion.text.length < word.value.length) {
-          return ''
-        }
-        //Step 2.1 - We create a span element and assign it a class
-        var translatedSpan = document.createElement('span')
-        translatedSpan.className = 'immerse-translation imr-' + word.value
-        let preChars, postChars
-        //Step 2.2 - Find characters that were part of the match but aren't part of the word
-        if (match) {
-          let start = match[0].toLowerCase().indexOf(word.value.toLowerCase())
-          preChars = match[0].substring(0, start)
-          postChars = match[0].substring(start + word.value.length)
-        }
-        //Step 2.3 - Create reult string with translated word with the additional characters.
-        let newContent = preChars ? preChars + word.translation : word.translation
-        newContent = postChars ? newContent + postChars : newContent
-        translatedSpan.textContent = newContent
-        return translatedSpan
-      },
-    })
-    //Step 3 - Add tooltip to all of the word translations
-    var translations = document.querySelectorAll('.imr-' + word.value)
-    for (const translation of translations) {
-      translation.addEventListener('mouseover', mouseEvent => {
-        showTooltip(translation, word, mouseEvent)
-      })
-      translation.addEventListener('mouseout', () => {
-        hideTooltip()
-      })
-    }
-  }
-}
-
-function removeAllTooltips() {
-  const existingTooltips = document.getElementsByClassName('immerse-translation')
-  Array.from(existingTooltips).forEach(tooltip => {
-    tooltip.removeEventListener('mouseover', showTooltip)
-    tooltip.removeEventListener('mouseout', hideTooltip)
-  })
-}
-
-function showTooltip(reference, word, mouseEvent) {
-  const imrPopup = document.getElementsByClassName('immerse-tooltip-element')[0]
-  imrPopup.classList.remove('immerse-hidden')
-  // let imrCoords = reference.getBoundingClientRect();
-  // let offsetCoords = reference.offsetParent.getBoundingClientRect();
-  // console.log("IMMERSE COORDS", imrCoords, offsetCoords);
-  // imrPopup.style.top = `${imrCoords.top+imrCoords.height-offsetCoords.y+30}px`;
-  imrPopup.style.top = `${mouseEvent.pageY}px`
-  // imrPopup.style.left = `${imrCoords.left}px`;
-  imrPopup.style.left = `${mouseEvent.pageX + 10}px`
-  imrPopup.getElementsByClassName('immerse-header-text')[0].innerHTML = `${word.value}`
-  console.log(
-    'for this tooltip:',
-    referenceWords,
-    word.translation,
-    referenceWords[word.translation]
-  )
-  imrPopup.getElementsByClassName('immerse-body-main')[0].innerHTML = `${word.translation}`
-  const referenceWord = referenceWords[word.translation]
-  imrPopup.getElementsByClassName('immerse-body-auxiliaries-kun')[0].innerHTML = `${
-    referenceWord ? referenceWord.kunyomi_ja : ''
-  }`
-  imrPopup.getElementsByClassName('immerse-body-auxiliaries-on')[0].innerHTML = `${
-    referenceWord ? referenceWord.onyomi_ja : ''
-  }`
-}
-
-function hideTooltip() {
-  const imrPopup = document.getElementsByClassName('immerse-tooltip-element')[0]
-  imrPopup.classList.add('immerse-hidden')
+  );
 }
