@@ -1,25 +1,19 @@
 {
-    "name": "Thermo Fisher Scientific UX-Library",
-    "src": [
-        "src"
-    ],
-    "exclude": [
-        "**/*.spec.ts",
-        "**/*.test.ts",
-        "**/global.ts"
-    ],
-    "out": "docs",
-    "mode": "file",
-    "theme": "default",
-    "excludeExternals": true,
-    "includeDeclarations": false,
-    "ignoreCompilerErrors": true,
-    "excludePrivate": true,
-    "excludeNotExported": "true",
-    "target": "ES2017",
-    "moduleResolution": "node",
-    "preserveConstEnums": "true",
-    "stripInternal": "true",
-    "suppressExcessPropertyErrors": "true",
-    "suppressImplicitAnyIndexErrors": "true"
+  "name": "Thermo Fisher Scientific UX-Library",
+  "src": ["src"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/global.ts"],
+  "out": "docs",
+  "mode": "file",
+  "theme": "default",
+  "excludeExternals": true,
+  "includeDeclarations": false,
+  "ignoreCompilerErrors": true,
+  "excludePrivate": true,
+  "excludeNotExported": "true",
+  "target": "ES2017",
+  "moduleResolution": "node",
+  "preserveConstEnums": "true",
+  "stripInternal": "true",
+  "suppressExcessPropertyErrors": "true",
+  "suppressImplicitAnyIndexErrors": "true"
 }

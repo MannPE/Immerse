@@ -1,10 +1,8 @@
-import { Config } from '@stencil/core';
-import { sass } from '@stencil/sass';
+import { Config } from '@stencil/core'
+import { sass } from '@stencil/sass'
 
 export const config: Config = {
-  plugins: [
-    sass()
-  ],
+  plugins: [sass()],
   buildEs5: false,
   namespace: 'Immerse',
   outputTargets: [
@@ -13,27 +11,23 @@ export const config: Config = {
       baseUrl: 'http://localhost:3333/',
       serviceWorker: {
         swSrc: 'src/sw.js',
-        globPatterns: [
-          '**/*.{html,js,css,json,ico,png}'
-        ]
-      }
+        globPatterns: ['**/*.{html,js,css,json,ico,png}'],
+      },
     },
     {
       type: 'docs-json',
-      file: 'dist/documentation.json'
+      file: 'dist/documentation.json',
     },
     {
       type: 'dist',
-      dir: './dist'
-    }
+      dir: './dist',
+    },
   ],
   globalStyle: 'src/global/style.scss',
-  copy: [
-    { src: 'extension/' }
-  ]
-};
+  copy: [{ src: 'extension/' }],
+}
 
 export const devServer = {
   root: 'www',
-  watchGlob: '**/**'
-};
+  watchGlob: '**/**',
+}
