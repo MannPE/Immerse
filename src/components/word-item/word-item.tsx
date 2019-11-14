@@ -1,4 +1,4 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Prop, State, h } from '@stencil/core';
 import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
 import { ImmerseWord } from '../../storage-manager/types';
 import { Language } from '../../languages/languages';
@@ -44,7 +44,14 @@ export class WordItem {
 
   handleEditClicked(): void {
     // console.log("saving:",this._immerseWordObject);
-    addWordToLanguage(Language.KOREAN,this._immerseWordObject);
+    this._immerseWordObject = {
+      value: this.value,
+      translation: this.translation,
+      caseSensitive: this.caseSensitive,
+      ignoreWhiteSpace: this.ignoreWhiteSpace,
+      altText: this.altText
+    };
+    addWordToLanguage(Language.KOREAN, this._immerseWordObject);
   }
 
   handleTranslationChanged = (event) => {
@@ -73,7 +80,7 @@ export class WordItem {
       this.expanded ? 
       <div class="details-row">
         <div class="checkbox-setting">
-          <input type="checkbox" checked={this.caseSensitive}/> <span>Case Sensitive </span>
+          <input type="checkbox" checked={this.caseSensitive} onChange={() => this.caseSensitive = !this.caseSensitive} /> <span>Case Sensitive </span>
         </div>
         <div class="alt-text">
         <span> Tooltip </span> <input type="text" value={this.altText ? this.altText : this.translation} onInput={this.handleAltTextChanged}/>

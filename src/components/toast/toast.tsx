@@ -1,4 +1,4 @@
-import { Component, State } from '@stencil/core';
+import { Component, State, h, JSX } from '@stencil/core';
 import { Disposable } from '../../services/event-emitter';
 import { ToastManager, Toast } from './toastManager';
 

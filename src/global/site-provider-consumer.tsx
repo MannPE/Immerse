@@ -1,13 +1,15 @@
-import { createProviderConsumer } from '@stencil/state-tunnel';
+import { createProviderConsumer } from '@stencil/state-tunnel'
+import { h } from '@stencil/core'
 
 export interface SiteState {
-  isLeftSidebarIn: boolean,
+  isLeftSidebarIn: boolean
   toggleLeftSidebar: () => void
 }
 
-export default createProviderConsumer<SiteState>({
+export default createProviderConsumer<SiteState>(
+  {
     isLeftSidebarIn: false,
-    toggleLeftSidebar: () => {}
+    toggleLeftSidebar: () => {},
   },
   (subscribe, child) => <context-consumer subscribe={subscribe} renderer={child} />
-);
+)

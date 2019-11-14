@@ -84,91 +84,91 @@ export class Menu { ... }
 <p>The source file should be organized like a newspaper article, with the highest level summary at the top, and more and more details further down. Functions called from the top function come directly below it, and so on down to the lowest level and most detailed functions at the bottom. This is a good way to organize the source code, even though IDE:s make the location of functions less important, since it is so easy to navigate in and out of them.</p>
 </blockquote>
 <h3 id="high-level-example-commented-">High level example (commented)</h3>
-<pre><code class="lang-ts"><span class="hljs-meta">@Component({
-  tag: <span class="hljs-meta-string">'ion-something'</span>,
-  styleUrl: <span class="hljs-meta-string">'something.scss'</span>,
+<pre><code class="lang-ts"><span class="hljs-meta">@Component</span>({
+  tag: <span class="hljs-string">'ion-something'</span>,
+  styleUrl: <span class="hljs-string">'something.scss'</span>,
   styleUrls: {
-    ios: <span class="hljs-meta-string">'something.ios.scss'</span>,
-    md: <span class="hljs-meta-string">'something.md.scss'</span>,
-    wp: <span class="hljs-meta-string">'something.wp.scss'</span>
+    ios: <span class="hljs-string">'something.ios.scss'</span>,
+    md: <span class="hljs-string">'something.md.scss'</span>,
+    wp: <span class="hljs-string">'something.wp.scss'</span>
   },
   host: {
-    theme: <span class="hljs-meta-string">'something'</span>
+    theme: <span class="hljs-string">'something'</span>
   }
-})</span>
-export <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Something</span> </span>{
+})
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Something</span> </span>{
 
-  <span class="hljs-comment">/**
-   * 1. Own Properties
-   * Always set the type if a default value has not
-   * been set. If a default value is being set, then type
-   * is already inferred. List the own properties in
-   * alphabetical order. Note that because these properties
-   * do not have the <span class="hljs-doctag">@Prop</span>() decorator, they will not be exposed
-   * publicly on the host element, but only used internally.
-   */</span>
-  num: number;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>1. Own Properties
+<span class="hljs-bullet">   * </span>Always set </span>the<span class="markdown"> type if </span>a<span class="markdown"> default value has not
+<span class="hljs-bullet">   * </span>been set. If </span>a<span class="markdown"> default value is being set, then type
+<span class="hljs-bullet">   * </span>is already inferred. List </span>the<span class="markdown"> own properties in
+<span class="hljs-bullet">   * </span>alphabetical order. Note that because these properties
+<span class="hljs-bullet">   * </span>do not have </span>the<span class="markdown"> @Prop() decorator, </span>they<span class="markdown"> </span>will<span class="markdown"> not be exposed
+<span class="hljs-bullet">   * </span>publicly on </span>the<span class="markdown"> host element, </span>but<span class="markdown"> only used internally.
+   */</span></span>
+  <span class="hljs-built_in">num</span>: number;
   someText = <span class="hljs-string">'default'</span>;
 
-  <span class="hljs-comment">/**
-   * 2. Reference to host HTML element.
-   * Inlined decorator
-   */</span>
-  <span class="hljs-meta">@Element()</span> el: HTMLElement;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>2. Reference to host HTML element.
+<span class="hljs-bullet">   * </span>Inlined decorator
+   */</span></span>
+  <span class="hljs-meta">@Element</span>() el: HTMLElement;
 
-  <span class="hljs-comment">/**
-   * 3. State() variables
-   * Inlined decorator, alphabetical order.
-   */</span>
-  <span class="hljs-meta">@State()</span> isValidated: boolean;
-  <span class="hljs-meta">@State()</span> status = <span class="hljs-number">0</span>;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>3. State() variables
+<span class="hljs-bullet">   * </span>Inlined decorator, alphabetical order.
+   */</span></span>
+  <span class="hljs-meta">@State</span>() isValidated: boolean;
+  <span class="hljs-meta">@State</span>() status = <span class="hljs-number">0</span>;
 
-  <span class="hljs-comment">/**
-   * 4. Internal props (context and connect)
-   * Inlined decorator, alphabetical order.
-   */</span>
-  <span class="hljs-meta">@Prop({ context: <span class="hljs-meta-string">'config'</span> })</span> config: Config;
-  <span class="hljs-meta">@Prop({ connect: <span class="hljs-meta-string">'ion-menu-controller'</span> })</span> lazyMenuCtrl: Lazy&lt;MenuController&gt;;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>4. Internal props (context and connect)
+<span class="hljs-bullet">   * </span>Inlined decorator, alphabetical order.
+   */</span></span>
+  <span class="hljs-meta">@Prop</span>({ context: <span class="hljs-string">'config'</span> }) config: Config;
+  <span class="hljs-meta">@Prop</span>({ connect: <span class="hljs-string">'ion-menu-controller'</span> }) lazyMenuCtrl: Lazy&lt;MenuController&gt;;
 
-  <span class="hljs-comment">/**
-   * 5. Public Property API
-   * Inlined decorator, alphabetical order. These are
-   * different than "own properties" in that public props
-   * are exposed as properties and attributes on the host element.
-   * Requires JSDocs for public API documentation.
-   */</span>
-  <span class="hljs-meta">@Prop()</span> content: string;
-  <span class="hljs-meta">@Prop()</span> enabled: boolean;
-  <span class="hljs-meta">@Prop()</span> menuId: string;
-  <span class="hljs-meta">@Prop()</span> type = <span class="hljs-string">'overlay'</span>;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>5. Public Property API
+<span class="hljs-bullet">   * </span>Inlined decorator, alphabetical order. These </span>are<span class="markdown"><span class="hljs-bullet">
+   * </span>different than "own properties" in that public props
+<span class="hljs-bullet">   * </span></span>are<span class="markdown"> exposed as properties and attributes on </span>the<span class="markdown"> host element.
+<span class="hljs-bullet">   * </span>Requires JSDocs for public API documentation.
+   */</span></span>
+  <span class="hljs-meta">@Prop</span>() content: string;
+  <span class="hljs-meta">@Prop</span>() enabled: boolean;
+  <span class="hljs-meta">@Prop</span>() menuId: string;
+  <span class="hljs-meta">@Prop</span>() type = <span class="hljs-string">'overlay'</span>;
 
-  <span class="hljs-comment">/**
-   * Prop lifecycle events SHOULD go just behind the Prop they listen to.
-   * This makes sense since both statements are strongly connected.
-   * - If renaming the instance variable name you must also update the name in <span class="hljs-doctag">@Watch</span>()
-   * - Code is easier to follow and maintain.
-   */</span>
-  <span class="hljs-meta">@Prop()</span> swipeEnabled = <span class="hljs-literal">true</span>;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>Prop lifecycle events SHOULD go </span>just<span class="markdown"> behind </span>the<span class="markdown"> Prop </span>they<span class="markdown"> listen to.
+<span class="hljs-bullet">   * </span>This makes sense since both statements </span>are<span class="markdown"> strongly connected.
+<span class="hljs-bullet">   * </span>- If renaming </span>the<span class="markdown"> instance variable name </span>you<span class="markdown"> must also update </span>the<span class="markdown"> name in @Watch()
+<span class="hljs-bullet">   * </span>- Code is easier to follow and maintain.
+   */</span></span>
+  <span class="hljs-meta">@Prop</span>() swipeEnabled = <span class="hljs-keyword">true</span>;
 
-  <span class="hljs-meta">@Watch(<span class="hljs-meta-string">'swipeEnabled'</span>)</span>
+  <span class="hljs-meta">@Watch</span>(<span class="hljs-string">'swipeEnabled'</span>)
   swipeEnabledChanged() {
     <span class="hljs-keyword">this</span>.updateState();
   }
 
-  <span class="hljs-comment">/**
-   * 6. Events section
-   * Inlined decorator, alphabetical order.
-   * Requires JSDocs for public API documentation.
-   */</span>
-  <span class="hljs-meta">@Event()</span> ionClose: EventEmitter;
-  <span class="hljs-meta">@Event()</span> ionDrag: EventEmitter;
-  <span class="hljs-meta">@Event()</span> ionOpen: EventEmitter;
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>6. Events section
+<span class="hljs-bullet">   * </span>Inlined decorator, alphabetical order.
+<span class="hljs-bullet">   * </span>Requires JSDocs for public API documentation.
+   */</span></span>
+  <span class="hljs-meta">@Event</span>() ionClose: EventEmitter;
+  <span class="hljs-meta">@Event</span>() ionDrag: EventEmitter;
+  <span class="hljs-meta">@Event</span>() ionOpen: EventEmitter;
 
-  <span class="hljs-comment">/**
-   * 7. Component lifecycle events
-   * Ordered by their natural call order, for example
-   * WillLoad should go before DidLoad.
-   */</span>
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>7. Component lifecycle events
+<span class="hljs-bullet">   * </span>Ordered by their natural call order, for example
+<span class="hljs-bullet">   * </span>WillLoad </span>should<span class="markdown"> go before DidLoad.
+   */</span></span>
   componentWillLoad() {}
   componentDidLoad() {}
   componentWillEnter() {}
@@ -177,40 +177,40 @@ export <span class="hljs-class"><span class="hljs-keyword">class</span> <span cl
   componentDidLeave() {}
   componentDidUnload() {}
 
-  <span class="hljs-comment">/**
-   * 8. Listeners
-   * It is ok to place them in a different location
-   * if makes more sense in the context. Recommend
-   * starting a listener method with "on".
-   * Always use two lines.
-   */</span>
-  <span class="hljs-meta">@Listen(<span class="hljs-meta-string">'click'</span>, { enabled: false })</span>
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>8. Listeners
+<span class="hljs-bullet">   * </span>It is ok to place them in </span>a<span class="markdown"> different location
+<span class="hljs-bullet">   * </span>if makes </span>more<span class="markdown"> sense in </span>the<span class="markdown"> context. Recommend
+<span class="hljs-bullet">   * </span>starting </span>a<span class="markdown"> listener method with "on".
+<span class="hljs-bullet">   * </span>Always use two lines.
+   */</span></span>
+  <span class="hljs-meta">@Listen</span>(<span class="hljs-string">'click'</span>, { enabled: <span class="hljs-keyword">false</span> })
   onClick(ev: UIEvent) {
     console.log(<span class="hljs-string">'hi!'</span>)
   }
 
-  <span class="hljs-comment">/**
-   * 9. Public methods API
-   * These methods are exposed on the host element.
-   * Always use two lines.
-   * Requires JSDocs for public API documentation.
-   */</span>
-  <span class="hljs-meta">@Method()</span>
-  <span class="hljs-keyword">open</span>() {
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>9. Public methods API
+<span class="hljs-bullet">   * </span>These methods </span>are<span class="markdown"> exposed on </span>the<span class="markdown"> host element.
+<span class="hljs-bullet">   * </span>Always use two lines.
+<span class="hljs-bullet">   * </span>Requires JSDocs for public API documentation.
+   */</span></span>
+  <span class="hljs-meta">@Method</span>()
+  open() {
     ...
   }
 
-  <span class="hljs-meta">@Method()</span>
+  <span class="hljs-meta">@Method</span>()
   close() {
     ...
   }
 
-  <span class="hljs-comment">/**
-   * 10. Local methods
-   * Internal business logic. These methods cannot be
-   * called from the host element.
-   */</span>
-  prepareAnimation(): Promise&lt;void&gt; {
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>10. Local methods
+<span class="hljs-bullet">   * </span>Internal business logic. These methods cannot be
+<span class="hljs-bullet">   * </span>called from </span>the<span class="markdown"> host element.
+   */</span></span>
+  prepareAnimation(): Promise&lt;<span class="hljs-keyword">void</span>&gt; {
     ...
   }
 
@@ -218,34 +218,34 @@ export <span class="hljs-class"><span class="hljs-keyword">class</span> <span cl
     ...
   }
 
-  <span class="hljs-comment">/**
-   * 11. hostData() function
-   * Used to dynamically set host element attributes.
-   * Should be placed directly above render()
-   */</span>
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>11. hostData() function
+<span class="hljs-bullet">   * </span>Used to dynamically set host element attributes.
+<span class="hljs-bullet">   * </span>Should be placed directly above render()
+   */</span></span>
   hostData() {
     <span class="hljs-keyword">return</span> {
       attribute: <span class="hljs-string">'navigation'</span>,
       side: <span class="hljs-keyword">this</span>.isRightSide ? <span class="hljs-string">'right'</span> : <span class="hljs-string">'left'</span>,
       type: <span class="hljs-keyword">this</span>.type,
-      <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-type">{</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span>: </span>{
         <span class="hljs-string">'something-is-animating'</span>: <span class="hljs-keyword">this</span>.isAnimating
       }
     };
   }
 
-  <span class="hljs-comment">/**
-   * 12. render() function
-   * Always the last one in the class.
-   */</span>
+  <span class="hljs-comment"><span class="markdown">/**
+<span class="hljs-bullet">   * </span>12. render() function
+<span class="hljs-bullet">   * </span>Always </span>the<span class="markdown"> last one in </span>the<span class="markdown"> class.
+   */</span></span>
   render() {
     <span class="hljs-keyword">return</span> (
-      &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>='<span class="hljs-title">menu</span>-<span class="hljs-title">inner</span> <span class="hljs-title">page</span>-<span class="hljs-title">inner</span>'&gt;</span>
-        &lt;slot&gt;&lt;/slot&gt;
-      &lt;/div&gt;
+      &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>='<span class="hljs-title">menu</span>-<span class="hljs-title">inner</span> <span class="hljs-title">page</span>-<span class="hljs-title">inner</span>'&gt;
+        &lt;<span class="hljs-title">slot</span>&gt;&lt;/<span class="hljs-title">slot</span>&gt;
+      &lt;/<span class="hljs-title">div</span>&gt;
     );
   }
-}
+}</span>
 </code></pre>
 <p><stencil-route-link url="/docs/framework-integration" router="#router" custom="true">
   <button class='pull-left btn btn--secondary'>

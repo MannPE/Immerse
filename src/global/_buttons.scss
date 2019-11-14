@@ -1,33 +1,51 @@
-$buttonPrimaryBackground: #1E8AE7;
+$buttonPrimaryBackground: #1e8ae7;
 $buttonPrimaryColor: #ffffff;
-$buttonPrimaryBackground_Focused: #1A79C0;
-$buttonPrimaryBackground_Disabled: #EBF2FA;
+$buttonPrimaryBackground_Focused: #1a79c0;
+$buttonPrimaryBackground_Disabled: #ebf2fa;
+
+$buttonSettingBackground: rgb(207, 207, 207);
+$buttonSettingColor: rgb(0, 0, 0);
+$buttonSettingBackground_Focused: rgb(173, 172, 172);
 
 button {
   outline: none;
-  margin-top:5px;
+  margin-top: 5px;
   border: 1px solid transparent;
   border-radius: 4px;
   min-height: 38px;
   font-size: 13px;
   font-weight: bold;
-  padding: .2em 2em;
+  padding: 0.2em 2em;
   white-space: nowrap;
   text-transform: uppercase;
   cursor: pointer;
-  transform: all .2 ease;
+  transform: all 0.2 ease;
   &.imr-success {
     background: $buttonPrimaryBackground;
     color: $buttonPrimaryColor;
 
     &:focus {
-        background: $buttonPrimaryBackground_Focused;
-        box-shadow: 0 0 6px 2px rgba(30,138,231,0.6);
+      background: $buttonPrimaryBackground_Focused;
+      box-shadow: 0 0 6px 2px rgba(30, 138, 231, 0.6);
     }
 
     &:disabled,
     &[disabled] {
-        background: $buttonPrimaryBackground_Disabled;
+      background: $buttonPrimaryBackground_Disabled;
+    }
+  }
+  &.imr-setting {
+    background: $buttonSettingBackground;
+    color: $buttonSettingColor;
+
+    &:focus {
+      background: $buttonSettingBackground_Focused;
+      box-shadow: 0 0 6px 2px rgba(61, 62, 63, 0.6);
+    }
+
+    &:disabled,
+    &[disabled] {
+      background: $buttonPrimaryBackground_Disabled;
     }
   }
 }

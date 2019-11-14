@@ -14,36 +14,20 @@
     "48": "assets/img/icon.png",
     "128": "assets/img/icon.png"
   },
-  "permissions": [
-    "activeTab",
-    "https://*/*",
-    "http://*/*",
-    "storage",
-    "contextMenus",
-    "tabs"
-  ],
+  "permissions": ["activeTab", "https://*/*", "http://*/*", "storage", "contextMenus", "tabs"],
   "background": {
     "page": "extension/bg/background.html",
     "persistent": true
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ],
-      "css": [
-        "extension/bg/tooltip.css"
-      ]
+      "matches": ["https://*/*", "http://*/*"],
+      "css": ["extension/bg/tooltip.css"]
     },
     {
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ],
-      "js": [
-        "extension/inject/inject.js"
-      ]
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["extension/inject/inject.js"]
     }
-  ]
+  ],
+  "web_accessible_resources": ["bg/*.json"]
 }

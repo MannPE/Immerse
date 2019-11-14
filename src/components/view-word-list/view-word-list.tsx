@@ -1,4 +1,4 @@
-import { Component, Element , State,  Method} from '@stencil/core';
+import { Component, Element , State,  Method, h, JSX } from '@stencil/core';
 import { getLanguageWords, removeItem } from '../../storage-manager/immerse-word-manager';
 import { ImmerseWord } from '../../storage-manager/types';
 import { Language } from '../../languages/languages';
@@ -16,17 +16,23 @@ export class ViewWordList {
   componentWillLoad() {
     getLanguageWords(Language.KOREAN, (wordResults) => {
       // console.log("Component will load set words: ",wordResults);
-      this.setWords(wordResults);
+      this.refreshCurrentWordList(wordResults);
     });
   }
 
   @Method()
-  setWords(any: ImmerseWord[]): void {
-    var filtered: ImmerseWord[] = any.filter(function (el) {
-      return el != null;
-    });
-    this.words = filtered;
-    // console.log("Found the following words: ",  this.words);
+  async refreshCurrentWordList(loadedWords: ImmerseWord[]): Promise<void> {
+    console.log('refreshing list with:', loadedWords);
+    if(!!!loadedWords) {
+      this.words = [];
+    }
+    else {
+      var filtered: ImmerseWord[] = loadedWords.filter(function (el) {
+        return el != null;
+      });
+      this.words = filtered;
+      console.log("Found the following words: ",  this.words);
+    }
   }
 
   render(): JSX.Element {
@@ -40,7 +46,7 @@ export class ViewWordList {
               translation = {word.translation}
               caseSensitive = {word.caseSensitive}
               ignoreWhiteSpace = {word.ignoreWhiteSpace}
-              onDelete = { () => removeItem(Language.KOREAN, word.value, (newWordList) => { this.setWords(newWordList) }) } 
+              onDelete = { () => removeItem(Language.KOREAN, word.value, (newWordList) => { this.refreshCurrentWordList(newWordList) }) } 
               altText = {word.altText}
             />);
         }

@@ -36,8 +36,8 @@
 <h2 id="copy"><code>copy</code></h2>
 <p>The <code>copy</code> config is an array of objects that defines any files or folders that should be copied over to the build directory. Each object in the array must include a <code>src</code> property which can be either an absolute path, a relative path or a glob pattern. The config can also provide an optional <code>dest</code> property which can be either an absolute path or a path relative to the build directory. Also note that any files within <code>src/assets</code> are automatically copied to <code>www/assets</code> for convenience.</p>
 <p>In the copy config below, it will copy the entire directory from <code>src/docs-content</code> over to <code>www/docs-content</code>.</p>
-<pre><code class="lang-js">  <span class="hljs-keyword">copy</span><span class="bash">: [
-</span>    { src: <span class="hljs-string">'docs-content'</span> }
+<pre><code class="lang-js">  <span class="hljs-keyword">copy</span><span class="bash">: [</span>
+    { src: <span class="hljs-string">'docs-content'</span> }
   ]
 </code></pre>
 <p><a name="enableCache"></a></p>
@@ -68,7 +68,7 @@
 <h2 id="hashedfilenamelength"><code>hashedFileNameLength</code></h2>
 <p><em>default: <code>8</code></em></p>
 <p>When the <code>hashFileNames</code> config is set to <code>true</code>, and it is a production build, the <code>hashedFileNameLength</code> config is used to determine how many characters the file name&#39;s hash should be.</p>
-<pre><code class="lang-js"><span class="hljs-symbol">hashedFileNameLength:</span> <span class="hljs-number">8</span>
+<pre><code class="lang-js">hashedFileNameLength: <span class="hljs-number">8</span>
 </code></pre>
 <p><a name="namespace"></a></p>
 <h2 id="namespace"><code>namespace</code></h2>

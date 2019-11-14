@@ -26,7 +26,7 @@
 <p>You can also link directly to <code>.scss</code> files</p>
 </blockquote>
 <p>The <code>@Component()</code> decorator also has a <code>host</code> option. This allows you to set CSS classes and attributes on the component you are building.</p>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Component } from <span class="hljs-string">'@stencil/core'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'@stencil/core'</span>;
 
 @Component({
   tag: <span class="hljs-string">'todo-list'</span>,
@@ -148,12 +148,12 @@ export <span class="hljs-class"><span class="hljs-keyword">class</span> <span cl
 <p><a name="method"></a></p>
 <h2 id="method-decorator">Method Decorator</h2>
 <p>The <code>@Method()</code> decorator is used to expose methods on the public API. Functions decorated with the <code>@Method()</code> decorator can be called directly from the element.</p>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Method } <span class="hljs-keyword">from</span> <span class="hljs-string">'@stencil/core'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Method } from <span class="hljs-string">'@stencil/core'</span>;
 
 ...
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> TodoList {
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoList</span> </span>{
 
-  @Method()
+  <span class="hljs-meta">@Method</span>()
   showPrompt() {
     <span class="hljs-comment">// show a prompt</span>
   }
@@ -206,10 +206,10 @@ export <span class="hljs-class"><span class="hljs-keyword">class</span> <span cl
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">my-embedded-component</span> <span class="hljs-attr">color</span>=<span class="hljs-string">"red"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">my-embedded-component</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
     );
   }
-}</span>
+}
 </code></pre>
 <p>The <code>my-parent-component</code> includes a reference to the <code>my-embedded-component</code> in the <code>render()</code> function.</p>
 <p><stencil-route-link url="/docs/component-lifecycle" router="#router" custom="true">
