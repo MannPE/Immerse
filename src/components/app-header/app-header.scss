@@ -7,7 +7,6 @@
 //   width: 500px;
 //   background-color: $color-white;
 //   z-index: 99;
-  
 
 //   .container {
 //     padding-top: 20px;
@@ -18,7 +17,7 @@
 
 // }
 
-imr-app-header{
+imr-app-header {
   padding-top: 20px;
   padding-bottom: 20px;
   background-color: white;
@@ -28,8 +27,12 @@ imr-app-header{
 }
 
 .header-menu {
+  display: flex;
+  justify-content: space-around;
+  justify-items: center;
+  width: 100%;
   a {
-    transition:color .5s;
+    transition: color 0.5s;
     font-size: 14px;
     border-bottom: 3px solid transparent;
     vertical-align: top;
@@ -50,7 +53,7 @@ imr-app-header{
     border-bottom: 2px solid;
   }
 
-  a.link-active{
+  a.link-active {
     color: $color-gunpowder;
   }
 

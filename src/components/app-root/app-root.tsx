@@ -1,33 +1,24 @@
-import "@stencil/router";
-import { Component, Element, Listen, State, h } from "@stencil/core";
+import '@stencil/router';
+import { Component, Element, State, h } from '@stencil/core';
+import { LangManager } from '../../languages/lang-manager';
 
 @Component({
-  tag: "imr-app-root",
-  styleUrl: "app-root.scss"
+  tag: 'imr-app-root',
+  styleUrl: 'app-root.scss',
 })
 export class AppRoot {
-  elements = ["site-header", "site-menu", "app-burger", ".root"];
+  elements = ['site-header', 'site-menu', 'app-burger', '.root'];
 
   @Element() el: HTMLElement;
 
-  @State() isLeftSidebarIn: boolean;
+  @State() hasSetupLanguage: boolean = !!LangManager.instance.getActiveLanguage();
 
-  @Listen("resize", { target: "window" })
-  handleResize() {
-    requestAnimationFrame(() => {
-      if (window.innerWidth > 768 && this.isLeftSidebarIn) {
-        this.isLeftSidebarIn = false;
-        document.body.classList.remove("no-scroll");
-        this.elements.forEach(el => {
-          this.el.querySelector(el).classList.remove("left-sidebar-in");
-        });
-      }
-    });
+  componentWillLoad() {
+    console.log('initial language is:', LangManager.instance.getActiveLanguage());
+    LangManager.instance.onLanguageChanged(newLanguage => (this.hasSetupLanguage = !!newLanguage));
   }
 
-  componentDidLoad() {
-    this.isLeftSidebarIn = false;
-  }
+  componentDidLoad() {}
 
   render() {
     return [
@@ -35,30 +26,28 @@ export class AppRoot {
       <imr-toast />,
       <div class="root">
         <div class="container">
-          <stencil-router>
-            <stencil-route
-              routeRender={props => {
-                try {
-                  console.log(props);
-                  return (
-                    <stencil-route-switch>
-                      <stencil-route
-                        url="/words"
-                        component="imr-view-word-list"
-                      />
-                      <stencil-route
-                        url="/settings"
-                        component="imr-view-settings"
-                      />
-                      <stencil-route component="imr-view-main" />
-                    </stencil-route-switch>
-                  );
-                } catch (e) {
-                  console.log(e);
-                }
-              }}
-            />
-          </stencil-router>
+          {this.hasSetupLanguage ? (
+            <stencil-router>
+              <stencil-route
+                routeRender={props => {
+                  try {
+                    console.log(props);
+                    return (
+                      <stencil-route-switch>
+                        <stencil-route url="/words" component="imr-view-word-list" />
+                        <stencil-route url="/settings" component="imr-view-settings" />
+                        <stencil-route component="imr-view-main" />
+                      </stencil-route-switch>
+                    );
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }}
+              />
+            </stencil-router>
+          ) : (
+            <imr-app-wizard />
+          )}
         </div>
         <footer>
           <div class="container">
@@ -90,7 +79,7 @@ export class AppRoot {
             </div>
           </div>
         </footer>
-      </div>
+      </div>,
     ];
   }
 }

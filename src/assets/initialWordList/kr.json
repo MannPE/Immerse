@@ -1,0 +1,20 @@
+{
+  "thank you": {
+    "value": "thank you",
+    "translation": "감사합니다",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "yes": {
+    "value": "yes",
+    "translation": "네",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "dog": {
+    "value": "dog",
+    "translation": "개",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  }
+}

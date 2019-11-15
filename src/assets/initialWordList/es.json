@@ -1,0 +1,20 @@
+{
+  "thank you": {
+    "value": "thank you",
+    "translation": "gracias",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "yes": {
+    "value": "yes",
+    "translation": "si",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "dog": {
+    "value": "dog",
+    "translation": "perro",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  }
+}

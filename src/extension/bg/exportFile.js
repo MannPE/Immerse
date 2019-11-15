@@ -1,6 +1,11 @@
 console.log('saving file');
-chrome.storage.local.get(['imrkorean'], result => {
-  exportToCsv(arrayToCsvRows(Object.values(result['imrkorean'])));
+const ACTIVE_LANGUAGE = 'imr-active-language';
+
+chrome.storage.local.get(ACTIVE_LANGUAGE, res => {
+  const lang = res[ACTIVE_LANGUAGE];
+  chrome.storage.local.get([lang], result => {
+    exportToCsv(arrayToCsvRows(Object.values(result[lang])));
+  });
 });
 
 function arrayToCsvRows(values) {
