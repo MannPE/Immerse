@@ -23,10 +23,6 @@
     {
       "matches": ["https://*/*", "http://*/*"],
       "css": ["extension/bg/tooltip.css"]
-    },
-    {
-      "matches": ["https://*/*", "http://*/*"],
-      "js": ["extension/inject/inject.js"]
     }
   ],
   "web_accessible_resources": ["bg/*.json"]

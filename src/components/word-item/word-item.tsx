@@ -1,7 +1,7 @@
 import { Component, Prop, State, h } from '@stencil/core';
 import { addWordToLanguage } from '../../storage-manager/immerse-word-manager';
 import { ImmerseWord } from '../../storage-manager/types';
-import { Language } from '../../languages/languages';
+import { LangManager } from '../../languages/lang-manager';
 
 /**
  * @export
@@ -11,14 +11,13 @@ import { Language } from '../../languages/languages';
  * @property {string} translation - The word that will replace the old one.
  * @property {string} lang - 2 letter shortened language. IE: ES, EN, DE
  * @property {string} type - The type of word. IE: noun, verb, adverb, etc.
- * @property {boolean} singular - Indicates if the word is for singular or plural 
+ * @property {boolean} singular - Indicates if the word is for singular or plural
  */
 
 @Component({
   tag: 'imr-word-item',
-  styleUrl: 'word-item.scss'
+  styleUrl: 'word-item.scss',
 })
-
 export class WordItem {
   @Prop() value: string;
   @Prop() translation: string;
@@ -38,55 +37,66 @@ export class WordItem {
       translation: this.translation,
       caseSensitive: this.caseSensitive,
       ignoreWhiteSpace: false,
-      altText: this.altText? this.altText : this.translation
+      altText: this.altText ? this.altText : this.translation,
     };
   }
 
   handleEditClicked(): void {
-    // console.log("saving:",this._immerseWordObject);
     this._immerseWordObject = {
       value: this.value,
       translation: this.translation,
       caseSensitive: this.caseSensitive,
       ignoreWhiteSpace: this.ignoreWhiteSpace,
-      altText: this.altText
+      altText: this.altText,
     };
-    addWordToLanguage(Language.KOREAN, this._immerseWordObject);
+    addWordToLanguage(LangManager.instance.getActiveLanguage(), this._immerseWordObject);
   }
 
-  handleTranslationChanged = (event) => {
+  handleTranslationChanged = event => {
     this._immerseWordObject.translation = event.target.value;
-  }
+  };
 
-  handleAltTextChanged = (event) => {
+  handleAltTextChanged = event => {
     this._immerseWordObject.altText = event.target.value;
-  }
-
-
+  };
 
   render() {
-    var trashstyle = {color:"red"}
-    var checkstyle = {color:"green"}
+    var trashstyle = { color: 'red' };
+    var checkstyle = { color: 'green' };
     return [
       <div class="main-row">
-        <a onClick={() => this.expanded = !this.expanded  }><i class={this.expanded?"fas fa-chevron-down" : "fas fa-chevron-right"}></i></a>
-        <span class={`${this.type} ${(this.singular ? "singular":"plural")}`}>
-          {this.value}
-        </span>
-        <input type="text" value={this.translation} onInput={this.handleTranslationChanged}/>
-        <a onClick={() => this.onDelete() }><i class="far fa-trash-alt" style={trashstyle}></i></a>
-        <a onClick={() => this.handleEditClicked()}><i class="far fa-check-circle" style={checkstyle}></i></a>
+        <a onClick={() => (this.expanded = !this.expanded)}>
+          <i class={this.expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right'}></i>
+        </a>
+        <span class={`${this.type} ${this.singular ? 'singular' : 'plural'}`}>{this.value}</span>
+        <input type="text" value={this.translation} onInput={this.handleTranslationChanged} />
+        <a onClick={() => this.onDelete()}>
+          <i class="far fa-trash-alt" style={trashstyle}></i>
+        </a>
+        <a onClick={() => this.handleEditClicked()}>
+          <i class="far fa-check-circle" style={checkstyle}></i>
+        </a>
       </div>,
-      this.expanded ? 
-      <div class="details-row">
-        <div class="checkbox-setting">
-          <input type="checkbox" checked={this.caseSensitive} onChange={() => this.caseSensitive = !this.caseSensitive} /> <span>Case Sensitive </span>
+      this.expanded ? (
+        <div class="details-row">
+          <div class="checkbox-setting">
+            <input
+              type="checkbox"
+              checked={this.caseSensitive}
+              onChange={() => (this.caseSensitive = !this.caseSensitive)}
+            />{' '}
+            <span>Case Sensitive </span>
+          </div>
+          <div class="alt-text">
+            <span> Tooltip </span>{' '}
+            <input
+              type="text"
+              value={this.altText ? this.altText : this.translation}
+              onInput={this.handleAltTextChanged}
+            />
+          </div>
         </div>
-        <div class="alt-text">
-        <span> Tooltip </span> <input type="text" value={this.altText ? this.altText : this.translation} onInput={this.handleAltTextChanged}/>
-        </div>
-      </div>: null
+      ) : null,
     ];
   }
 }
-

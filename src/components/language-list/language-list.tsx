@@ -1,6 +1,6 @@
-import { Component, h, State, Host } from "@stencil/core";
-import { LangManager } from "../../languages/lang-manager";
-import { Language } from "../../languages/languages";
+import { Component, h, State, Host } from '@stencil/core';
+import { LangManager } from '../../languages/lang-manager';
+import { Language, LANGUAGE_LIST } from '../../languages/languages';
 
 /**
  *
@@ -16,48 +16,28 @@ import { Language } from "../../languages/languages";
  */
 
 @Component({
-  tag: "imr-language-list",
-  styleUrl: "language-list.scss",
-  shadow: true
+  tag: 'imr-language-list',
+  styleUrl: 'language-list.scss',
+  shadow: true,
 })
 export class LanguageList {
-  @State() activeLanguage: Language = Language.JAPANESE;
+  @State() activeLanguage: Language = null;
   @State() expanded: boolean = false;
-
-  languages: { name: Language; imgPath: string; alt: string }[] = [
-    {
-      name: Language.KOREAN,
-      imgPath: "/assets/img/flags/korean.png",
-      alt: "Korean_KR"
-    },
-    {
-      name: Language.JAPANESE,
-      imgPath: "/assets/img/flags/japanese.png",
-      alt: "Japan_JP"
-    },
-    {
-      name: Language.GERMAN,
-      imgPath: "/assets/img/flags/german.png",
-      alt: "German_DE"
-    },
-    {
-      name: Language.FRENCH,
-      imgPath: "/assets/img/flags/french.png",
-      alt: "French_FR"
-    },
-    {
-      name: Language.SPANISH,
-      imgPath: "/assets/img/flags/spanish.png",
-      alt: "Spanish_MX"
-    }
-  ];
 
   async componentWillLoad() {
     this.activeLanguage = LangManager.instance.getActiveLanguage();
+    LangManager.instance.onLanguageChanged(newLang => {
+      this.activeLanguage = newLang;
+    });
+  }
+
+  handleFlagClick(langInfo: Language) {
+    this.expanded = false;
+    LangManager.instance.changeActiveLanguage(langInfo);
   }
 
   render() {
-    const defaultLang = this.languages.find(x => x.name == this.activeLanguage);
+    const defaultLang = LANGUAGE_LIST.find(x => x.name == this.activeLanguage);
     return (
       <Host>
         <div class="language-selection-preview">
@@ -67,18 +47,14 @@ export class LanguageList {
             onClick={() => (this.expanded = !this.expanded)}
           />
         </div>
-        <div
-          class={`language-selection-dropdown ${
-            this.expanded ? "expanded" : "hidden"
-          }`}
-        >
+        <div class={`language-selection-dropdown ${this.expanded ? 'expanded' : 'hidden'}`}>
           {this.expanded
-            ? this.languages.map(demo => (
+            ? LANGUAGE_LIST.map(demo => (
                 <div class="language-selection-option">
                   <img
                     src={`${demo.imgPath}`}
                     alt={demo.alt}
-                    onClick={() => (this.expanded = false)}
+                    onClick={() => this.handleFlagClick(demo.name)}
                   />
                 </div>
               ))

@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-var
 var fileChooser = document.createElement('input');
+const ACTIVE_LANGUAGE = 'imr-active-language';
 fileChooser.type = 'file';
 fileChooser.accept = '.csv';
 
@@ -25,7 +26,12 @@ fileChooser.addEventListener('change', evt => {
       }
       const wordList = jsonObj;
       orderArrayAlphabetically(wordList);
-      chrome.storage.local.set({ imrkorean: wordList });
+      chrome.storage.local.get(ACTIVE_LANGUAGE, res => {
+        const lang = res[ACTIVE_LANGUAGE];
+        let newImport = {};
+        newImport[lang] = wordList;
+        chrome.storage.local.set(newImport);
+      });
     };
     reader.readAsText(file);
   }

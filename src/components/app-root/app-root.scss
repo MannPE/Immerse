@@ -1,4 +1,4 @@
-@import "../../global/variables";
+@import '../../global/variables';
 
 * {
   box-sizing: border-box;
@@ -29,10 +29,10 @@ imr-toast {
 
 .container {
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 1em;
-  flex: 1 0 auto;
+  // margin-left: auto;
+  // margin-right: auto;
+  // padding: 0 1em;
+  // flex: 1 0 auto;
 }
 
 .root {
@@ -79,5 +79,13 @@ imr-app-header {
   top: 0;
   left: 0;
   z-index: 80;
-  margin-bottom: 100px;
+  // margin-bottom: 100px;
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1em;
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: space-between;
+  }
 }

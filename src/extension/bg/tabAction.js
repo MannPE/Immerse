@@ -665,29 +665,21 @@ function hideTooltip() {
 function showTooltip(reference, word, mouseEvent) {
   const imrPopup = document.getElementsByClassName('immerse-tooltip-element')[0];
   imrPopup.classList.remove('immerse-hidden');
-  // let imrCoords = reference.getBoundingClientRect();
-  // let offsetCoords = reference.offsetParent.getBoundingClientRect();
-  // console.log("IMMERSE COORDS", imrCoords, offsetCoords);
-  // imrPopup.style.top = `${imrCoords.top+imrCoords.height-offsetCoords.y+30}px`;
   imrPopup.style.top = `${mouseEvent.pageY}px`;
-  // imrPopup.style.left = `${imrCoords.left}px`;
   imrPopup.style.left = `${mouseEvent.pageX + 10}px`;
   imrPopup.getElementsByClassName('immerse-header-text')[0].innerHTML = `${word.value}`;
   // eslint-disable-next-line no-console
-  console.log(
-    'for this tooltip:',
-    referenceWords,
-    word.translation,
-    referenceWords[word.translation]
-  );
+  console.log('for this tooltip:', referenceWords, word.translation);
   imrPopup.getElementsByClassName('immerse-body-main')[0].innerHTML = `${word.translation}`;
-  const referenceWord = referenceWords[word.translation];
-  imrPopup.getElementsByClassName('immerse-body-auxiliaries-kun')[0].innerHTML = `${
-    referenceWord ? referenceWord.kunyomi_ja : ''
-  }`;
-  imrPopup.getElementsByClassName('immerse-body-auxiliaries-on')[0].innerHTML = `${
-    referenceWord ? referenceWord.onyomi_ja : ''
-  }`;
+  if (referenceWords) {
+    const referenceWord = referenceWords[word.translation];
+    imrPopup.getElementsByClassName('immerse-body-auxiliaries-kun')[0].innerHTML = `${
+      referenceWord ? referenceWord.kunyomi_ja : ''
+    }`;
+    imrPopup.getElementsByClassName('immerse-body-auxiliaries-on')[0].innerHTML = `${
+      referenceWord ? referenceWord.onyomi_ja : ''
+    }`;
+  }
 }
 
 function removeAllTooltips() {
@@ -736,6 +728,7 @@ function replaceTextInDocument(wordList) {
     const translations = document.querySelectorAll(`.imr-${word.value}`);
     Array.from(translations).forEach(translation => {
       translation.addEventListener('mouseover', mouseEvent => {
+        console.log('Event triggered:', translation, word);
         showTooltip(translation, word, mouseEvent);
       });
       translation.addEventListener('mouseout', () => {
@@ -747,37 +740,50 @@ function replaceTextInDocument(wordList) {
 
 // eslint-disable-next-line no-var
 var lastTimer = performance.now();
+const ACTIVE_LANGUAGE = 'imr-active-language';
+const languageCodes = {
+  imrjapanese: 'jp',
+  imrkorean: 'kr',
+  imrgerman: 'de',
+  imrfrench: 'fr',
+};
+console.log('PLEASE BEHERE');
+chrome.storage.local.get(ACTIVE_LANGUAGE, res => {
+  const lang = res[ACTIVE_LANGUAGE];
+  console.log('initial lang:', lang);
+  chrome.storage.local.get([lang], result => {
+    console.log('initial list:', result);
 
-chrome.storage.local.get(['imrkorean'], result => {
-  const wordList = result.imrkorean;
-  replaceTextInDocument(wordList);
-  const domObserver = new MutationObserver(mutation => {
-    const newTimer = performance.now();
-    if (newTimer - lastTimer > 5000) {
-      // Check if mutation is typing
-      const typing = mutation.some(record => record.type === 'characterData');
-      const immersePopup = mutation.some(
-        record =>
-          record.target &&
-          (record.target.classList.contains('immerse-header-text') ||
-            record.target.classList.contains('immerse-body-main'))
-      );
-      console.log('Detected changed Content', newTimer, lastTimer, mutation);
-      if (typing || immersePopup) return;
-      console.log('Immerse reloaded words since content changed', newTimer, lastTimer, mutation);
-      removeAllTooltips();
-      replaceTextInDocument(wordList);
-      lastTimer = newTimer;
-    }
+    const wordList = result[lang];
+    replaceTextInDocument(Object.values(wordList));
+    const domObserver = new MutationObserver(mutation => {
+      const newTimer = performance.now();
+      if (newTimer - lastTimer > 5000) {
+        // Check if mutation is typing
+        const typing = mutation.some(record => record.type === 'characterData');
+        const immersePopup = mutation.some(
+          record =>
+            record.target &&
+            (record.target.classList.contains('immerse-header-text') ||
+              record.target.classList.contains('immerse-body-main'))
+        );
+        console.log('Detected changed Content', newTimer, lastTimer, mutation);
+        if (typing || immersePopup) return;
+        console.log('Immerse reloaded words since content changed', newTimer, lastTimer, mutation);
+        removeAllTooltips();
+        replaceTextInDocument(Object.values(wordList));
+        lastTimer = newTimer;
+      }
+    });
+    // const container = document.body;
+    // console.log('new container', container);
+    const config = { attributes: true, childList: true, characterData: true, subtree: true };
+    domObserver.observe(document.body, config);
   });
-  // const container = document.body;
-  // console.log('new container', container);
-  const config = { attributes: true, childList: true, characterData: true, subtree: true };
-  domObserver.observe(document.body, config);
-});
 
-chrome.storage.local.get(['imr-reference-jp'], result => {
-  referenceWords = result['imr-reference-jp'];
+  chrome.storage.local.get([languageCodes[lang]], result => {
+    referenceWords = result[languageCodes[lang]];
+  });
 });
 
 if (document.getElementsByClassName('immerse-tooltip-element').length === 0) {

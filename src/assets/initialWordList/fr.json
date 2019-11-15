@@ -1,0 +1,20 @@
+{
+  "mother": {
+    "value": "mother",
+    "translation": "mère",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "dog": {
+    "value": "dog",
+    "translation": "chien",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "water": {
+    "value": "water",
+    "translation": "eau",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  }
+}

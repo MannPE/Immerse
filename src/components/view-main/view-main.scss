@@ -1,9 +1,7 @@
 @import '../../global/variables';
 @import '../../global/buttons';
 
-
 imr-view-main {
-
   .main-wrapper {
     display: flex;
     justify-content: center;
@@ -13,14 +11,10 @@ imr-view-main {
     overflow: hidden;
   }
 
-
-
   button:hover {
     box-shadow: $button-shadow-hover;
     transform: translateY(1px);
   }
-
-
 
   .point-card {
     margin: 2.4em;
@@ -30,14 +24,13 @@ imr-view-main {
       margin-top: 72px;
     }
 
-
     &::before {
       position: absolute;
       background: url(/assets/img/feature-icons.png) no-repeat;
       background-size: 48px;
       height: 48px;
       width: 48px;
-      content: "";
+      content: '';
       top: 0;
       left: calc(50% - 24px);
     }
@@ -52,21 +45,31 @@ imr-view-main {
   }
 }
 
+.toolbar {
+  justify-content: space-between;
+  margin: 0 20px;
+  display: flex;
 
-.toolbar{
-  width: 100%;
-  margin-right: 30px;
-  
-  .toolbar-icon{
+  .toolbar-icon {
     width: 25px;
     height: 25px;
-    float:right;
+    float: right;
     cursor: pointer;
-    &.inactive{
+    &.inactive {
       color: gray;
     }
-    &.danger{
+    &.danger {
       color: red;
     }
   }
+}
+
+.empty-items-overlay {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-color: rgba(139, 145, 145, 0.685);
+  font-size: 3em;
+  font-weight: 700;
+  color: rgb(7, 116, 179);
 }

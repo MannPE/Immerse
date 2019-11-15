@@ -17,6 +17,7 @@ export namespace Components {
   }
   interface ImrAppHeader {}
   interface ImrAppRoot {}
+  interface ImrAppWizard {}
   interface ImrInput {
     'description': string;
     'example': string;
@@ -64,6 +65,12 @@ declare global {
     new (): HTMLImrAppRootElement;
   };
 
+  interface HTMLImrAppWizardElement extends Components.ImrAppWizard, HTMLStencilElement {}
+  var HTMLImrAppWizardElement: {
+    prototype: HTMLImrAppWizardElement;
+    new (): HTMLImrAppWizardElement;
+  };
+
   interface HTMLImrInputElement extends Components.ImrInput, HTMLStencilElement {}
   var HTMLImrInputElement: {
     prototype: HTMLImrInputElement;
@@ -109,6 +116,7 @@ declare global {
     'app-icon': HTMLAppIconElement;
     'imr-app-header': HTMLImrAppHeaderElement;
     'imr-app-root': HTMLImrAppRootElement;
+    'imr-app-wizard': HTMLImrAppWizardElement;
     'imr-input': HTMLImrInputElement;
     'imr-language-list': HTMLImrLanguageListElement;
     'imr-toast': HTMLImrToastElement;
@@ -125,6 +133,7 @@ declare namespace LocalJSX {
   }
   interface ImrAppHeader {}
   interface ImrAppRoot {}
+  interface ImrAppWizard {}
   interface ImrInput {
     'description'?: string;
     'example'?: string;
@@ -152,6 +161,7 @@ declare namespace LocalJSX {
     'app-icon': AppIcon;
     'imr-app-header': ImrAppHeader;
     'imr-app-root': ImrAppRoot;
+    'imr-app-wizard': ImrAppWizard;
     'imr-input': ImrInput;
     'imr-language-list': ImrLanguageList;
     'imr-toast': ImrToast;
@@ -171,6 +181,7 @@ declare module "@stencil/core" {
       'app-icon': LocalJSX.AppIcon & JSXBase.HTMLAttributes<HTMLAppIconElement>;
       'imr-app-header': LocalJSX.ImrAppHeader & JSXBase.HTMLAttributes<HTMLImrAppHeaderElement>;
       'imr-app-root': LocalJSX.ImrAppRoot & JSXBase.HTMLAttributes<HTMLImrAppRootElement>;
+      'imr-app-wizard': LocalJSX.ImrAppWizard & JSXBase.HTMLAttributes<HTMLImrAppWizardElement>;
       'imr-input': LocalJSX.ImrInput & JSXBase.HTMLAttributes<HTMLImrInputElement>;
       'imr-language-list': LocalJSX.ImrLanguageList & JSXBase.HTMLAttributes<HTMLImrLanguageListElement>;
       'imr-toast': LocalJSX.ImrToast & JSXBase.HTMLAttributes<HTMLImrToastElement>;

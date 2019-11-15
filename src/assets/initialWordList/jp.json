@@ -1,0 +1,20 @@
+{
+  "woman": {
+    "value": "woman",
+    "translation": "女",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "water": {
+    "value": "water",
+    "translation": "水",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  },
+  "mouth": {
+    "value": "mouth",
+    "translation": "口",
+    "caseSensitive": false,
+    "ignoreWhiteSpace": false
+  }
+}
