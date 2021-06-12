@@ -3,76 +3,88 @@ import { Language } from '../languages/languages';
 import { ToastManager } from '../components/toast/toastManager';
 import browser from 'webextension-polyfill';
 
-export async function getLanguageWords(
-  language: Language,
-  callback: (words: ImmerseWord[]) => void
-): Promise<void> {
-  browser.storage.local.get([language]).then(result => {
-    console.log('getLanguageWords() => ', result);
-    if (!!result && Object.keys(result).length > 0) callback(Object.values(result[language]));
-    else callback([]);
-  });
+export async function getLanguageWords(language: Language): Promise<ImmerseWord[]> {
+  const localLanguage = await browser.storage.local.get(language);
+  console.log(`[getLanguageWords] ${language} =>`, localLanguage);
+  if (!!localLanguage && Object.keys(localLanguage).length > 0) {
+    return Object.values(localLanguage[language]);
+  } else return [];
 }
 
 export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWord): Promise<void> {
-  getLanguageWords(language, allWords => {
-    pushAlphabetically(allWords, wordToAdd);
-    browser.storage.local.set({ [language]: allWords }).then(function() {
-      ToastManager.instance.enqueue({
-        message: `Saved word "${wordToAdd.value}" : "${wordToAdd.translation}"`,
-        duration: 2000,
-      });
+  const allWords = await getLanguageWords(language);
+  const newWordList = addWordToListAlphabetically(allWords, wordToAdd);
+  console.log('[addWordToLanguage] => ', language, wordToAdd);
+  try {
+    await browser.storage.local.set({ [language]: newWordList });
+    ToastManager.instance.enqueue({
+      message: `Saved word ${wordToAdd.value} : ${wordToAdd.translation}`,
+      duration: 2000,
     });
-  });
+  } catch (e) {
+    ToastManager.instance.enqueue({
+      message: `There was an error adding word: ${wordToAdd.value}`,
+      duration: 2000,
+    });
+    console.log('[addWordToLanguage] ERROR => ', e);
+  }
 }
 
-export async function removeItem(
-  language: Language,
-  wordValue: string,
-  callback: (words: ImmerseWord[]) => void
-) {
-  browser.storage.local.get([`${language}`]).then(result => {
-    let newItems: ImmerseWord[] = result[language];
-    let index = 0;
-    for (; index < newItems.length; index++) {
-      const element = newItems[index];
-      if (element.value == wordValue) break;
-    }
-    newItems.splice(index, 1);
-    browser.storage.local.set({ [`${language}`]: newItems }).then(function() {
-      ToastManager.instance.enqueue({
-        message: `Removed word "${wordValue}" from ${language.toString()}`,
-        duration: 2000,
-      });
-    });
-    callback(newItems);
+export async function removeItem(language: Language, wordValue: string): Promise<ImmerseWord[]> {
+  const result = await browser.storage.local.get([`${language}`]);
+  let newItems: ImmerseWord[] = result[language];
+  let index = 0;
+  // TODO optimize algorithm here - All are sorted alphabetically so can use logn lookup instead of n
+  for (; index < newItems.length; index++) {
+    const element = newItems[index];
+    if (element.value == wordValue) break;
+  }
+  newItems.splice(index, 1);
+  await browser.storage.local.set({ [language]: newItems });
+  ToastManager.instance.enqueue({
+    message: `Removed word "${wordValue}" from ${language.toString()}`,
+    duration: 2000,
   });
+
+  return newItems;
 }
 
-function pushAlphabetically(array: ImmerseWord[], item: ImmerseWord): void {
-  const itemValue = item.value.toUpperCase();
-  if (array.length < 1)
+function addWordToListAlphabetically(wordList: ImmerseWord[], item: ImmerseWord): ImmerseWord[] {
+  const insertedValue = item.value.toUpperCase();
+  let result = wordList;
+  if (!wordList || wordList.length < 1)
     //empty or null array
-    array = [item];
+    result = [item];
   else {
-    let finished: boolean = false;
-    for (let i = 0; i < array.length; i++) {
-      const current = array[i];
+    let startPointer = 0;
+    let endPointer = wordList.length - 1;
+    for (let i = 0; i < wordList.length; i++) {
+      const midwayPointer = Math.floor((startPointer + endPointer) / 2);
+      const current = wordList[midwayPointer];
       const currentValue = current.value.toUpperCase();
-      if (currentValue < itemValue) {
-        continue;
-      } else if (currentValue == itemValue) {
-        array[i] = item;
-        finished = true;
+      if (startPointer == endPointer) {
+        // we just need to insert the word here since it's the final slot we'll be visiting
+        if (insertedValue < currentValue) {
+          result.splice(midwayPointer, 0, item);
+        } else if (currentValue < insertedValue) {
+          result.splice(midwayPointer + 1, 0, item);
+        } else {
+          // was an update
+          result[midwayPointer] = item;
+        }
         break;
+      }
+      if (insertedValue < currentValue) {
+        endPointer = midwayPointer;
+      } else if (currentValue < insertedValue) {
+        startPointer = midwayPointer + 1; // since we're using math.floor we need to increase this value
       } else {
-        array.splice(i, 0, item);
-        finished = true;
+        // was an update on a word with same value
+        result[midwayPointer] = item;
         break;
       }
     }
-    if (!finished)
-      //the item will go at the end of the array
-      array.push(item);
+    console.log('[addWordToImmerseListAlphabetically]', item, wordList, ' ==> ', result);
   }
+  return wordList;
 }

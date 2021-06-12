@@ -13,9 +13,8 @@ try {
     const newFilContents = script.substring(script.indexOf('>') + 1, script.lastIndexOf('<'));
     fs.writeFileSync(`dist/${newScriptFile}`, newFilContents);
     textContents = textContents.replace(script, `<script src="${newScriptFile}"></script>`);
-    console.log('new file contents', textContents);
     fs.writeFileSync(entryFile, textContents, 'utf-8');
   }
 } catch (err) {
-  console.log('had an error', err);
+  console.log('PostInstall ERROR: ', err);
 }

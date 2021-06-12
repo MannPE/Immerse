@@ -21,7 +21,7 @@ export const config: Config = {
     },
   ],
   globalStyle: 'src/global/style.scss',
-  copy: [{ src: 'extension/' }],
+  copy: [{ src: 'extension/' }, { src: 'browser-polyfill.min.js' }],
 };
 
 export const devServer = {

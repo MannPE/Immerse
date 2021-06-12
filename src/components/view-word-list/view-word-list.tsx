@@ -13,38 +13,34 @@ export class ViewWordList {
   @State() words: ImmerseWord[];
   @Element() _el: HTMLElement;
 
-  componentWillLoad() {
-    console.log('list component loading');
+  async componentWillLoad() {
     this.currentLanguage = LangManager.instance.getActiveLanguage();
-    getLanguageWords(this.currentLanguage, wordResults => {
-      console.log('Component will load set words: ', wordResults);
-      this.refreshCurrentWordList(wordResults);
-    });
+    const localWords = await getLanguageWords(this.currentLanguage);
+    console.log('ViewWordList[componentWillLoad] => ', localWords);
+    this.refreshCurrentWordList(localWords);
   }
 
-  componentWillUpdate() {
-    getLanguageWords(this.currentLanguage, wordResults => {
-      // console.log("Component will load set words: ",wordResults);
-      this.refreshCurrentWordList(wordResults);
-    });
+  async componentWillUpdate() {
+    const localWords = await getLanguageWords(this.currentLanguage);
+    console.log('ViewWordList[componentWillLoad] => ', localWords);
+    this.refreshCurrentWordList(localWords);
   }
 
   @Method()
   async refreshCurrentWordList(loadedWords: ImmerseWord[]): Promise<void> {
-    console.log('refreshing list with:', loadedWords);
+    console.log('[refreshCurrentWordList]  ', loadedWords, this.words);
     if (!!!loadedWords) {
       this.words = [];
     } else {
-      var filtered: ImmerseWord[] = loadedWords.filter(function(el) {
+      var filtered: ImmerseWord[] = loadedWords.filter(el => {
         return el != null;
       });
       this.words = filtered;
-      console.log('Found the following words: ', this.words);
     }
   }
 
   render(): JSX.Element {
-    if (this.words) {
+    if (this.words && this.words.length > 0) {
       let wordItems = [];
       for (var key in this.words) {
         let word = this.words[key];
@@ -54,16 +50,20 @@ export class ViewWordList {
             translation={word.translation}
             caseSensitive={word.caseSensitive}
             ignoreWhiteSpace={word.ignoreWhiteSpace}
-            onDelete={() =>
-              removeItem(LangManager.instance.getActiveLanguage(), word.value, newWordList => {
-                this.refreshCurrentWordList(newWordList);
-              })
-            }
+            onDelete={async () => {
+              const newWordList = await removeItem(
+                LangManager.instance.getActiveLanguage(),
+                word.value
+              );
+              this.refreshCurrentWordList(newWordList);
+            }}
             altText={word.altText}
           />
         );
       }
       return wordItems;
-    } else return <div>NO WORDS</div>;
+    } else {
+      return <div class="empty-items-overlay">Go to the first tab and add some words!</div>;
+    }
   }
 }

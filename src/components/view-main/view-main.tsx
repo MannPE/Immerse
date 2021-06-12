@@ -28,19 +28,17 @@ export class MainPage {
   };
   langManager = LangManager.instance;
 
-  componentWillLoad() {
+  async componentWillLoad() {
     this.getCurrentDomainAndBlockedStatus();
-    getLanguageWords(this.langManager.getActiveLanguage(), words => {
-      if (words && words.length > 0) this.emptyWords = false;
-    });
+    const words = await getLanguageWords(this.langManager.getActiveLanguage());
+    if (words && words.length > 0) this.emptyWords = false;
 
-    LangManager.instance.onLanguageChanged(() => {
-      console.log('The language was changed and my main view detected it');
-      getLanguageWords(this.langManager.getActiveLanguage(), words => {
-        console.log('After language ws changed i can detect:', words);
-        if (!!words && words.length > 0) this.emptyWords = false;
-        else this.emptyWords = true;
-      });
+    LangManager.instance.onLanguageChanged(async lang => {
+      console.log(`[onLanguageChanged] Triggered => `, lang);
+      const words = await getLanguageWords(this.langManager.getActiveLanguage());
+      console.log(`[onLanguageChanged] New words => `, words);
+      if (!!words && words.length > 0) this.emptyWords = false;
+      else this.emptyWords = true;
     });
   }
 
@@ -61,7 +59,7 @@ export class MainPage {
 
   addWord = (): void => {
     if (this.settings.value.length == 0) return;
-    console.log('Adding the following word:', this.settings);
+    console.log(`Adding new word to : ${this.langManager.getActiveLanguage()}`, this.settings);
     addWordToLanguage(this.langManager.getActiveLanguage(), this.settings);
     let inputs = Array.from(this.el.querySelectorAll('input'));
     inputs.forEach(imrinput => {
@@ -103,11 +101,6 @@ export class MainPage {
   render() {
     return (
       <Host>
-        {this.emptyWords ? (
-          <div class="empty-items-overlay">
-            Please open a website in a new tab or reload for immerse to detect the changes!
-          </div>
-        ) : null}
         <div class="toolbar">
           <i
             class={'toolbar-icon ' + (this.pageBlocked ? 'danger' : 'inactive')}

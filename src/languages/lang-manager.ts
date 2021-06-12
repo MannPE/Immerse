@@ -26,11 +26,14 @@ export class LangManager {
     this._subscribers.push(subscriber);
   }
 
-  changeActiveLanguage(lang: Language): void {
-    browser.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang }).then(() => {
+  async changeActiveLanguage(lang: Language): Promise<void> {
+    try {
+      browser.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang });
       console.log('set new lnguage', lang);
       this.updateLanguage(lang);
-    });
+    } catch (e) {
+      console.log('There was an error changing the language :/');
+    }
   }
 
   getActiveLanguage(): Language {
