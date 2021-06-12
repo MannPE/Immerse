@@ -12,7 +12,7 @@ const languageCodes = {
 let immerseActive = false;
 chrome.tabs.onUpdated.addListener((tab, changeInfo) => {
   if (!immerseActive && changeInfo.status && changeInfo.status === 'complete') {
-    chrome.storage.local.get(ACTIVE_LANGUAGE, res => {
+    chrome.storage.local.get(ACTIVE_LANGUAGE).then(res => {
       console.log('Active lang:', res);
       if (res && !!res[ACTIVE_LANGUAGE]) {
         immerseActive = true;
@@ -33,10 +33,10 @@ chrome.tabs.onUpdated.addListener((tab, changeInfo) => {
 loadDomainBlackList();
 
 function createInitialWordListIfNotExist() {
-  chrome.storage.local.get(ACTIVE_LANGUAGE, lang => {
+  chrome.storage.local.get(ACTIVE_LANGUAGE).then(lang => {
     const activeLanguage = lang[ACTIVE_LANGUAGE];
     console.log('First results', activeLanguage);
-    chrome.storage.local.get([activeLanguage], words => {
+    chrome.storage.local.get([activeLanguage]).then(words => {
       // Check if a wordlist already exists, if not then add the default wordlist
       console.log('Loaded words from:', lang, words);
       if (words.constructor === Object && Object.keys(words).length === 0) {
@@ -65,7 +65,7 @@ function createInitialWordListIfNotExist() {
 // // load language dictionary if not already loaded
 function loadReferenceDictionary() {
   // TODO look for dictionaries and choose when to load each one
-  chrome.storage.local.get(['imr-reference-jp'], result => {
+  chrome.storage.local.get(['imr-reference-jp']).then(result => {
     console.log('REFERENCE WORDS FOR JP ARE:', result);
     if (result)
       fetch(chrome.extension.getURL('assets/references/kanji_data.json'))
@@ -86,7 +86,7 @@ function runImmerseOnTabUpdated() {
     if (info.status && info.status === 'complete') {
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
         const currentDomain = extractHostname(tabs[0].url).toString();
-        chrome.storage.sync.get([BLOCKED_DOMAINS], result => {
+        chrome.storage.sync.get([BLOCKED_DOMAINS]).then(result => {
           const blockedDomains = result[BLOCKED_DOMAINS] || {};
           if (!blockedDomains) {
             chrome.sync.set({ imrdomains: {} }, () => {
@@ -108,7 +108,7 @@ function runImmerseOnTabUpdated() {
 
 // Check if there already exists an imrdomain list, if not then set it to docs.google.com
 function loadDomainBlackList() {
-  chrome.storage.sync.get([BLOCKED_DOMAINS], result => {
+  chrome.storage.sync.get([BLOCKED_DOMAINS]).then(result => {
     console.log('Current blocked domains:', result);
     const domainDict = result[BLOCKED_DOMAINS];
     if (!domainDict || Object.keys(domainDict).length === 0) {

@@ -1,5 +1,5 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "Immerse language extension",
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "This extension was created with the awesome extensionizr.com",
@@ -19,10 +19,5 @@
     "default_title": "browser action demo",
     "default_popup": "src/browser_action/browser_action.html"
   },
-  "permissions": [
-    "https://*/*",
-    "http://*/*",
-    "google.com",
-    "tabs"
-  ]
+  "permissions": ["https://*/*", "http://*/*", "google.com", "tabs"]
 }

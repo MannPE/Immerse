@@ -2,19 +2,19 @@
   "name": "@stencil/stencil-site",
   "private": true,
   "version": "0.0.1",
-  "description": "Stencil Site",
+  "description": "Immerse chrome extension",
   "scripts": {
     "docs": "gulp",
-    "build": "gulp && stencil build --prerender && npm run host-to-firebase",
+    "build": "gulp && stencil build && node scripts/postInstall.js",
     "stdocs": "stencil build --docs",
     "deploy": "npm run build && firebase deploy",
-    "host-to-firebase": "node scripts/host-to-firebase.js",
     "start": "gulp && stencil build --dev --watch --serve",
     "doc": "typedoc --options typedoc.json"
   },
   "dependencies": {
     "jmdict-parser": "^2.1.6",
-    "jsdoc": "^3.6.3"
+    "jsdoc": "^3.6.7",
+    "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
     "@stencil/core": "^1.0.0",
@@ -23,7 +23,7 @@
     "@stencil/sass": "^1.0.0",
     "@stencil/state-tunnel": "^1.0.0",
     "@stencil/utils": "latest",
-    "@types/chrome": "0.0.74",
+    "@types/chrome": "0.0.143",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",

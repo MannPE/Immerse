@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import { Language } from './languages';
 
 const DEFAULT_LANGUAGE: Language | null = null; // When null the extension was just installed or opened
@@ -26,7 +27,7 @@ export class LangManager {
   }
 
   changeActiveLanguage(lang: Language): void {
-    chrome.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang }, () => {
+    browser.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang }).then(() => {
       console.log('set new lnguage', lang);
       this.updateLanguage(lang);
     });
@@ -37,7 +38,7 @@ export class LangManager {
   }
 
   private getSavedLanguage(): void {
-    (chrome as any).storage.local.get([LOCAL_STORAGE_LANGUAGE], result => {
+    (browser as any).storage.local.get([LOCAL_STORAGE_LANGUAGE]).then(result => {
       let res: Language = result[LOCAL_STORAGE_LANGUAGE];
       if (res) {
         this.changeActiveLanguage(res);

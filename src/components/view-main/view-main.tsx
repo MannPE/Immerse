@@ -5,6 +5,7 @@ import { ImmerseWord } from '../../storage-manager/types';
 import { addWordToLanguage, getLanguageWords } from '../../storage-manager/immerse-word-manager';
 import { LangManager } from '../../languages/lang-manager';
 import { ToastManager } from '../toast/toastManager';
+import browser from 'webextension-polyfill';
 
 @Component({
   tag: 'imr-view-main',
@@ -47,15 +48,14 @@ export class MainPage {
     this.firstInput = this.el.querySelector('#imr-main-word').querySelector('input');
   }
 
-  getCurrentDomainAndBlockedStatus = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-      this.currentDomain = extractHostname(tabs[0].url).toString();
-      chrome.storage.sync.get(['imrdomains'], result => {
-        this.blockedDomains = result['imrdomains'] || {};
-        if (this.blockedDomains[this.currentDomain]) {
-          this.pageBlocked = true;
-        }
-      });
+  getCurrentDomainAndBlockedStatus = async () => {
+    let tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    this.currentDomain = extractHostname(tabs[0].url).toString();
+    browser.storage.sync.get(['imrdomains']).then(result => {
+      this.blockedDomains = result['imrdomains'] || {};
+      if (this.blockedDomains[this.currentDomain]) {
+        this.pageBlocked = true;
+      }
     });
   };
 
@@ -71,7 +71,7 @@ export class MainPage {
   };
 
   toggleBlockedDomain = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    browser.tabs.query({ active: true, currentWindow: true }, tabs => {
       console.log(
         'Blocking domain: ',
         extractHostname(tabs[0].url),
@@ -89,7 +89,7 @@ export class MainPage {
         this.pageBlocked = false;
         toastMessage = `Unblocked ${this.currentDomain} from immerse.`;
       }
-      chrome.storage.sync.set({ imrdomains: this.blockedDomains }, () => {
+      browser.storage.sync.set({ imrdomains: this.blockedDomains }, () => {
         ToastManager.instance.enqueue({ message: toastMessage, duration: 3000 });
       });
     });

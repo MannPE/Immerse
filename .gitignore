@@ -3,3 +3,5 @@
 /www
 /node_modules
 *.DS_Store
+**/docs-content/
+/src/docs-content

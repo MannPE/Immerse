@@ -1,12 +1,13 @@
 import { ImmerseWord } from './types';
 import { Language } from '../languages/languages';
 import { ToastManager } from '../components/toast/toastManager';
+import browser from 'webextension-polyfill';
 
 export async function getLanguageWords(
   language: Language,
   callback: (words: ImmerseWord[]) => void
 ): Promise<void> {
-  chrome.storage.local.get([language], result => {
+  browser.storage.local.get([language]).then(result => {
     console.log('getLanguageWords() => ', result);
     if (!!result && Object.keys(result).length > 0) callback(Object.values(result[language]));
     else callback([]);
@@ -16,7 +17,7 @@ export async function getLanguageWords(
 export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWord): Promise<void> {
   getLanguageWords(language, allWords => {
     pushAlphabetically(allWords, wordToAdd);
-    chrome.storage.local.set({ [language]: allWords }, function() {
+    browser.storage.local.set({ [language]: allWords }).then(function() {
       ToastManager.instance.enqueue({
         message: `Saved word "${wordToAdd.value}" : "${wordToAdd.translation}"`,
         duration: 2000,
@@ -30,7 +31,7 @@ export async function removeItem(
   wordValue: string,
   callback: (words: ImmerseWord[]) => void
 ) {
-  chrome.storage.local.get([`${language}`], result => {
+  browser.storage.local.get([`${language}`]).then(result => {
     let newItems: ImmerseWord[] = result[language];
     let index = 0;
     for (; index < newItems.length; index++) {
@@ -38,7 +39,7 @@ export async function removeItem(
       if (element.value == wordValue) break;
     }
     newItems.splice(index, 1);
-    chrome.storage.local.set({ [`${language}`]: newItems }, function() {
+    browser.storage.local.set({ [`${language}`]: newItems }).then(function() {
       ToastManager.instance.enqueue({
         message: `Removed word "${wordValue}" from ${language.toString()}`,
         duration: 2000,
