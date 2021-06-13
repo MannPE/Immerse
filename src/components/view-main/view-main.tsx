@@ -6,6 +6,7 @@ import { addWordToLanguage, getLanguageWords } from '../../storage-manager/immer
 import { LangManager } from '../../languages/lang-manager';
 import { ToastManager } from '../toast/toastManager';
 import browser from 'webextension-polyfill';
+import { Language, LANGUAGE_LIST } from '../../languages/languages';
 
 @Component({
   tag: 'imr-view-main',
@@ -15,7 +16,7 @@ export class MainPage {
   @Element() el: Element;
   @State() pageBlocked: boolean = false;
   @Prop({ mutable: true }) currentDomain: string = '';
-  @State() emptyWords = true;
+  @State() currentLanguage: Language;
 
   blockedDomains: any = [];
   firstInput: HTMLInputElement;
@@ -30,15 +31,14 @@ export class MainPage {
 
   async componentWillLoad() {
     this.getCurrentDomainAndBlockedStatus();
-    const words = await getLanguageWords(this.langManager.getActiveLanguage());
-    if (words && words.length > 0) this.emptyWords = false;
-
+    const currentLanguage = this.langManager.getActiveLanguage();
+    this.currentLanguage = currentLanguage;
     LangManager.instance.onLanguageChanged(async lang => {
       console.log(`[onLanguageChanged] Triggered => `, lang);
+      const currentLanguage = this.langManager.getActiveLanguage();
       const words = await getLanguageWords(this.langManager.getActiveLanguage());
+      this.currentLanguage = currentLanguage;
       console.log(`[onLanguageChanged] New words => `, words);
-      if (!!words && words.length > 0) this.emptyWords = false;
-      else this.emptyWords = true;
     });
   }
 
@@ -49,12 +49,11 @@ export class MainPage {
   getCurrentDomainAndBlockedStatus = async () => {
     let tabs = await browser.tabs.query({ active: true, currentWindow: true });
     this.currentDomain = extractHostname(tabs[0].url).toString();
-    browser.storage.sync.get(['imrdomains']).then(result => {
-      this.blockedDomains = result['imrdomains'] || {};
-      if (this.blockedDomains[this.currentDomain]) {
-        this.pageBlocked = true;
-      }
-    });
+    let domains = await browser.storage.sync.get(['imrdomains']);
+    this.blockedDomains = domains['imrdomains'] || {};
+    if (this.blockedDomains[this.currentDomain]) {
+      this.pageBlocked = true;
+    }
   };
 
   addWord = (): void => {
@@ -68,29 +67,29 @@ export class MainPage {
     this.firstInput.focus();
   };
 
-  toggleBlockedDomain = () => {
-    browser.tabs.query({ active: true, currentWindow: true }, tabs => {
-      console.log(
-        'Blocking domain: ',
-        extractHostname(tabs[0].url),
-        'adding to list:',
-        this.blockedDomains
-      );
-      let toastMessage = '';
-      if (!this.pageBlocked) {
-        //page isn't blocked
-        this.blockedDomains[this.currentDomain] = true;
-        this.pageBlocked = true;
-        toastMessage = `Immerse wil not load on ${this.currentDomain}.`;
-      } else {
-        delete this.blockedDomains[this.currentDomain];
-        this.pageBlocked = false;
-        toastMessage = `Unblocked ${this.currentDomain} from immerse.`;
-      }
-      browser.storage.sync.set({ imrdomains: this.blockedDomains }, () => {
-        ToastManager.instance.enqueue({ message: toastMessage, duration: 3000 });
+  toggleBlockedDomain = async () => {
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    console.log('[toggleBlockedDomain] ', extractHostname(tabs[0].url));
+    let toastMessage = '';
+    if (!this.pageBlocked) {
+      //page isn't blocked
+      this.blockedDomains[this.currentDomain] = true;
+      this.pageBlocked = true;
+      toastMessage = `Immerse wil not load on ${this.currentDomain}.`;
+    } else {
+      delete this.blockedDomains[this.currentDomain];
+      this.pageBlocked = false;
+      toastMessage = `Unblocked ${this.currentDomain} from immerse.`;
+    }
+    try {
+      await browser.storage.sync.set({ imrdomains: this.blockedDomains });
+      ToastManager.instance.enqueue({ message: toastMessage, duration: 3000 });
+    } catch (e) {
+      ToastManager.instance.enqueue({
+        message: 'There was an error when trying to block this domain',
+        duration: 3000,
       });
-    });
+    }
   };
 
   handleCheckboxChange = (ev: Event) => {
@@ -111,19 +110,23 @@ export class MainPage {
             }
             onClick={this.toggleBlockedDomain}
           >
-            {' '}
-            <Ban />{' '}
+            <Ban />
           </i>
           <i>
             <imr-language-list />
           </i>
         </div>
         <div class="main-wrapper">
-          {/* <img width="150" src="assets/img/flags/kr.svg" /> */}
+          {this.currentLanguage && (
+            <img
+              width="150"
+              src={LANGUAGE_LIST.find(lang => lang.name == this.currentLanguage).imgPath}
+            />
+          )}
           <h1> Immerse </h1>
           <imr-input
             id="imr-main-word"
-            description="Word"
+            description="Word to replace"
             example="yes"
             onInput={(event: UIEvent) => this.valueBind(event)}
           />
@@ -133,7 +136,7 @@ export class MainPage {
             example="네"
             onInput={(event: UIEvent) => this.translationBind(event)}
             onKeyPress={(e: KeyboardEvent) => {
-              if (e.keyCode == 13) this.addWord();
+              if (e.key == 'Enter') this.addWord();
             }}
           />
           <div class="main-settings">
@@ -150,11 +153,11 @@ export class MainPage {
     );
   }
 
-  valueBind(event) {
+  valueBind = event => {
     this.settings.value = event.target.value;
-  }
+  };
 
-  translationBind(event) {
+  translationBind = event => {
     this.settings.translation = event.target.value;
-  }
+  };
 }

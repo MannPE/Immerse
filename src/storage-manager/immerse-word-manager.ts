@@ -12,17 +12,30 @@ export async function getLanguageWords(language: Language): Promise<ImmerseWord[
 }
 
 export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWord): Promise<void> {
-  const allWords = await getLanguageWords(language);
-  const newWordList = addWordToListAlphabetically(allWords, wordToAdd);
+  let allWords = await getLanguageWords(language);
   console.log('[addWordToLanguage] => ', language, wordToAdd);
+
   try {
-    await browser.storage.local.set({ [language]: newWordList });
+    if (allWords.length == 0) {
+      allWords = [wordToAdd];
+    } else {
+      const insertedValue = wordToAdd.value.toUpperCase();
+      const newWordIndex = getAlphabeticMatchIndex(allWords, wordToAdd.value);
+      const itemAtPositionValue = allWords[newWordIndex].value.toUpperCase();
+
+      if (itemAtPositionValue == insertedValue) {
+        allWords[newWordIndex] = wordToAdd;
+      } else {
+        allWords.splice(newWordIndex, 0, wordToAdd);
+      }
+    }
+    await browser.storage.local.set({ [language]: allWords });
     ToastManager.instance.enqueue({
       message: `Saved word ${wordToAdd.value} : ${wordToAdd.translation}`,
       duration: 2000,
     });
   } catch (e) {
-    ToastManager.instance.enqueue({
+    -ToastManager.instance.enqueue({
       message: `There was an error adding word: ${wordToAdd.value}`,
       duration: 2000,
     });
@@ -31,60 +44,53 @@ export async function addWordToLanguage(language: Language, wordToAdd: ImmerseWo
 }
 
 export async function removeItem(language: Language, wordValue: string): Promise<ImmerseWord[]> {
-  const result = await browser.storage.local.get([`${language}`]);
-  let newItems: ImmerseWord[] = result[language];
-  let index = 0;
-  // TODO optimize algorithm here - All are sorted alphabetically so can use logn lookup instead of n
-  for (; index < newItems.length; index++) {
-    const element = newItems[index];
-    if (element.value == wordValue) break;
-  }
-  newItems.splice(index, 1);
-  await browser.storage.local.set({ [language]: newItems });
-  ToastManager.instance.enqueue({
-    message: `Removed word "${wordValue}" from ${language.toString()}`,
-    duration: 2000,
-  });
+  const allWords = await getLanguageWords(language);
+  const toDeleteIndex = getAlphabeticMatchIndex(allWords, wordValue);
 
-  return newItems;
+  if (allWords[toDeleteIndex] && allWords[toDeleteIndex].value == wordValue) {
+    allWords.splice(toDeleteIndex, 1);
+    await browser.storage.local.set({ [language]: allWords });
+    ToastManager.instance.enqueue({
+      message: `Removed word "${wordValue}" from ${language.toString()}`,
+      duration: 2000,
+    });
+  } else {
+    ToastManager.instance.enqueue({
+      message: `Could not remove word ${wordValue} from the word list`,
+      duration: 2000,
+    });
+  }
+
+  return allWords;
 }
 
-function addWordToListAlphabetically(wordList: ImmerseWord[], item: ImmerseWord): ImmerseWord[] {
-  const insertedValue = item.value.toUpperCase();
-  let result = wordList;
-  if (!wordList || wordList.length < 1)
-    //empty or null array
-    result = [item];
+function getAlphabeticMatchIndex(wordList: ImmerseWord[], wordVal: string): number {
+  const insertedValue = wordVal.toUpperCase();
+  if (wordList.length < 1) return 0;
   else {
     let startPointer = 0;
     let endPointer = wordList.length - 1;
+    let midwayPointer = 0;
     for (let i = 0; i < wordList.length; i++) {
-      const midwayPointer = Math.floor((startPointer + endPointer) / 2);
+      midwayPointer = Math.floor((startPointer + endPointer) / 2);
       const current = wordList[midwayPointer];
       const currentValue = current.value.toUpperCase();
       if (startPointer == endPointer) {
-        // we just need to insert the word here since it's the final slot we'll be visiting
-        if (insertedValue < currentValue) {
-          result.splice(midwayPointer, 0, item);
+        if (insertedValue < currentValue || insertedValue == currentValue) {
+          return midwayPointer;
         } else if (currentValue < insertedValue) {
-          result.splice(midwayPointer + 1, 0, item);
-        } else {
-          // was an update
-          result[midwayPointer] = item;
+          return midwayPointer + 1;
         }
-        break;
       }
       if (insertedValue < currentValue) {
         endPointer = midwayPointer;
       } else if (currentValue < insertedValue) {
         startPointer = midwayPointer + 1; // since we're using math.floor we need to increase this value
       } else {
-        // was an update on a word with same value
-        result[midwayPointer] = item;
-        break;
+        return midwayPointer;
       }
     }
-    console.log('[addWordToImmerseListAlphabetically]', item, wordList, ' ==> ', result);
+    console.log('[addWordToImmerseListAlphabetically]', wordVal, wordList, ' ==> ', midwayPointer);
   }
-  return wordList;
+  return -1;
 }

@@ -28,11 +28,11 @@ export class LangManager {
 
   async changeActiveLanguage(lang: Language): Promise<void> {
     try {
-      browser.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang });
-      console.log('set new lnguage', lang);
+      await browser.storage.local.set({ [LOCAL_STORAGE_LANGUAGE]: lang });
+      console.log('[changeActiveLanguage] => ', lang);
       this.updateLanguage(lang);
     } catch (e) {
-      console.log('There was an error changing the language :/');
+      console.log('[changeActiveLanguage] ERROR', e);
     }
   }
 
@@ -40,12 +40,12 @@ export class LangManager {
     return this._activeLanguage;
   }
 
-  private getSavedLanguage(): void {
-    (browser as any).storage.local.get([LOCAL_STORAGE_LANGUAGE]).then(result => {
-      let res: Language = result[LOCAL_STORAGE_LANGUAGE];
-      if (res) {
-        this.changeActiveLanguage(res);
-      }
-    });
+  private async getSavedLanguage(): Promise<void> {
+    const result = await browser.storage.local.get(LOCAL_STORAGE_LANGUAGE);
+    console.log('[getSavedLanguage] =>', result);
+    let localLanguage: Language = result[LOCAL_STORAGE_LANGUAGE];
+    if (localLanguage) {
+      this.changeActiveLanguage(localLanguage);
+    }
   }
 }

@@ -32,6 +32,7 @@ chrome.tabs.onUpdated.addListener((tab, changeInfo) => {
 });
 
 loadDomainBlackList();
+loadReferenceDictionary();
 
 function createInitialWordListIfNotExist() {
   chrome.storage.local.get([ACTIVE_LANGUAGE], lang => {
@@ -66,10 +67,10 @@ function createInitialWordListIfNotExist() {
 // // load language dictionary if not already loaded
 function loadReferenceDictionary() {
   // TODO look for dictionaries and choose when to load each one
-  chrome.storage.local.get(['imr-reference-jp']).then(result => {
-    console.log('REFERENCE WORDS FOR JP ARE:', result);
-    if (result)
-      fetch(chrome.extension.getURL('assets/references/kanji_data.json'))
+  chrome.storage.local.get(['imr-reference-jp'], result => {
+    console.log('[loadReferenceDictionary] => ', result);
+    if (!result)
+      fetch(chrome.extension.getURL('assets/dictionaries/kanji_data.json'))
         .then(resp => resp.json())
         .then(jsonData => {
           // console.log(jsonData);

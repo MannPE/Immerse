@@ -8,12 +8,14 @@ export enum Language {
   CUSTOM = 'imrcustom',
 }
 
-export const LANGUAGE_LIST: {
+export type LanguageDetails = {
   name: Language;
   standardName: string;
   imgPath: string;
   alt: string;
-}[] = [
+};
+
+export const LANGUAGE_LIST: LanguageDetails[] = [
   {
     name: Language.KOREAN,
     standardName: '한국어',

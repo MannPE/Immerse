@@ -1,4 +1,4 @@
-@import "../../global/variables";
+@import '../../global/variables';
 
 .language-selection-option {
   max-height: 25px;
@@ -33,7 +33,6 @@
   column-width: 200px;
   column-fill: #ccc;
   grid-template-columns: repeat(1, 40px);
-  grid-template-rows: minmax(35px, 1fr);
   justify-content: center;
   padding: 0 20px;
 

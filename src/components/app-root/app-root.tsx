@@ -52,7 +52,9 @@ export class AppRoot {
         <footer>
           <div class="container">
             <div class="footer__open-source">
-              <p>Made by Manuel Puentes</p>
+              <p>
+                Made by <a href="https://github.com/MannPE">MannPE</a>
+              </p>
             </div>
 
             <div class="footer__icons">
